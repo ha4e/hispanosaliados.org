@@ -190,6 +190,18 @@ section {
     font-size: 2.5rem;
 }
 
+/* Global list styling - applies to all content lists site-wide */
+ul:not(.nav-menu):not(.footer-section ul):not(.nav-links) {
+    margin: var(--spacing-md) 0;
+    padding-left: var(--spacing-lg);
+    list-style-type: disc;
+}
+
+li:not(.nav-menu li):not(.footer-section li):not(.nav-links li) {
+    margin: var(--spacing-xs) 0;
+    padding-left: var(--spacing-xs);
+}
+
 /* Content sections with lists */
 .privacy-content,
 .content-section {
