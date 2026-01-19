@@ -57,9 +57,22 @@
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Contact</h4>
-                    <p>Email: <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></p>
-                    <p>Phone: <a href="tel:+12812109596">(281) 210-9596</a></p>
+                    <h4>Stay Connected</h4>
+                    <p class="footer-newsletter-text">Subscribe to our newsletter for updates on impact and events.</p>
+                    <form name="newsletter" method="POST" data-netlify="true" netlify-honeypot="bot-field" class="newsletter-form">
+                        <input type="hidden" name="form-name" value="newsletter">
+                        <p style="display: none;">
+                            <label>Don't fill this out: <input name="bot-field" /></label>
+                        </p>
+                        <div class="newsletter-input-group">
+                            <input type="email" name="email" placeholder="Email Address" required aria-label="Email address for newsletter">
+                            <button type="submit" class="btn btn-primary">Join</button>
+                        </div>
+                    </form>
+                    <div class="footer-contact-info">
+                        <p>Email: <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></p>
+                        <p>Phone: <a href="tel:+12812109596">(281) 210-9596</a></p>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom">
