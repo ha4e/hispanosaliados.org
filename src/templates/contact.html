@@ -26,7 +26,7 @@
 <section class="contact-form-section">
     <div class="container">
         <h2>Send Us a Message</h2>
-        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" hx-post="/" hx-target="#form-response" hx-swap="innerHTML">
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact-success.html">
             <input type="hidden" name="form-name" value="contact">
             <p style="display: none;">
                 <label>Don't fill this out if you're human: <input name="bot-field" /></label>
@@ -54,7 +54,6 @@
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Send Message</button>
-            <div id="form-response"></div>
         </form>
     </div>
 </section>
