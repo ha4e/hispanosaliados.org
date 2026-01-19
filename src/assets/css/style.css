@@ -444,6 +444,17 @@ footer {
     opacity: 0.8;
 }
 
+.footer-bottom a {
+    color: var(--color-white);
+    text-decoration: underline;
+    opacity: 0.9;
+    transition: opacity 0.3s;
+}
+
+.footer-bottom a:hover {
+    opacity: 1;
+}
+
 /* Values Grid */
 .values-grid {
     display: grid;
