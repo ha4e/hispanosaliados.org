@@ -306,17 +306,32 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 }
 
 /* Programs */
-.program-section {
+.programs-intro {
     margin-bottom: var(--spacing-lg);
 }
 
-.program-section h2 {
+.programs-intro h2 {
     margin-top: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
 }
 
-.program-section h2:first-child {
+.program-section {
+    margin-bottom: var(--spacing-xl);
+    padding-top: var(--spacing-md);
+}
+
+.program-section:first-of-type {
+    padding-top: 0;
+}
+
+.program-section h2 {
     margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    padding-top: var(--spacing-md);
+}
+
+.program-section:first-of-type h2 {
+    padding-top: 0;
 }
 
 .program-section h3 {
