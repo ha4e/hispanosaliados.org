@@ -11,15 +11,31 @@
     (slurp file)))
 
 (defn process-markdown [content]
-  "Process markdown content (basic implementation - can be enhanced)"
-  (-> content
-      (str/replace #"# (.+)" "<h1>$1</h1>")
-      (str/replace #"## (.+)" "<h2>$1</h2>")
-      (str/replace #"### (.+)" "<h3>$1</h3>")
-      (str/replace #"\*\*(.+?)\*\*" "<strong>$1</strong>")
-      (str/replace #"\*(.+?)\*" "<em>$1</em>")
-      (str/replace #"\n\n" "</p><p>")
-      (str/replace #"^(.+)$" "<p>$1</p>")))
+  "Process markdown content to HTML"
+  (if (empty? content)
+    ""
+    (-> content
+        ;; Headers
+        (str/replace #"^### (.+)$" "<h3>$1</h3>")
+        (str/replace #"^## (.+)$" "<h2>$1</h2>")
+        (str/replace #"^# (.+)$" "<h1>$1</h1>")
+        ;; Bold and italic
+        (str/replace #"\*\*(.+?)\*\*" "<strong>$1</strong>")
+        (str/replace #"\*(.+?)\*" "<em>$1</em>")
+        ;; Links
+        (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>")
+        ;; Lists
+        (str/replace #"^- (.+)$" "<li>$1</li>")
+        ;; Paragraphs (split by double newlines)
+        (str/split #"\n\n+")
+        (->> (map (fn [para]
+                    (if (or (str/starts-with? para "<h")
+                            (str/starts-with? para "<li")
+                            (str/starts-with? para "<ul")
+                            (str/starts-with? para "<ol"))
+                      para
+                      (str "<p>" (str/trim para) "</p>"))))
+             (str/join "\n")))))
 
 (defn read-template [template-name]
   "Read HTML template file"
