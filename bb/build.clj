@@ -10,32 +10,37 @@
   (when (.exists (io/file file))
     (slurp file)))
 
+(defn process-markdown-line [line]
+  "Process a single markdown line"
+  (cond
+    (str/starts-with? line "### ") (str "<h3>" (subs line 4) "</h3>")
+    (str/starts-with? line "## ") (str "<h2>" (subs line 3) "</h2>")
+    (str/starts-with? line "# ") (str "<h1>" (subs line 2) "</h1>")
+    (str/starts-with? line "- ") (str "<li>" (subs line 2) "</li>")
+    :else line))
+
 (defn process-markdown [content]
   "Process markdown content to HTML"
-  (if (empty? content)
+  (if (or (nil? content) (empty? content))
     ""
-    (-> content
-        ;; Headers
-        (str/replace #"^### (.+)$" "<h3>$1</h3>")
-        (str/replace #"^## (.+)$" "<h2>$1</h2>")
-        (str/replace #"^# (.+)$" "<h1>$1</h1>")
-        ;; Bold and italic
-        (str/replace #"\*\*(.+?)\*\*" "<strong>$1</strong>")
-        (str/replace #"\*(.+?)\*" "<em>$1</em>")
-        ;; Links
-        (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>")
-        ;; Lists
-        (str/replace #"^- (.+)$" "<li>$1</li>")
-        ;; Paragraphs (split by double newlines)
-        (str/split #"\n\n+")
-        (->> (map (fn [para]
-                    (if (or (str/starts-with? para "<h")
-                            (str/starts-with? para "<li")
-                            (str/starts-with? para "<ul")
-                            (str/starts-with? para "<ol"))
-                      para
-                      (str "<p>" (str/trim para) "</p>"))))
-             (str/join "\n")))))
+    (let [lines (str/split-lines content)
+          processed (map process-markdown-line lines)
+          joined (str/join "\n" processed)]
+      (-> joined
+          ;; Bold
+          (str/replace #"\*\*([^*]+)\*\*" "<strong>$1</strong>")
+          ;; Italic
+          (str/replace #"\*([^*]+)\*" "<em>$1</em>")
+          ;; Links
+          (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>")
+          ;; Wrap consecutive non-header/list items in paragraphs
+          (str/replace #"((?:<p>)?[^<]+(?:</p>)?)" 
+                       (fn [match]
+                         (if (or (str/includes? match "<h")
+                                 (str/includes? match "<li")
+                                 (str/includes? match "<p>"))
+                           match
+                           (str "<p>" (str/trim match) "</p>")))))))
 
 (defn read-template [template-name]
   "Read HTML template file"
