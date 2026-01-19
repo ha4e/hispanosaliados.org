@@ -63,9 +63,19 @@ header {
     min-height: 70px;
 }
 
+.logo {
+    display: block;
+    height: 80px;
+    overflow: hidden;
+    position: relative;
+}
+
 .logo-img {
     height: 200px;
     width: auto;
+    object-fit: cover;
+    object-position: center top;
+    transform: translateY(-30%);
 }
 
 .nav-menu {
