@@ -150,23 +150,29 @@ header {
     font-size: 1rem;
 }
 
-.btn-primary {
+.btn-primary,
+a.btn.btn-primary {
     background-color: var(--color-red);
-    color: var(--color-white);
+    color: var(--color-white) !important;
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+a.btn.btn-primary:hover {
     background-color: #A01A2E;
     transform: translateY(-2px);
+    text-decoration: none;
 }
 
-.btn-secondary {
+.btn-secondary,
+a.btn.btn-secondary {
     background-color: var(--color-white);
-    color: var(--color-blue);
+    color: var(--color-blue) !important;
 }
 
-.btn-secondary:hover {
+.btn-secondary:hover,
+a.btn.btn-secondary:hover {
     background-color: var(--color-gray-light);
+    text-decoration: none;
 }
 
 /* Sections */
@@ -191,21 +197,21 @@ section {
 }
 
 /* Standardize link colors across all content sections */
-.privacy-content a,
-.content-section a,
-.donate-form-section a,
-.donate-ways a,
-.corporate-sponsorships a,
+.privacy-content a:not(.btn),
+.content-section a:not(.btn),
+.donate-form-section a:not(.btn),
+.donate-ways a:not(.btn),
+.corporate-sponsorships a:not(.btn),
 section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a) {
     color: var(--color-red);
     text-decoration: none;
 }
 
-.privacy-content a:hover,
-.content-section a:hover,
-.donate-form-section a:hover,
-.donate-ways a:hover,
-.corporate-sponsorships a:hover,
+.privacy-content a:not(.btn):hover,
+.content-section a:not(.btn):hover,
+.donate-form-section a:not(.btn):hover,
+.donate-ways a:not(.btn):hover,
+.corporate-sponsorships a:not(.btn):hover,
 section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a):hover {
     text-decoration: underline;
 }
