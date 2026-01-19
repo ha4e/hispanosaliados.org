@@ -28,39 +28,77 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/images/favicon-16x16.png">
     <link rel="icon" type="image/png" href="/assets/images/favicon.png">
+    
+    <!-- Robots meta for AI agents -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    
+    <!-- Structured Data (JSON-LD) for AI agents -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "NonProfitOrganization",
+      "name": "Hispanos Aliados for Education",
+      "alternateName": "HA4E",
+      "url": "https://hispanosaliados.org",
+      "logo": "https://hispanosaliados.org/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png",
+      "description": "Empowering Hispanic youth through education and skilled trades by providing mentorship, awareness, and scholarships",
+      "foundingDate": "2024",
+      "taxID": "501(c)(3)",
+      "legalName": "Hispanos Aliados for Education",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-281-210-9596",
+        "contactType": "General Inquiries",
+        "email": "info@hispanosaliados.org",
+        "areaServed": "US",
+        "availableLanguage": ["English", "Spanish"]
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "US"
+      },
+      "sameAs": [],
+      "knowsAbout": ["Education", "Skilled Trades", "Scholarships", "Mentorship", "Vocational Training", "Hispanic Community"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Hispanic students, high school students, trade school students"
+      }
+    }
+    </script>
+    
     <link rel="stylesheet" href="/assets/css/style.css">
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 </head>
 <body>
-    <header>
-        <nav class="navbar">
+    <header role="banner">
+        <nav class="navbar" role="navigation" aria-label="Main navigation">
             <div class="container">
-                <a href="/" class="logo">
-                    <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo" class="logo-img">
+                <a href="/" class="logo" aria-label="HA4E Home">
+                    <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo - Hispanos Aliados for Education" class="logo-img">
                 </a>
-                <button class="nav-toggle" aria-label="Toggle navigation">
+                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                <ul class="nav-menu">
-                    <li><a href="/" class="{{active-home}}">Home</a></li>
-                    <li><a href="/about.html" class="{{active-about}}">About</a></li>
-                    <li><a href="/programs.html" class="{{active-programs}}">Programs</a></li>
-                    <li><a href="/impact.html" class="{{active-impact}}">Impact</a></li>
-                    <li><a href="/get-involved.html" class="{{active-get-involved}}">Get Involved</a></li>
-                    <li><a href="/donate.html" class="{{active-donate}}">Donate</a></li>
-                    <li><a href="/contact.html" class="{{active-contact}}">Contact</a></li>
+                <ul class="nav-menu" id="nav-menu" role="menubar">
+                    <li role="none"><a href="/" class="{{active-home}}" role="menuitem">Home</a></li>
+                    <li role="none"><a href="/about.html" class="{{active-about}}" role="menuitem">About</a></li>
+                    <li role="none"><a href="/programs.html" class="{{active-programs}}" role="menuitem">Programs</a></li>
+                    <li role="none"><a href="/impact.html" class="{{active-impact}}" role="menuitem">Impact</a></li>
+                    <li role="none"><a href="/get-involved.html" class="{{active-get-involved}}" role="menuitem">Get Involved</a></li>
+                    <li role="none"><a href="/donate.html" class="{{active-donate}}" role="menuitem">Donate</a></li>
+                    <li role="none"><a href="/contact.html" class="{{active-contact}}" role="menuitem">Contact</a></li>
                 </ul>
             </div>
         </nav>
     </header>
 
-    <main>
+    <main role="main">
         {{content}}
     </main>
 
-    <footer>
+    <footer role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -93,8 +131,10 @@
                         </div>
                     </form>
                     <div class="footer-contact-info">
-                        <p>Email: <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></p>
-                        <p>Phone: <a href="tel:+12812109596">(281) 210-9596</a></p>
+                        <address>
+                            <p>Email: <a href="mailto:info@hispanosaliados.org" aria-label="Email HA4E at info@hispanosaliados.org">info@hispanosaliados.org</a></p>
+                            <p>Phone: <a href="tel:+12812109596" aria-label="Call HA4E at (281) 210-9596">(281) 210-9596</a></p>
+                        </address>
                     </div>
                 </div>
             </div>

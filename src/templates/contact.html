@@ -8,9 +8,11 @@
     <div class="container">
         <div class="contact-details">
             <h2>Get in Touch</h2>
-            <p><strong>Email:</strong> <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></p>
-            <p><strong>Phone:</strong> <a href="tel:+12812109596">(281) 210-9596</a></p>
-            <p><strong>Address:</strong> 1404A Stonehollow Dr. Kingwood, TX 77339</p>
+            <address>
+                <p><strong>Email:</strong> <a href="mailto:info@hispanosaliados.org" aria-label="Email HA4E">info@hispanosaliados.org</a></p>
+                <p><strong>Phone:</strong> <a href="tel:+12812109596" aria-label="Call HA4E">(281) 210-9596</a></p>
+                <p><strong>Address:</strong> 1404A Stonehollow Dr. Kingwood, TX 77339</p>
+            </address>
             
             <h3>Department Contacts</h3>
             <ul>
@@ -26,7 +28,7 @@
 <section class="contact-form-section">
     <div class="container">
         <h2>Send Us a Message</h2>
-        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact-success.html">
+        <form id="contact-form" name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/contact-success.html" aria-label="Contact form">
             <input type="hidden" name="form-name" value="contact">
             <p style="display: none;">
                 <label>Don't fill this out if you're human: <input name="bot-field" /></label>
