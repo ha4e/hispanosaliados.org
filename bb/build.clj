@@ -55,10 +55,11 @@
              template
              content-map))
 
-(defn compose-page [base-template page-content active-page]
+(defn compose-page [base-template page-content active-page title]
   "Compose full page from base template and page content"
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
         content-map {:content page-content
+                     :title title
                      :active-home (active-class "home")
                      :active-about (active-class "about")
                      :active-programs (active-class "programs")
@@ -87,8 +88,8 @@
     (let [page-html (if page-template
                       (render-template page-template {:content content})
                       content)
-          full-html (compose-page base-template page-html page-name)]
-      (spit output-file (str/replace full-html #"\{\{title\}\}" title))
+          full-html (compose-page base-template page-html page-name title)]
+      (spit output-file full-html)
       (println "Built:" output-file))))
 
 (defn -main []
