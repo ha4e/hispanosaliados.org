@@ -432,6 +432,17 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     border-radius: var(--border-radius);
 }
 
+.trade-school h4 a {
+    color: var(--color-blue);
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.trade-school h4 a:hover {
+    color: var(--color-red);
+    text-decoration: underline;
+}
+
 /* Get Involved */
 .participation-grid {
     display: grid;
