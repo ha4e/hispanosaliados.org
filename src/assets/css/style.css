@@ -53,7 +53,7 @@ header {
 }
 
 .navbar {
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-xs) 0;
 }
 
 .navbar .container {
@@ -63,7 +63,7 @@ header {
 }
 
 .logo-img {
-    height: 80px;
+    height: 120px;
     width: auto;
 }
 
