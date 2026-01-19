@@ -23,8 +23,9 @@
     text
     (str "<p>" (str/trim text) "</p>")))
 
-(defn wrap-lists [text]
+(defn wrap-lists
   "Wrap consecutive <li> elements in <ul> tags"
+  [text]
   (let [lines (str/split-lines text)
         result (loop [remaining lines
                       acc []
