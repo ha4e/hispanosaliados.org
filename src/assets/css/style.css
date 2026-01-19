@@ -322,7 +322,7 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 }
 
 .stat-label {
-    color: var(--color-white);
+    color: var(--color-gray-dark);
     font-size: 0.875rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -345,6 +345,10 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 
 .impact-glimpse .stat {
     background-color: transparent;
+    color: var(--color-white);
+}
+
+.impact-glimpse .stat-label {
     color: var(--color-white);
 }
 
