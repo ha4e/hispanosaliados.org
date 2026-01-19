@@ -23,14 +23,29 @@
 
 (defn read-template [template-name]
   "Read HTML template file"
-  (read-markdown (str "src/templates/" template-name ".html")))
+  (let [file (str "src/templates/" template-name ".html")]
+    (when (.exists (io/file file))
+      (slurp file))))
 
 (defn render-template [template content-map]
   "Replace placeholders in template with content"
   (reduce-kv (fn [acc k v]
-               (str/replace acc (re-pattern (str "\\{\\{" (name k) "\\}\\}")) (str v)))
+               (str/replace acc (re-pattern (str "\\{\\{" (name k) "\\}\\}")) (or (str v) "")))
              template
              content-map))
+
+(defn compose-page [base-template page-content active-page]
+  "Compose full page from base template and page content"
+  (let [active-class (fn [page] (if (= page active-page) "active" ""))
+        content-map {:content page-content
+                     :active-home (active-class "home")
+                     :active-about (active-class "about")
+                     :active-programs (active-class "programs")
+                     :active-impact (active-class "impact")
+                     :active-get-involved (active-class "get-involved")
+                     :active-donate (active-class "donate")
+                     :active-contact (active-class "contact")}]
+    (render-template base-template content-map)))
 
 (defn copy-assets []
   "Copy static assets to public directory"
@@ -43,13 +58,16 @@
   "Ensure directory exists"
   (.mkdirs (io/file path)))
 
-(defn build-page [page-name template content]
+(defn build-page [page-name base-template page-template content title]
   "Build a single HTML page"
   (let [output-dir "public"
         output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
     (ensure-dir output-dir)
-    (let [html (render-template template content)]
-      (spit output-file html)
+    (let [page-html (if page-template
+                      (render-template page-template {:content content})
+                      content)
+          full-html (compose-page base-template page-html page-name)]
+      (spit output-file (str/replace full-html #"\{\{title\}\}" title))
       (println "Built:" output-file))))
 
 (defn -main []
@@ -65,16 +83,22 @@
   (copy-assets)
   (println "Assets copied")
   
-  ;; Build pages
-  (let [pages ["index" "about" "programs" "impact" "get-involved" "donate" "contact" "privacy"]]
-    (doseq [page pages]
-      (let [template (read-template (if (= page "index") "home" page))
-            content-file (str "src/content/" (if (= page "index") "home" page) ".md")
+  ;; Read base template
+  (let [base-template (read-template "base")
+        pages [["index" "home" "Home"]
+               ["about" "about" "About Us"]
+               ["programs" "programs" "Programs"]
+               ["impact" "impact" "Impact"]
+               ["get-involved" "get-involved" "Get Involved"]
+               ["donate" "donate" "Donate"]
+               ["contact" "contact" "Contact"]
+               ["privacy" "privacy" "Privacy Policy"]]]
+    (doseq [[page-name template-name title] pages]
+      (let [page-template (read-template template-name)
+            content-file (str "src/content/" template-name ".md")
             content (read-markdown content-file)
             processed-content (if content (process-markdown content) "")]
-        (build-page page template {:content processed-content
-                                   :title (str/capitalize (if (= page "index") "Home" page))
-                                   :page-name page}))))
+        (build-page page-name base-template page-template processed-content title)))))
   
   (println "Build complete!"))
 
