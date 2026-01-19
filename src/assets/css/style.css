@@ -310,6 +310,20 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     margin-bottom: var(--spacing-lg);
 }
 
+.program-section h2 {
+    margin-top: var(--spacing-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.program-section h2:first-child {
+    margin-top: 0;
+}
+
+.program-section h3 {
+    margin-top: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
+}
+
 .program-image {
     margin: var(--spacing-md) 0;
 }
