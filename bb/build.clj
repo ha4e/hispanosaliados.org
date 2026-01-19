@@ -113,6 +113,7 @@
                ["get-involved" "get-involved" "Get Involved"]
                ["donate" "donate" "Donate"]
                ["contact" "contact" "Contact"]
+               ["contact-success" "contact-success" "Thank You"]
                ["privacy" "privacy" "Privacy Policy"]]]
     (doseq [[page-name template-name title] pages]
       (let [page-template (read-template template-name)
