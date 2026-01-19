@@ -1,0 +1,11 @@
+[build]
+  command = "bb build"
+  publish = "public"
+
+[build.environment]
+  BABASHKA_VERSION = "latest"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
