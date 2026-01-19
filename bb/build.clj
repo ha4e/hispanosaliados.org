@@ -77,10 +77,12 @@
              template
              content-map))
 
-(defn compose-page [base-template page-content active-page title]
+(defn compose-page [base-template page-content active-page title page-name]
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
+        canonical-path (if (= page-name "index") "/" (str "/" page-name ".html"))
         content-map {:content page-content
                      :title title
+                     :canonical-path canonical-path
                      :active-home (active-class "home")
                      :active-about (active-class "about")
                      :active-programs (active-class "programs")
@@ -103,10 +105,10 @@
   (let [output-dir "public"
         output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
     (ensure-dir output-dir)
-    (let [page-html (if page-template
+      (let [page-html (if page-template
                       (render-template page-template {:content content})
                       content)
-          full-html (compose-page base-template page-html page-name title)]
+          full-html (compose-page base-template page-html page-name title page-name)]
       (spit output-file full-html)
       (println "Built:" output-file))))
 
