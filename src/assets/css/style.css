@@ -332,6 +332,17 @@ section {
 }
 
 /* Donate */
+.donate-ways ul {
+    margin: var(--spacing-md) 0;
+    padding-left: var(--spacing-lg);
+    list-style-type: disc;
+}
+
+.donate-ways li {
+    margin: var(--spacing-xs) 0;
+    padding-left: var(--spacing-xs);
+}
+
 .donate-impact {
     background-color: var(--color-gray-light);
 }
