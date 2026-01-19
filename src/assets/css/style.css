@@ -184,6 +184,25 @@ section {
     font-size: 2.5rem;
 }
 
+/* Content sections with lists */
+.privacy-content,
+.content-section {
+    line-height: 1.8;
+}
+
+.privacy-content ul,
+.content-section ul {
+    margin: var(--spacing-md) 0;
+    padding-left: var(--spacing-lg);
+    list-style-type: disc;
+}
+
+.privacy-content li,
+.content-section li {
+    margin: var(--spacing-xs) 0;
+    padding-left: var(--spacing-xs);
+}
+
 .about-snapshot {
     background-color: var(--color-gray-light);
     text-align: center;

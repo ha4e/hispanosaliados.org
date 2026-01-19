@@ -23,6 +23,33 @@
     text
     (str "<p>" (str/trim text) "</p>")))
 
+(defn wrap-lists [text]
+  "Wrap consecutive <li> elements in <ul> tags"
+  (let [lines (str/split-lines text)
+        result (loop [remaining lines
+                      acc []
+                      in-list false
+                      list-items []]
+                 (if (empty? remaining)
+                   (if (seq list-items)
+                     (conj acc (str "<ul>\n" (str/join "\n" list-items) "\n</ul>"))
+                     acc)
+                   (let [line (first remaining)
+                         is-list-item (str/starts-with? line "<li>")]
+                     (cond
+                       (and is-list-item (not in-list))
+                       (recur (rest remaining) acc true [line])
+                       (and is-list-item in-list)
+                       (recur (rest remaining) acc true (conj list-items line))
+                       (and (not is-list-item) in-list)
+                       (recur remaining
+                              (conj acc (str "<ul>\n" (str/join "\n" list-items) "\n</ul>") line)
+                              false
+                              [])
+                       :else
+                       (recur (rest remaining) (conj acc line) false [])))))]
+    (str/join "\n" result)))
+
 (defn process-markdown [content]
   (if (or (nil? content) (empty? content))
     ""
@@ -32,8 +59,9 @@
           with-formatting (-> joined
                               (str/replace #"\*\*([^*]+)\*\*" "<strong>$1</strong>")
                               (str/replace #"\*([^*]+)\*" "<em>$1</em>")
-                              (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>"))]
-      (wrap-paragraph with-formatting))))
+                              (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>"))
+          with-lists (wrap-lists with-formatting)]
+      (wrap-paragraph with-lists))))
 
 (defn read-template [template-name]
   (let [file (str "src/templates/" template-name ".html")]
