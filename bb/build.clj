@@ -98,6 +98,12 @@
     (when (.exists (io/file assets-dir))
       (fs/copy-tree assets-dir public-assets {:replace-existing true}))))
 
+(defn copy-robots-txt []
+  (let [robots-file "src/robots.txt"
+        public-robots "public/robots.txt"]
+    (when (.exists (io/file robots-file))
+      (fs/copy robots-file public-robots {:replace-existing true}))))
+
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
@@ -121,6 +127,7 @@
 
 (copy-assets)
 (println "Assets copied")
+(copy-robots-txt)
 
 (let [base-template (read-template "base")
       pages [["index" "home" "Home"]
