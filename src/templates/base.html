@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}} - Hispanos Aliados for Education</title>
+    <meta name="description" content="Empowering Hispanic youth through education and skilled trades">
+    <link rel="stylesheet" href="/assets/css/style.css">
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="container">
+                <a href="/" class="logo">
+                    <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo" class="logo-img">
+                </a>
+                <button class="nav-toggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="nav-menu">
+                    <li><a href="/" class="{{active-home}}">Home</a></li>
+                    <li><a href="/about.html" class="{{active-about}}">About</a></li>
+                    <li><a href="/programs.html" class="{{active-programs}}">Programs</a></li>
+                    <li><a href="/impact.html" class="{{active-impact}}">Impact</a></li>
+                    <li><a href="/get-involved.html" class="{{active-get-involved}}">Get Involved</a></li>
+                    <li><a href="/donate.html" class="{{active-donate}}">Donate</a></li>
+                    <li><a href="/contact.html" class="{{active-contact}}">Contact</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {{content}}
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Hispanos Aliados for Education</h3>
+                    <p>Empowering Hispanic Youth Through Education and Skilled Trades</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/about.html">About</a></li>
+                        <li><a href="/programs.html">Programs</a></li>
+                        <li><a href="/impact.html">Impact</a></li>
+                        <li><a href="/get-involved.html">Get Involved</a></li>
+                        <li><a href="/donate.html">Donate</a></li>
+                        <li><a href="/contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></p>
+                    <p>Phone: <a href="tel:+12812109596">(281) 210-9596</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Hispanos Aliados for Education | 501(c)(3) Nonprofit Organization</p>
+                <p><a href="/privacy.html">Privacy Policy</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="/assets/js/main.js"></script>
+</body>
+</html>
