@@ -190,6 +190,26 @@ section {
     line-height: 1.8;
 }
 
+/* Standardize link colors across all content sections */
+.privacy-content a,
+.content-section a,
+.donate-form-section a,
+.donate-ways a,
+.corporate-sponsorships a,
+section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a) {
+    color: var(--color-red);
+    text-decoration: none;
+}
+
+.privacy-content a:hover,
+.content-section a:hover,
+.donate-form-section a:hover,
+.donate-ways a:hover,
+.corporate-sponsorships a:hover,
+section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a):hover {
+    text-decoration: underline;
+}
+
 .privacy-content h1 + em,
 .privacy-content h1 + p em {
     display: block;
