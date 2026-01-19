@@ -5,7 +5,11 @@
 [build.environment]
   BABASHKA_VERSION = "latest"
 
+# Redirect contact form success page
 [[redirects]]
-  from = "/*"
-  to = "/index.html"
+  from = "/contact-success"
+  to = "/contact-success.html"
   status = 200
+
+# Note: Netlify Forms will handle form submissions automatically
+# Forms with data-netlify="true" are processed before any redirects
