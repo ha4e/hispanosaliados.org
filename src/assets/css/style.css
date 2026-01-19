@@ -53,24 +53,26 @@ header {
 }
 
 .navbar {
-    padding: var(--spacing-xs) 0;
+    padding: 0.25rem 0;
 }
 
 .navbar .container {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 80px;
 }
 
 .logo-img {
-    height: 120px;
+    height: 160px;
     width: auto;
 }
 
 .nav-menu {
     display: flex;
     list-style: none;
-    gap: var(--spacing-md);
+    gap: var(--spacing-sm);
+    font-size: 0.9rem;
 }
 
 .nav-menu a {
@@ -78,6 +80,7 @@ header {
     color: var(--color-gray-dark);
     font-weight: 500;
     transition: color 0.3s;
+    padding: 0.25rem 0.5rem;
 }
 
 .nav-menu a:hover,
