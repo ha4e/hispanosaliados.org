@@ -1,5 +1,5 @@
 [build]
-  command = "bb build"
+  command = "make build"
   publish = "public"
 
 [build.environment]
