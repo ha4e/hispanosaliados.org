@@ -6,12 +6,10 @@
             [babashka.fs :as fs]))
 
 (defn read-markdown [file]
-  "Read markdown file and return content as string"
   (when (.exists (io/file file))
     (slurp file)))
 
 (defn process-markdown-line [line]
-  "Process a single markdown line"
   (cond
     (str/starts-with? line "### ") (str "<h3>" (subs line 4) "</h3>")
     (str/starts-with? line "## ") (str "<h2>" (subs line 3) "</h2>")
@@ -20,7 +18,6 @@
     :else line))
 
 (defn process-markdown [content]
-  "Process markdown content to HTML"
   (if (or (nil? content) (empty? content))
     ""
     (let [lines (str/split-lines content)
@@ -43,20 +40,17 @@
                            (str "<p>" (str/trim match) "</p>")))))))
 
 (defn read-template [template-name]
-  "Read HTML template file"
   (let [file (str "src/templates/" template-name ".html")]
     (when (.exists (io/file file))
       (slurp file))))
 
 (defn render-template [template content-map]
-  "Replace placeholders in template with content"
   (reduce-kv (fn [acc k v]
                (str/replace acc (re-pattern (str "\\{\\{" (name k) "\\}\\}")) (or (str v) "")))
              template
              content-map))
 
 (defn compose-page [base-template page-content active-page title]
-  "Compose full page from base template and page content"
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
         content-map {:content page-content
                      :title title
@@ -70,18 +64,15 @@
     (render-template base-template content-map)))
 
 (defn copy-assets []
-  "Copy static assets to public directory"
   (let [assets-dir "src/assets"
         public-assets "public/assets"]
     (when (.exists (io/file assets-dir))
       (fs/copy-tree assets-dir public-assets {:replace-existing true}))))
 
 (defn ensure-dir [path]
-  "Ensure directory exists"
   (.mkdirs (io/file path)))
 
 (defn build-page [page-name base-template page-template content title]
-  "Build a single HTML page"
   (let [output-dir "public"
         output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
     (ensure-dir output-dir)
@@ -93,7 +84,6 @@
       (println "Built:" output-file))))
 
 (defn -main []
-  "Main build function"
   (println "Building HA4E website...")
   
   ;; Clean public directory

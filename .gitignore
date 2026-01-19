@@ -29,3 +29,7 @@ logs/
 tmp/
 temp/
 *.tmp
+
+# Clojure/Kondo cache
+.clj-kondo/
+.lsp/
