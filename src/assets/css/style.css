@@ -346,11 +346,23 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     background-color: var(--color-gray-light);
     border-radius: var(--border-radius);
     text-align: center;
+    display: flex;
+    flex-direction: column;
 }
 
 .participation-card h3 {
     color: var(--color-blue);
     margin-bottom: var(--spacing-sm);
+}
+
+.participation-card p {
+    flex-grow: 1;
+    margin-bottom: var(--spacing-md);
+}
+
+.participation-card .btn {
+    margin-top: auto;
+    align-self: center;
 }
 
 .outreach-plan {
