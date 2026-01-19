@@ -1,7 +1,7 @@
 .PHONY: build serve clean
 
 build:
-	bb build
+	bb bb/build.clj
 
 serve: build
 	cd public && python3 -m http.server 8000

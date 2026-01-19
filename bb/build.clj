@@ -1,9 +1,8 @@
 #!/usr/bin/env bb
 
-(ns build
-  (:require [clojure.java.io :as io]
-            [clojure.string :as str]
-            [babashka.fs :as fs]))
+(require '[clojure.java.io :as io]
+         '[clojure.string :as str]
+         '[babashka.fs :as fs])
 
 (defn read-markdown [file]
   (when (.exists (io/file file))
@@ -17,27 +16,24 @@
     (str/starts-with? line "- ") (str "<li>" (subs line 2) "</li>")
     :else line))
 
+(defn wrap-paragraph [text]
+  (if (or (str/includes? text "<h")
+          (str/includes? text "<li")
+          (str/includes? text "<p>"))
+    text
+    (str "<p>" (str/trim text) "</p>")))
+
 (defn process-markdown [content]
   (if (or (nil? content) (empty? content))
     ""
     (let [lines (str/split-lines content)
           processed (map process-markdown-line lines)
-          joined (str/join "\n" processed)]
-      (-> joined
-          ;; Bold
-          (str/replace #"\*\*([^*]+)\*\*" "<strong>$1</strong>")
-          ;; Italic
-          (str/replace #"\*([^*]+)\*" "<em>$1</em>")
-          ;; Links
-          (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>")
-          ;; Wrap consecutive non-header/list items in paragraphs
-          (str/replace #"((?:<p>)?[^<]+(?:</p>)?)" 
-                       (fn [match]
-                         (if (or (str/includes? match "<h")
-                                 (str/includes? match "<li")
-                                 (str/includes? match "<p>"))
-                           match
-                           (str "<p>" (str/trim match) "</p>")))))))
+          joined (str/join "\n" processed)
+          with-formatting (-> joined
+                              (str/replace #"\*\*([^*]+)\*\*" "<strong>$1</strong>")
+                              (str/replace #"\*([^*]+)\*" "<em>$1</em>")
+                              (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>"))]
+      (wrap-paragraph with-formatting))))
 
 (defn read-template [template-name]
   (let [file (str "src/templates/" template-name ".html")]
@@ -46,7 +42,9 @@
 
 (defn render-template [template content-map]
   (reduce-kv (fn [acc k v]
-               (str/replace acc (re-pattern (str "\\{\\{" (name k) "\\}\\}")) (or (str v) "")))
+               (let [placeholder (str "{{" (name k) "}}")
+                     replacement (str (or v ""))]
+                 (str/replace acc placeholder replacement)))
              template
              content-map))
 
@@ -83,36 +81,31 @@
       (spit output-file full-html)
       (println "Built:" output-file))))
 
-(defn -main []
-  (println "Building HA4E website...")
-  
-  ;; Clean public directory
-  (when (.exists (io/file "public"))
-    (fs/delete-tree "public"))
-  (ensure-dir "public")
-  
-  ;; Copy assets
-  (copy-assets)
-  (println "Assets copied")
-  
-  ;; Read base template
-  (let [base-template (read-template "base")
-        pages [["index" "home" "Home"]
-               ["about" "about" "About Us"]
-               ["programs" "programs" "Programs"]
-               ["impact" "impact" "Impact"]
-               ["get-involved" "get-involved" "Get Involved"]
-               ["donate" "donate" "Donate"]
-               ["contact" "contact" "Contact"]
-               ["contact-success" "contact-success" "Thank You"]
-               ["privacy" "privacy" "Privacy Policy"]]]
-    (doseq [[page-name template-name title] pages]
-      (let [page-template (read-template template-name)
-            content-file (str "src/content/" template-name ".md")
-            content (read-markdown content-file)
-            processed-content (if content (process-markdown content) "")]
-        (build-page page-name base-template page-template processed-content title)))))
-  
-  (println "Build complete!"))
+;; Main build execution
+(println "Building HA4E website...")
 
-(-main)
+(when (.exists (io/file "public"))
+  (fs/delete-tree "public"))
+(ensure-dir "public")
+
+(copy-assets)
+(println "Assets copied")
+
+(let [base-template (read-template "base")
+      pages [["index" "home" "Home"]
+             ["about" "about" "About Us"]
+             ["programs" "programs" "Programs"]
+             ["impact" "impact" "Impact"]
+             ["get-involved" "get-involved" "Get Involved"]
+             ["donate" "donate" "Donate"]
+             ["contact" "contact" "Contact"]
+             ["contact-success" "contact-success" "Thank You"]
+             ["privacy" "privacy" "Privacy Policy"]]]
+  (doseq [[page-name template-name title] pages]
+    (let [page-template (read-template template-name)
+          content-file (str "src/content/" template-name ".md")
+          content (read-markdown content-file)
+          processed-content (if content (process-markdown content) "")]
+      (build-page page-name base-template page-template processed-content title))))
+
+(println "Build complete!")
