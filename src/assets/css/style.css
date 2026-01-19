@@ -415,6 +415,15 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 .contact-details h3 {
     color: var(--color-blue);
     margin-bottom: var(--spacing-sm);
+    margin-top: var(--spacing-md);
+}
+
+.contact-details h2:first-child {
+    margin-top: 0;
+}
+
+.contact-details h3 + ul {
+    margin-top: var(--spacing-sm);
 }
 
 .contact-details a {
