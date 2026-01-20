@@ -22,22 +22,29 @@
      */
     function initContactForm() {
         const form = document.getElementById('contact-form');
+        const messageDiv = document.getElementById('contact-form-message');
         
-        if (form) {
-            // For Netlify Forms, we need to let it submit naturally
-            // Add action attribute back for redirect
-            form.setAttribute('action', '/contact-success.html');
-            
-            // Optional: Add a small delay before redirect to ensure Netlify processes it
+        if (form && messageDiv) {
             form.addEventListener('submit', function(event) {
-                // Don't prevent default - let Netlify handle it
-                // But add a fallback redirect in case Netlify's redirect doesn't work
+                // Let Netlify handle the form submission naturally
+                // Show success message after submission
                 setTimeout(function() {
-                    // Only redirect if we're still on the contact page
-                    if (window.location.pathname === '/contact.html' || window.location.pathname === '/contact') {
+                    messageDiv.style.display = 'block';
+                    messageDiv.className = 'form-message form-message-success';
+                    messageDiv.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
+                    messageDiv.setAttribute('role', 'alert');
+                    
+                    // Reset the form
+                    form.reset();
+                    
+                    // Scroll to message
+                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // Optionally redirect after 5 seconds
+                    setTimeout(function() {
                         window.location.href = '/contact-success.html';
-                    }
-                }, 2000);
+                    }, 5000);
+                }, 1000);
             });
         }
     }
