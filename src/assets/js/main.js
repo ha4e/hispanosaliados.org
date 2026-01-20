@@ -18,20 +18,31 @@
     }
     
     /**
-     * Handle contact form submission with HTMX
+     * Handle contact form submission with Netlify Forms
      */
     function initContactForm() {
         const form = document.getElementById('contact-form');
-        const responseDiv = document.getElementById('form-response');
         
         if (form) {
-            form.addEventListener('htmx:afterRequest', function(event) {
-                if (event.detail.xhr.status === 200) {
-                    responseDiv.className = 'success';
-                    form.reset();
-                } else {
-                    responseDiv.className = 'error';
-                }
+            form.addEventListener('submit', function(event) {
+                // Let Netlify handle the form submission
+                // Netlify will automatically redirect to the action URL if specified
+                // or we can handle it manually
+                const formData = new FormData(form);
+                
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                }).then(function(response) {
+                    if (response.ok) {
+                        // Redirect to success page
+                        window.location.href = '/contact-success.html';
+                    }
+                }).catch(function(error) {
+                    console.error('Form submission error:', error);
+                    // Still redirect to success page (Netlify may have processed it)
+                    window.location.href = '/contact-success.html';
+                });
             });
         }
     }
