@@ -119,8 +119,8 @@
   (let [text "HA4E"
         ;; Smaller font size to ensure all text fits (40% of size)
         font-size (* size 0.4)
-        ;; Brand color: red (#C8102E)
-        text-color "#C8102E"]
+        ;; Brand color: blue (#1E3A5F) to match logo
+        text-color "#1E3A5F"]
     (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          "<svg width=\"" size "\" height=\"" size "\" viewBox=\"0 0 " size " " size "\" xmlns=\"http://www.w3.org/2000/svg\">\n"
          "  <rect width=\"" size "\" height=\"" size "\" fill=\"transparent\"/>\n"
