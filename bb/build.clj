@@ -114,30 +114,80 @@
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
+(defn generate-svg-favicon [size]
+  "Generate SVG favicon with HA4E text - pure Clojure, no dependencies"
+  (let [text "HA4E"
+        font-size (* size 0.7)
+        ;; Brand color: red (#C8102E)
+        text-color "#C8102E"]
+    (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+         "<svg width=\"" size "\" height=\"" size "\" xmlns=\"http://www.w3.org/2000/svg\">\n"
+         "  <rect width=\"" size "\" height=\"" size "\" fill=\"transparent\"/>\n"
+         "  <text x=\"50%\" y=\"50%\" font-family=\"Arial, sans-serif\" "
+         "font-size=\"" font-size "\" font-weight=\"bold\" "
+         "fill=\"" text-color "\" "
+         "text-anchor=\"middle\" dominant-baseline=\"central\">" text "</text>\n"
+         "</svg>")))
+
 (defn generate-favicons []
-  "Generate favicon files with HA4E text using Python script if available"
+  "Generate favicon files with HA4E text - pure Clojure solution"
   (let [output-dir "src/assets/images"
-        script-path "scripts/generate-favicons.py"]
+        ;; Generate SVG favicon (works everywhere, modern browsers support it)
+        svg-favicon (generate-svg-favicon 64)
+        svg-path (str output-dir "/favicon.svg")]
     (ensure-dir output-dir)
-    (if (.exists (io/file script-path))
-      (try
-        ;; Try to generate using Python script
-        (let [result @(p/process ["python3" script-path "--text"]
-                                  {:dir (System/getProperty "user.dir")})]
-          (if (= (:exit result) 0)
-            (do
-              (println "Favicons generated via Python script")
-              true)
-            (do
-              (println "Warning: Python script failed, favicons may be missing")
-              false)))
-        (catch Exception e
-          (println "Warning: Could not generate favicons:" (.getMessage e))
-          false))
-      (do
-        (println "Warning: Favicon generation script not found at" script-path)
-        (println "Favicons will not be regenerated - using existing files if present")
-        true))))
+    
+    ;; Write SVG favicon
+    (spit svg-path svg-favicon)
+    (println "Generated:" svg-path)
+    
+    ;; For PNG favicons, try to use system tools if available
+    ;; Otherwise, browsers will use the SVG
+    (let [png-sizes [{:name "favicon.png" :size 64}
+                     {:name "favicon-32x32.png" :size 32}
+                     {:name "favicon-16x16.png" :size 16}]
+          ;; Try to find image conversion tools
+          convert-cmd (cond
+                        ;; macOS - use sips
+                        (and (= (System/getProperty "os.name") "Mac OS X")
+                             (= (:exit @(p/process ["which" "sips"] {:out :string :err :string})) 0))
+                        "sips"
+                        ;; Linux/Unix - use convert (ImageMagick)
+                        (= (:exit @(p/process ["which" "convert"] {:out :string :err :string})) 0)
+                        "convert"
+                        :else nil)]
+      
+      (if convert-cmd
+        (do
+          ;; Generate PNGs using system tool
+          (doseq [{:keys [name size]} png-sizes]
+            (let [output-path (str output-dir "/" name)]
+              (try
+                (if (= convert-cmd "sips")
+                  ;; macOS sips
+                  (let [result @(p/process ["sips" "-s" "format" "png" 
+                                            "-z" (str size) (str size)
+                                            svg-path "--out" output-path]
+                                           {:dir (System/getProperty "user.dir")})]
+                    (if (= (:exit result) 0)
+                      (println "Generated:" output-path (str "(" size "x" size ")"))
+                      (println "Warning: Failed to generate" output-path)))
+                  ;; ImageMagick convert
+                  (let [result @(p/process ["convert" "-background" "transparent"
+                                            "-size" (str size "x" size)
+                                            svg-path output-path]
+                                           {:dir (System/getProperty "user.dir")})]
+                    (if (= (:exit result) 0)
+                      (println "Generated:" output-path (str "(" size "x" size ")"))
+                      (println "Warning: Failed to generate" output-path))))
+                (catch Exception e
+                  (println "Warning: Could not generate" output-path ":" (.getMessage e))))))
+          true)
+        (do
+          ;; No conversion tool available - just use SVG
+          (println "Note: No image conversion tool found. Using SVG favicon only.")
+          (println "Modern browsers support SVG favicons. For PNG fallbacks, install ImageMagick or use macOS sips.")
+          true)))))
 
 (defn build-page [page-name base-template page-template content title]
   (let [output-dir "public"
