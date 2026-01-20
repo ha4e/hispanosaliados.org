@@ -19,6 +19,7 @@
     
     /**
      * Handle contact form submission with Netlify Forms
+     * Uses AJAX to submit without page reload, avoiding redirect issues
      */
     function initContactForm() {
         const form = document.getElementById('contact-form');
@@ -26,33 +27,56 @@
         
         if (form && messageDiv) {
             form.addEventListener('submit', function(event) {
-                // Store a flag to show message after page reload (if Netlify redirects)
-                sessionStorage.setItem('contactFormSubmitted', 'true');
+                event.preventDefault(); // Prevent default form submission
                 
-                // Show success message immediately
-                setTimeout(function() {
+                // Disable submit button
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.textContent;
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Sending...';
+                
+                // Create FormData from the form
+                const formData = new FormData(form);
+                
+                // Submit to Netlify
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        // Success - show message
+                        messageDiv.style.display = 'block';
+                        messageDiv.className = 'form-message form-message-success';
+                        messageDiv.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
+                        messageDiv.setAttribute('role', 'alert');
+                        
+                        // Reset the form
+                        form.reset();
+                        
+                        // Scroll to message
+                        messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    } else {
+                        // Error - show error message
+                        messageDiv.style.display = 'block';
+                        messageDiv.className = 'form-message form-message-error';
+                        messageDiv.innerHTML = '<strong>Error:</strong> There was a problem sending your message. Please try again or contact us directly.';
+                        messageDiv.setAttribute('role', 'alert');
+                    }
+                })
+                .catch(function(error) {
+                    // Network error
                     messageDiv.style.display = 'block';
-                    messageDiv.className = 'form-message form-message-success';
-                    messageDiv.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
+                    messageDiv.className = 'form-message form-message-error';
+                    messageDiv.innerHTML = '<strong>Error:</strong> There was a problem sending your message. Please try again or contact us directly.';
                     messageDiv.setAttribute('role', 'alert');
-                    
-                    // Reset the form
-                    form.reset();
-                    
-                    // Scroll to message
-                    messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                }, 500);
+                })
+                .finally(function() {
+                    // Re-enable submit button
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = originalBtnText;
+                });
             });
-            
-            // Check if form was just submitted (after Netlify redirect)
-            if (sessionStorage.getItem('contactFormSubmitted') === 'true') {
-                sessionStorage.removeItem('contactFormSubmitted');
-                messageDiv.style.display = 'block';
-                messageDiv.className = 'form-message form-message-success';
-                messageDiv.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
-                messageDiv.setAttribute('role', 'alert');
-                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
         }
     }
     
