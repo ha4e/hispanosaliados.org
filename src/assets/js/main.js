@@ -26,8 +26,10 @@
         
         if (form && messageDiv) {
             form.addEventListener('submit', function(event) {
-                // Let Netlify handle the form submission naturally
-                // Show success message after submission
+                // Store a flag to show message after page reload (if Netlify redirects)
+                sessionStorage.setItem('contactFormSubmitted', 'true');
+                
+                // Show success message immediately
                 setTimeout(function() {
                     messageDiv.style.display = 'block';
                     messageDiv.className = 'form-message form-message-success';
@@ -39,13 +41,18 @@
                     
                     // Scroll to message
                     messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    
-                    // Optionally redirect after 5 seconds
-                    setTimeout(function() {
-                        window.location.href = '/contact-success.html';
-                    }, 5000);
-                }, 1000);
+                }, 500);
             });
+            
+            // Check if form was just submitted (after Netlify redirect)
+            if (sessionStorage.getItem('contactFormSubmitted') === 'true') {
+                sessionStorage.removeItem('contactFormSubmitted');
+                messageDiv.style.display = 'block';
+                messageDiv.className = 'form-message form-message-success';
+                messageDiv.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
+                messageDiv.setAttribute('role', 'alert');
+                messageDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
     }
     
