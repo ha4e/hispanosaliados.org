@@ -117,16 +117,18 @@
 (defn generate-svg-favicon [size]
   "Generate SVG favicon with HA4E text - pure Clojure, no dependencies"
   (let [text "HA4E"
-        font-size (* size 0.7)
+        ;; Smaller font size to ensure all text fits (40% of size)
+        font-size (* size 0.4)
         ;; Brand color: red (#C8102E)
         text-color "#C8102E"]
     (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-         "<svg width=\"" size "\" height=\"" size "\" xmlns=\"http://www.w3.org/2000/svg\">\n"
+         "<svg width=\"" size "\" height=\"" size "\" viewBox=\"0 0 " size " " size "\" xmlns=\"http://www.w3.org/2000/svg\">\n"
          "  <rect width=\"" size "\" height=\"" size "\" fill=\"transparent\"/>\n"
-         "  <text x=\"50%\" y=\"50%\" font-family=\"Arial, sans-serif\" "
+         "  <text x=\"50%\" y=\"50%\" font-family=\"Arial, Helvetica, sans-serif\" "
          "font-size=\"" font-size "\" font-weight=\"bold\" "
          "fill=\"" text-color "\" "
-         "text-anchor=\"middle\" dominant-baseline=\"central\">" text "</text>\n"
+         "text-anchor=\"middle\" dominant-baseline=\"central\" "
+         "letter-spacing=\"-0.02em\">" text "</text>\n"
          "</svg>")))
 
 (defn generate-favicons []
