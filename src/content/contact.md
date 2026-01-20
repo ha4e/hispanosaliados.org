@@ -11,6 +11,6 @@ We'd love to hear from you! Get in touch with us through any of the methods belo
 ## Department Contacts
 
 - **General**: info@hispanosaliados.org
-- **Executive Director**: rosa@hispanosaliados.org
+- **Executive Director**: rose@hispanosaliados.org
 - **Scholarships**: scholarships@hispanosaliados.org
 - **Partnerships**: partnerships@hispanosaliados.org
