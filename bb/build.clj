@@ -2,7 +2,8 @@
 
 (require '[clojure.java.io :as io]
          '[clojure.string :as str]
-         '[babashka.fs :as fs])
+         '[babashka.fs :as fs]
+         '[babashka.process :as p])
 
 (defn read-markdown [file]
   (when (.exists (io/file file))
@@ -113,6 +114,31 @@
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
+(defn generate-favicons []
+  "Generate favicon files with HA4E text using Python script if available"
+  (let [output-dir "src/assets/images"
+        script-path "scripts/generate-favicons.py"]
+    (ensure-dir output-dir)
+    (if (.exists (io/file script-path))
+      (try
+        ;; Try to generate using Python script
+        (let [result @(p/process ["python3" script-path "--text"]
+                                  {:dir (System/getProperty "user.dir")})]
+          (if (= (:exit result) 0)
+            (do
+              (println "Favicons generated via Python script")
+              true)
+            (do
+              (println "Warning: Python script failed, favicons may be missing")
+              false)))
+        (catch Exception e
+          (println "Warning: Could not generate favicons:" (.getMessage e))
+          false))
+      (do
+        (println "Warning: Favicon generation script not found at" script-path)
+        (println "Favicons will not be regenerated - using existing files if present")
+        true))))
+
 (defn build-page [page-name base-template page-template content title]
   (let [output-dir "public"
         output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
@@ -131,6 +157,8 @@
   (fs/delete-tree "public"))
 (ensure-dir "public")
 
+(generate-favicons)
+(println "Favicons generated")
 (copy-assets)
 (println "Assets copied")
 (copy-robots-txt)
