@@ -589,6 +589,26 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     font-size: 0.9rem;
 }
 
+.newsletter-message {
+    margin-top: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+.newsletter-message-success {
+    background-color: rgba(76, 175, 80, 0.2);
+    color: var(--color-white);
+    border: 1px solid rgba(76, 175, 80, 0.5);
+}
+
+.newsletter-message-error {
+    background-color: rgba(244, 67, 54, 0.2);
+    color: var(--color-white);
+    border: 1px solid rgba(244, 67, 54, 0.5);
+}
+
 .footer-contact-info {
     margin-top: var(--spacing-md);
     padding-top: var(--spacing-md);
