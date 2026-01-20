@@ -115,20 +115,27 @@
   (.mkdirs (io/file path)))
 
 (defn generate-svg-favicon [size]
-  "Generate SVG favicon with HA4E text - pure Clojure, no dependencies"
-  (let [text "HA4E"
+  "Generate SVG favicon with HA (blue) and 4E (red) text on white background"
+  (let [text-ha "HA"
+        text-4e "4E"
         ;; Smaller font size to ensure all text fits (40% of size)
         font-size (* size 0.4)
-        ;; Brand color: blue (#1E3A5F) to match logo
-        text-color "#1E3A5F"]
+        ;; Brand colors
+        color-blue "#1E3A5F"
+        color-red "#C41E3A"
+        color-white "#FFFFFF"]
     (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
          "<svg width=\"" size "\" height=\"" size "\" viewBox=\"0 0 " size " " size "\" xmlns=\"http://www.w3.org/2000/svg\">\n"
-         "  <rect width=\"" size "\" height=\"" size "\" fill=\"transparent\"/>\n"
+         "  <!-- White background -->\n"
+         "  <rect width=\"" size "\" height=\"" size "\" fill=\"" color-white "\" rx=\"2\"/>\n"
+         "  <!-- HA4E with HA in blue and 4E in red -->\n"
          "  <text x=\"50%\" y=\"50%\" font-family=\"Arial, Helvetica, sans-serif\" "
          "font-size=\"" font-size "\" font-weight=\"bold\" "
-         "fill=\"" text-color "\" "
          "text-anchor=\"middle\" dominant-baseline=\"central\" "
-         "letter-spacing=\"-0.02em\">" text "</text>\n"
+         "letter-spacing=\"-0.02em\">\n"
+         "    <tspan fill=\"" color-blue "\">" text-ha "</tspan>"
+         "<tspan fill=\"" color-red "\">" text-4e "</tspan>\n"
+         "  </text>\n"
          "</svg>")))
 
 (defn generate-favicons []
