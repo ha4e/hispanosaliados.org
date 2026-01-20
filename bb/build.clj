@@ -104,6 +104,12 @@
     (when (.exists (io/file robots-file))
       (fs/copy robots-file public-robots {:replace-existing true}))))
 
+(defn copy-redirects []
+  (let [redirects-file "src/_redirects"
+        public-redirects "public/_redirects"]
+    (when (.exists (io/file redirects-file))
+      (fs/copy redirects-file public-redirects {:replace-existing true}))))
+
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
@@ -128,6 +134,7 @@
 (copy-assets)
 (println "Assets copied")
 (copy-robots-txt)
+(copy-redirects)
 
 (let [base-template (read-template "base")
       pages [["index" "home" "Home"]
