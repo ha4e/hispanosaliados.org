@@ -82,6 +82,7 @@
     
     /**
      * Handle newsletter form submission with Netlify Forms
+     * Uses AJAX so submission works without redirect (same pattern as contact form)
      */
     function initNewsletterForm() {
         const form = document.getElementById('newsletter-form');
@@ -90,24 +91,48 @@
         
         if (form && messageDiv) {
             form.addEventListener('submit', function(event) {
-                // Let Netlify handle the form submission naturally
-                // Show success message after a short delay
-                setTimeout(function() {
-                    messageDiv.style.display = 'block';
-                    messageDiv.className = 'newsletter-message newsletter-message-success';
-                    messageDiv.textContent = 'Thank you! You\'ve been subscribed to our newsletter.';
-                    messageDiv.setAttribute('role', 'alert');
-                    
-                    // Clear the email input
-                    if (emailInput) {
-                        emailInput.value = '';
+                event.preventDefault();
+                
+                const submitBtn = form.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn ? submitBtn.textContent : 'Join';
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.textContent = 'Joining…';
+                }
+                
+                const formData = new FormData(form);
+                
+                fetch('/', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(function(response) {
+                    if (response.ok) {
+                        messageDiv.style.display = 'block';
+                        messageDiv.className = 'newsletter-message newsletter-message-success';
+                        messageDiv.textContent = 'Thank you! You\'ve been subscribed to our newsletter.';
+                        messageDiv.setAttribute('role', 'alert');
+                        if (emailInput) emailInput.value = '';
+                    } else {
+                        messageDiv.style.display = 'block';
+                        messageDiv.className = 'newsletter-message newsletter-message-error';
+                        messageDiv.textContent = 'Something went wrong. Please try again or email us.';
+                        messageDiv.setAttribute('role', 'alert');
                     }
-                    
-                    // Hide message after 5 seconds
-                    setTimeout(function() {
-                        messageDiv.style.display = 'none';
-                    }, 5000);
-                }, 1000);
+                })
+                .catch(function() {
+                    messageDiv.style.display = 'block';
+                    messageDiv.className = 'newsletter-message newsletter-message-error';
+                    messageDiv.textContent = 'Something went wrong. Please try again or email us.';
+                    messageDiv.setAttribute('role', 'alert');
+                })
+                .finally(function() {
+                    if (submitBtn) {
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = originalBtnText;
+                    }
+                    setTimeout(function() { messageDiv.style.display = 'none'; }, 5000);
+                });
             });
         }
     }
