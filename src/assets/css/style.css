@@ -148,9 +148,17 @@ header {
     gap: var(--spacing-sm);
 }
 
+/* Hero image: crop bottom to hide watermark */
+.hero-image {
+    overflow: hidden;
+    border-radius: var(--border-radius);
+    height: 360px;
+}
 .hero-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
     border-radius: var(--border-radius);
 }
 
@@ -380,6 +388,21 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     align-items: center;
     gap: var(--spacing-md);
 }
+/* Crop bottom to hide watermark on story photos */
+/* Only crop the image; keep the paragraph visible */
+.student-story-image-wrap {
+    overflow: hidden;
+    height: 400px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+.student-story-image-wrap .story-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 25%;
+}
 
 .story-image {
     width: 100%;
@@ -390,12 +413,16 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 
 .story-image-container {
     margin-bottom: var(--spacing-md);
+    overflow: hidden;
+    height: 520px;
+    border-radius: var(--border-radius);
 }
-
 .story-image-container img {
     width: 100%;
     max-width: 800px;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 20%;
     border-radius: var(--border-radius);
 }
 
@@ -406,6 +433,32 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     gap: var(--spacing-md);
 }
 
+/* Reusable crop wrapper to hide watermark on photos */
+.photo-crop-wrap {
+    overflow: hidden;
+    height: 320px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: var(--border-radius);
+}
+.photo-crop-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: var(--border-radius);
+}
+/* Impact page Community Feedback: shift crop down to reduce blue at top */
+.photo-crop-wrap--community img {
+    object-position: center 58%;
+}
+
+.testimonial-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+}
 .testimonial-content img {
     width: 100%;
     max-width: 600px;
@@ -419,12 +472,16 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     align-items: center;
     gap: var(--spacing-md);
 }
-
 .feedback-content img {
     width: 100%;
     max-width: 600px;
     height: auto;
     border-radius: var(--border-radius);
+}
+/* Inside crop wrapper, img must fill box so object-position works */
+.feedback-content .photo-crop-wrap img {
+    height: 100%;
+    object-fit: cover;
 }
 
 /* CTA Bar */
@@ -519,6 +576,7 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     width: 100%;
     height: 200px;
     object-fit: cover;
+    object-position: center top;
     border-radius: var(--border-radius);
     margin-bottom: var(--spacing-sm);
 }
@@ -655,13 +713,22 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 }
 
 .program-image {
-    margin: var(--spacing-md) 0;
+    margin: var(--spacing-md) auto;
+    overflow: hidden;
+    max-width: 800px;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--border-radius);
 }
-
 .program-image img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
     border-radius: var(--border-radius);
+}
+/* Trades image: center crop so blue is balanced top and bottom */
+.program-image--trades img {
+    object-position: center 52%;
 }
 
 .trade-schools-list {
@@ -726,6 +793,7 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     width: 100%;
     height: 180px;
     object-fit: cover;
+    object-position: center top;
     border-radius: var(--border-radius);
     margin-bottom: var(--spacing-sm);
 }
@@ -1011,8 +1079,16 @@ footer {
     align-items: center;
 }
 
-.leadership-content img {
+.leadership-image-wrap {
+    overflow: hidden;
+    height: 360px;
+    border-radius: var(--border-radius);
+}
+.leadership-image-wrap img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
     border-radius: var(--border-radius);
 }
 
