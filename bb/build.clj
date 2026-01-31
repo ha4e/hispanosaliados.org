@@ -104,23 +104,18 @@
     (when (.exists (io/file assets-dir))
       (fs/copy-tree assets-dir public-assets {:replace-existing true}))))
 
+(defn copy-static-file [src-path public-path]
+  (when (.exists (io/file src-path))
+    (fs/copy src-path public-path {:replace-existing true})))
+
 (defn copy-robots-txt []
-  (let [robots-file "src/robots.txt"
-        public-robots "public/robots.txt"]
-    (when (.exists (io/file robots-file))
-      (fs/copy robots-file public-robots {:replace-existing true}))))
+  (copy-static-file "src/robots.txt" "public/robots.txt"))
 
 (defn copy-redirects []
-  (let [redirects-file "src/_redirects"
-        public-redirects "public/_redirects"]
-    (when (.exists (io/file redirects-file))
-      (fs/copy redirects-file public-redirects {:replace-existing true}))))
+  (copy-static-file "src/_redirects" "public/_redirects"))
 
 (defn copy-headers []
-  (let [headers-file "src/_headers"
-        public-headers "public/_headers"]
-    (when (.exists (io/file headers-file))
-      (fs/copy headers-file public-headers {:replace-existing true}))))
+  (copy-static-file "src/_headers" "public/_headers"))
 
 (defn minify-assets []
   "Optional: minify CSS and JS when npx/csso-cli and npx/terser are available."
