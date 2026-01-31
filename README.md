@@ -28,16 +28,18 @@ ha4e/
 ### Build
 
 ```bash
-bb build
+make build
 ```
+
+(or `bb bb/build.clj` if you have Babashka in PATH)
 
 ### Serve Locally
 
 ```bash
-# After build, serve public/ directory
-python3 -m http.server 8000 --directory public
+make serve
+# Open http://localhost:8000
 ```
 
 ## Deployment
 
-Deploy to Netlify by connecting the repository. The build command is `bb build` and the publish directory is `public/`.
+Deploy to Netlify by connecting the repository. The build runs `scripts/netlify-build.sh`, which installs Babashka (if needed) and runs `make build`. Publish directory is `public/`.

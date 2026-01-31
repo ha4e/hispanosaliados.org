@@ -1,9 +1,16 @@
 [build]
-  command = "make build"
+  command = "bash scripts/netlify-build.sh"
   publish = "public"
 
 [build.environment]
-  BABASHKA_VERSION = "latest"
+  # Pin Babashka for reproducible builds; omit or set "latest" to use newest
+  BABASHKA_VERSION = "1.12.214"
+
+# Pretty URL for donate (so /donate and /donate.html both work)
+[[redirects]]
+  from = "/donate"
+  to = "/donate.html"
+  status = 200
 
 # Redirect contact form success page
 [[redirects]]
