@@ -360,7 +360,7 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 .stat-number {
     font-size: 3.5rem;
     font-weight: 900;
-    color: var(--color-gold);
+    color: var(--color-blue);
     line-height: 1;
     margin-bottom: var(--spacing-xs);
 }
@@ -389,6 +389,10 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 
 .impact-glimpse .stat {
     background-color: transparent;
+    color: var(--color-white);
+}
+
+.impact-glimpse .stat-number {
     color: var(--color-white);
 }
 
@@ -867,6 +871,19 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     margin-top: 1.5rem;
     font-size: 0.95rem;
     color: var(--color-gray-dark, #333);
+}
+
+/* Override section link style: sufficient contrast on white + underline (accessibility) */
+.donate-form-section .donate-contact-fallback a {
+    color: var(--color-blue);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.donate-form-section .donate-contact-fallback a:hover {
+    color: var(--color-blue);
+    text-decoration: underline;
+    opacity: 0.85;
 }
 
 .impact-grid {
