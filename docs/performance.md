@@ -49,7 +49,7 @@ These headers are defined in `src/_headers` and are applied **only by Netlify** 
 |-----------------|------------|
 | **Efficient cache policy** | `src/_headers` sets long-lived `Cache-Control` for `/assets/*` so CSS, JS, and images are cached. HTML uses short cache. |
 | **Minify CSS / Minify JavaScript** | Build runs `npx csso-cli` and `npx terser` when available. |
-| **Reduce requests / unused resources** | Single CSS and single JS per page; unused htmx script removed. |
+| **Reduce requests / unused resources** | Single CSS and single JS per page; HTMX used for forms (contact, newsletter). |
 | **Render-blocking resources** | Stylesheet in `<head>`; only script is `main.js` at end of `<body>`. |
 | **Avoid empty src/href** | No empty links or script sources. |
 
@@ -75,8 +75,8 @@ For **prioritized next steps** (e.g. WebP in templates, verifying headers on Net
   - `npx terser` on `public/assets/js/main.js`  
   If npx or the tools aren’t available, the build continues with unminified files.
 
-- **No blocking third‑party script**  
-  The unused htmx script was removed; only our `main.js` loads at the bottom of the page.
+- **HTMX for forms**  
+  Contact and newsletter forms use HTMX (`hx-post`, `hx-swap="none"`) so submissions go via AJAX; `main.js` only shows success/error messages. HTMX loads from unpkg in `<head>` with `defer`.
 
 ---
 
