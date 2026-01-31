@@ -10,10 +10,6 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 # Donate page: allow GiveButter widget + payment iframes (Stripe, PayPal, etc.)
-/donate
-  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
-/donate/
-  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
 /donate.html
   Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
 
