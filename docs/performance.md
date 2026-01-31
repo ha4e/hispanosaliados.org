@@ -1,0 +1,148 @@
+# Performance
+
+This doc describes how we optimize the HA4E site and how to **check performance without any extension** using built-in and web tools.
+
+## How to check performance (no extension)
+
+### 1. Chrome DevTools → Lighthouse
+
+**Lighthouse** is built into Chrome. No install needed.
+
+1. Open the site (e.g. `make serve` then http://localhost:8000, or your Netlify URL).
+2. Open **DevTools**: `F12` or right‑click → **Inspect**.
+3. Go to the **Lighthouse** tab.
+4. Choose **Performance** (and optionally **Best practices**, **SEO**).
+5. Click **Analyze page load**.
+
+You get a Performance score (0–100), Core Web Vitals, and a list of opportunities (e.g. “Serve static assets with an efficient cache policy”, “Minify CSS”).
+
+### 2. PageSpeed Insights (online)
+
+[PageSpeed Insights](https://pagespeed.web.dev/) uses Lighthouse and works from a URL. Good for testing a **live** site (e.g. Netlify deploy).
+
+1. Go to https://pagespeed.web.dev/.
+2. Enter your site URL (e.g. `https://yoursite.netlify.app` or your production URL).
+3. Click **Analyze**.
+
+You get mobile and desktop scores plus the same kind of suggestions. **Note:** It can’t test `http://localhost:8000`; use a public URL or deploy first.
+
+### 3. Local testing with Lighthouse
+
+For local URLs (e.g. http://localhost:8000), use **Chrome DevTools → Lighthouse** as above. That’s the standard way to check performance without an extension.
+
+### 4. Why security headers don’t show on localhost
+
+The local server (`make serve` → `python3 -m http.server` in `public/`) does **not** read Netlify’s `_headers` file. So when you run Lighthouse on `http://localhost:8000`, you will see:
+
+- “No CSP found in enforcement mode”
+- “No HSTS header found”
+- “No COOP header found”
+- “No frame control policy found”
+
+These headers are defined in `src/_headers` and are applied **only by Netlify** when the site is deployed. To verify they are present, run Lighthouse (or [PageSpeed Insights](https://pagespeed.web.dev/)) against a **Netlify deploy URL** (e.g. `https://yoursite.netlify.app`). There is no need to change the local server unless you want to simulate Netlify headers locally (e.g. with `netlify dev`).
+
+---
+
+## What we optimize for (Lighthouse / PageSpeed)
+
+| What they check | What we do |
+|-----------------|------------|
+| **Efficient cache policy** | `src/_headers` sets long-lived `Cache-Control` for `/assets/*` so CSS, JS, and images are cached. HTML uses short cache. |
+| **Minify CSS / Minify JavaScript** | Build runs `npx csso-cli` and `npx terser` when available. |
+| **Reduce requests / unused resources** | Single CSS and single JS per page; unused htmx script removed. |
+| **Render-blocking resources** | Stylesheet in `<head>`; only script is `main.js` at end of `<body>`. |
+| **Avoid empty src/href** | No empty links or script sources. |
+
+For **prioritized next steps** (e.g. WebP in templates, verifying headers on Netlify), see [Performance suggestions](#performance-suggestions-priority-order) below.
+
+## Build optimizations
+
+- **Cache headers**  
+  `src/_headers` is copied to `public/_headers`. Netlify serves it so assets under `/assets/*` get `Cache-Control: public, max-age=31536000, immutable`.
+
+- **Security headers**  
+  For `/*`, Netlify also sends: `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy`, `Strict-Transport-Security`, `Cross-Origin-Opener-Policy`, `Permissions-Policy`. These apply on deploy; local dev may not send them.
+
+- **Image optimization (WebP, AVIF, responsive)**  
+  After copying assets, the build runs `npx sharp-cli` to:
+  - Generate **responsive widths** (480, 800, 1200 px) for content photos in `src/assets/images/photos/`, in PNG, WebP, and AVIF. Outputs are named e.g. `name-480w.webp`. The first full run can take several minutes; later runs skip files that are up to date.
+  - Generate full-size WebP (quality 85) and AVIF (quality 70) for all PNG/JPG under `public/assets/images` (favicons and small favicon sizes are skipped).  
+  If `sharp-cli` isn’t available, these steps are skipped and the site still works with originals. Templates use `<picture>` with `<source type="image/avif">` and `<source type="image/webp">` plus `srcset` and `sizes` so browsers get appropriately sized, modern-format images; PNG/JPG remain as fallback.
+
+- **Minification**  
+  After WebP generation, the build runs:
+  - `npx csso-cli` on `public/assets/css/style.css`
+  - `npx terser` on `public/assets/js/main.js`  
+  If npx or the tools aren’t available, the build continues with unminified files.
+
+- **No blocking third‑party script**  
+  The unused htmx script was removed; only our `main.js` loads at the bottom of the page.
+
+---
+
+## Image optimization (concrete steps)
+
+### 1. Build generates WebP
+
+- **What:** `bb build` (or `make build`) runs `generate-webp`, which uses `npx sharp-cli` to create a `.webp` next to each PNG/JPG under `public/assets/images` (e.g. `home-hero.png` → `home-hero.webp`).
+- **Requirement:** Node/npx; first run will pull `sharp-cli`. If it fails, build continues and only PNG/JPG are deployed.
+- **Skip list:** Favicons and `*-16x16.png` / `*-32x32.png` are not converted.
+
+### 2. Serve WebP in HTML with `<picture>`
+
+Use `<picture>` so supporting browsers get WebP and others get the original:
+
+```html
+<picture>
+  <source srcset="/assets/images/photos/home-hero.webp" type="image/webp">
+  <img src="/assets/images/photos/home-hero.png" alt="..." loading="eager" fetchpriority="high">
+</picture>
+```
+
+- **Where:** Replace plain `<img src=".../photo.png">` with the block above for hero and content images. Keep the same `alt`, `loading`, `fetchpriority`, and `width`/`height` on the `<img>`.
+- **Priority:** Start with the LCP image (e.g. home hero) and above-the-fold images, then the rest.
+
+### 3. Optional: AVIF
+
+For more savings, generate AVIF in addition to WebP (e.g. with `sharp-cli --format avif` or a separate script). Then add a second `<source type="image/avif" srcset="...">` before the WebP source; browsers that support AVIF will pick it.
+
+### 4. Optional: Responsive images (`srcset` / `sizes`)
+
+If you add multiple widths (e.g. 480w, 800w, 1200w) in the build, use `srcset` and `sizes` so small screens don’t download huge files:
+
+```html
+<picture>
+  <source srcset="/assets/images/photos/hero-480.webp 480w, /assets/images/photos/hero-800.webp 800w" type="image/webp" sizes="(max-width: 600px) 100vw, 800px">
+  <img src="/assets/images/photos/hero.png" alt="..." width="800" height="600">
+</picture>
+```
+
+Implementing multiple widths would require extra build steps (e.g. sharp resizing) and template or config listing desired widths.
+
+## Performance suggestions (priority order)
+
+Use these to improve Lighthouse scores and Core Web Vitals. Tackle in order for the biggest impact.
+
+1. **Serve WebP in templates** — **Done.** All content images and the logo use `<picture>` with WebP (and AVIF) sources; PNG/JPG remain as fallback.
+
+2. **Verify production headers**  
+   Run Lighthouse or PageSpeed Insights against your **Netlify deploy URL**, not localhost. That confirms cache and security headers (CSP, HSTS, etc.) are applied and Best Practices items pass.
+
+3. **Reduce render-blocking CSS (optional)**  
+   If FCP/LCP remain high after image fixes, consider inlining critical above-the-fold CSS in `<head>` and loading the full stylesheet with `media="print" onload="this.media='all'"` or a small async loader so the main stylesheet doesn’t block first paint.
+
+4. **Responsive images** — **Done.** The build generates 480w, 800w, 1200w variants for content photos; templates use `srcset`/`sizes` so small viewports get smaller files (see “Responsive images” above).
+
+5. **AVIF (optional)** — **Done.** The build generates `.avif` files and templates include `<source type="image/avif">` before WebP so supporting browsers get smaller images.
+
+---
+
+## Quick local benchmark
+
+```bash
+make build
+make serve
+# Open http://localhost:8000 → DevTools → Lighthouse → Analyze page load
+```
+
+For cache and minification behavior closest to production, run Lighthouse (or PageSpeed Insights) against a Netlify deploy URL.
