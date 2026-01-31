@@ -125,7 +125,8 @@
                 <div class="footer-section">
                     <h4>Stay Connected</h4>
                     <p class="footer-newsletter-text">Subscribe to our newsletter for updates on impact and events.</p>
-                    <form name="newsletter" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="newsletter-form" id="newsletter-form">
+                    <form name="newsletter" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" class="newsletter-form" id="newsletter-form"
+                          hx-post="/" hx-swap="none" hx-target="#newsletter-message">
                         <input type="hidden" name="form-name" value="newsletter">
                         <p class="form-honeypot" aria-hidden="true">
                             <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>

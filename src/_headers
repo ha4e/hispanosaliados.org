@@ -1,7 +1,7 @@
 # Security: CSP and hardening (adjust CSP if you add external scripts/fonts)
 # GiveButter donation widget: script + frame from widgets.givebutter.com
 /*
-  Content-Security-Policy: default-src 'self'; img-src 'self' https://widgets.givebutter.com https://givebutter.com; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'sha256-biLFinpqYMtWHmXfkA1BPeCY0/fNt46SAZ+BBk5YUog=' 'sha256-VACH4Rk9/KHgE7xz3JbI+u3DNCON0XKt8wZx5mV7YOA=' 'unsafe-hashes'; frame-src https://widgets.givebutter.com https://givebutter.com https://*.stripe.com https://js.stripe.com https://www.paypal.com https://*.paypal.com; connect-src 'self' https://widgets.givebutter.com https://api.givebutter.com https://*.stripe.com https://api.stripe.com
+  Content-Security-Policy: default-src 'self'; img-src 'self' https://widgets.givebutter.com https://givebutter.com; script-src 'self' https://widgets.givebutter.com https://unpkg.com; style-src 'self' https://widgets.givebutter.com 'sha256-biLFinpqYMtWHmXfkA1BPeCY0/fNt46SAZ+BBk5YUog=' 'sha256-VACH4Rk9/KHgE7xz3JbI+u3DNCON0XKt8wZx5mV7YOA=' 'unsafe-hashes'; frame-src https://widgets.givebutter.com https://givebutter.com https://*.stripe.com https://js.stripe.com https://www.paypal.com https://*.paypal.com; connect-src 'self' https://widgets.givebutter.com https://api.givebutter.com https://*.stripe.com https://api.stripe.com
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
