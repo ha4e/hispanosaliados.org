@@ -5,7 +5,7 @@ JAMStack website for Hispanos Aliados for Education (HA4E), a 501(c)(3) non-prof
 ## Tech Stack
 
 - **Babashka**: Build scripts and tooling
-- **HTMX + VanillaJS**: Frontend interactivity
+- **VanillaJS**: Frontend interactivity (nav, forms)
 - **Markdown**: Content management
 - **Static HTML/CSS**: Simple, fast, CDN-friendly
 - **Netlify**: Hosting and CDN
@@ -19,8 +19,8 @@ ha4e/
 │   ├── content/            # Markdown content files
 │   └── assets/             # CSS, JS, images
 ├── bb/                     # Babashka build scripts
-├── public/                 # Built static site (generated)
-└── admin/                  # Admin config (if needed)
+├── scripts/                # Netlify build script, etc.
+└── public/                 # Built static site (generated)
 ```
 
 ## Development
