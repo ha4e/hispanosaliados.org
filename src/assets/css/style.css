@@ -163,7 +163,7 @@ header {
     gap: var(--spacing-sm);
 }
 
-/* Hero image: crop bottom to hide watermark */
+/* Hero image: crop bottom-right to hide Gemini watermark */
 .hero-image {
     overflow: hidden;
     border-radius: var(--border-radius);
@@ -175,6 +175,10 @@ header {
     object-fit: cover;
     object-position: center top;
     border-radius: var(--border-radius);
+}
+/* Crop hero so watermark (typically bottom-right) is outside visible area */
+.hero .hero-image img {
+    object-position: left top;
 }
 
 /* Buttons */
@@ -811,6 +815,10 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     object-position: center top;
     border-radius: var(--border-radius);
     margin-bottom: var(--spacing-sm);
+}
+/* Volunteer card: shift crop down so beige at top is hidden and subject is centered */
+.participation-image--center {
+    object-position: center 42%;
 }
 
 .participation-card .btn {
