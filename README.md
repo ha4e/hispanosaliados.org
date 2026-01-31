@@ -43,3 +43,9 @@ make serve
 ## Deployment
 
 Deploy to Netlify by connecting the repository. The build runs `scripts/netlify-build.sh`, which installs Babashka (if needed) and runs `make build`. Publish directory is `public/`.
+
+## License and trademarks
+
+- **Code:** MIT License — see [LICENSE](LICENSE). Logo and branding assets are excluded (see LICENSE).
+- **Trademarks and name:** [TRADEMARKS.md](TRADEMARKS.md) — use of the code does not grant rights to use HA4E’s name or marks; no endorsement implied.
+- **Notice:** [NOTICE](NOTICE) — copyright and trademark notice, no-endorsement disclaimer.
