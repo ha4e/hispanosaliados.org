@@ -68,14 +68,18 @@
     </script>
     
     <link rel="stylesheet" href="/assets/css/style.css">
-    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    {{head-extra}}
 </head>
 <body>
     <header role="banner">
         <nav class="navbar" role="navigation" aria-label="Main navigation">
             <div class="container">
                 <a href="/" class="logo" aria-label="HA4E Home">
-                    <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo - Hispanos Aliados for Education" class="logo-img">
+                    <picture>
+                        <source srcset="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.avif" type="image/avif">
+                        <source srcset="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.webp" type="image/webp">
+                        <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo - Hispanos Aliados for Education" class="logo-img" width="1024" height="1024">
+                    </picture>
                 </a>
                 <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
                     <span></span>
@@ -123,8 +127,8 @@
                     <p class="footer-newsletter-text">Subscribe to our newsletter for updates on impact and events.</p>
                     <form name="newsletter" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" class="newsletter-form" id="newsletter-form">
                         <input type="hidden" name="form-name" value="newsletter">
-                        <p style="display: none;">
-                            <label>Don't fill this out: <input name="bot-field" /></label>
+                        <p class="form-honeypot" aria-hidden="true">
+                            <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
                         </p>
                         <div class="newsletter-input-group">
                             <input type="email" name="email" id="newsletter-email" placeholder="Email Address" required aria-label="Email address for newsletter">
