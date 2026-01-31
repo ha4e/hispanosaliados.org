@@ -78,12 +78,17 @@
              template
              content-map))
 
+(def ^:private givebutter-script
+  "<!-- GiveButter donation widget (loaded only on Donate page) -->\n    <script src=\"https://widgets.givebutter.com/latest.umd.cjs?acct=tU1dQXJcQXXOpiB7&p=other\"></script>")
+
 (defn compose-page [base-template page-content active-page title page-name]
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
         canonical-path (if (= page-name "index") "/" (str "/" page-name ".html"))
+        head-extra (if (= page-name "donate") givebutter-script "")
         content-map {:content page-content
                      :title title
                      :canonical-path canonical-path
+                     :head-extra head-extra
                      :active-home (active-class "home")
                      :active-about (active-class "about")
                      :active-programs (active-class "programs")
@@ -110,6 +115,155 @@
         public-redirects "public/_redirects"]
     (when (.exists (io/file redirects-file))
       (fs/copy redirects-file public-redirects {:replace-existing true}))))
+
+(defn copy-headers []
+  (let [headers-file "src/_headers"
+        public-headers "public/_headers"]
+    (when (.exists (io/file headers-file))
+      (fs/copy headers-file public-headers {:replace-existing true}))))
+
+(defn minify-assets []
+  "Optional: minify CSS and JS when npx/csso-cli and npx/terser are available."
+  (let [css-src "public/assets/css/style.css"
+        js-src "public/assets/js/main.js"]
+    (when (and (.exists (io/file css-src)) (.exists (io/file js-src)))
+      (let [css-result (p/process ["npx" "--yes" "csso-cli" css-src "-o" css-src]
+                                 {:dir (System/getProperty "user.dir")
+                                  :out :string :err :string})]
+        (if (= (:exit @css-result) 0)
+          (println "Minified CSS")
+          (println "Note: CSS minification skipped (npx csso-cli not available or failed).")))
+      (let [js-result (p/process ["npx" "--yes" "terser" js-src "-o" js-src "-c" "-m"]
+                                 {:dir (System/getProperty "user.dir")
+                                  :out :string :err :string})]
+        (if (= (:exit @js-result) 0)
+          (println "Minified JS")
+          (println "Note: JS minification skipped (npx terser not available or failed)."))))))
+
+(defn skip-webp? [path]
+  (let [name (fs/file-name path)]
+    (or (str/includes? (str/lower-case name) "favicon")
+        (str/ends-with? (str/lower-case name) "-16x16.png")
+        (str/ends-with? (str/lower-case name) "-32x32.png"))))
+
+(defn generate-webp []
+  "Generate WebP versions of PNG/JPG under public/assets/images when sharp-cli is available."
+  (let [images-dir (io/file "public/assets/images")
+        ext? (fn [f ext]
+               (str/ends-with? (str/lower-case (.getName f)) (str "." ext)))]
+    (when (.isDirectory images-dir)
+      (let [files (->> (file-seq images-dir)
+                      (filter #(.isFile %))
+                      (filter (fn [f]
+                                (let [p (.getPath f)]
+                                  (and (not (skip-webp? p))
+                                       (or (ext? f "png") (ext? f "jpg") (ext? f "jpeg"))))))) ]
+        (if (empty? files)
+          (println "No PNG/JPG images to convert to WebP (or only favicons).")
+          (let [ok (atom 0)
+                ;; Compare output to source in src/, not copied file in public/ (copy updates mtime).
+                need-generate? (fn [public-path out-path]
+                                 (let [src-path (str/replace public-path #"^public/" "src/")
+                                       src-f (io/file src-path)
+                                       out-f (io/file out-path)]
+                                   (or (not (.exists out-f))
+                                       (> (.lastModified src-f) (.lastModified out-f)))))]
+            (doseq [f files]
+              (let [path (.getPath f)
+                    out (str/replace path #"(?i)\.(png|jpe?g)$" ".webp")]
+                (when (and (not= path out) (need-generate? path out))
+                  (let [result (p/process ["npx" "--yes" "sharp-cli" "--input" path "--output" out "--format" "webp" "--quality" "85"]
+                                         {:dir (System/getProperty "user.dir")
+                                          :out :string :err :string})]
+                    (if (= (:exit @result) 0)
+                      (do (swap! ok inc) (println "WebP:" out))
+                      (println "Note: WebP skipped for" path ":" (:err @result)))))))
+            (when (> @ok 0)
+              (println "Generated" @ok "WebP image(s). Use <picture> in templates to serve them (see docs/performance.md)."))))))))
+
+(defn generate-avif []
+  "Generate AVIF versions of PNG/JPG under public/assets/images when sharp-cli supports it."
+  (let [images-dir (io/file "public/assets/images")
+        ext? (fn [f ext]
+               (str/ends-with? (str/lower-case (.getName f)) (str "." ext)))]
+    (when (.isDirectory images-dir)
+      (let [files (->> (file-seq images-dir)
+                      (filter #(.isFile %))
+                      (filter (fn [f]
+                                (let [p (.getPath f)]
+                                  (and (not (skip-webp? p))
+                                       (or (ext? f "png") (ext? f "jpg") (ext? f "jpeg")))))))]
+        (if (empty? files)
+          (println "No PNG/JPG images to convert to AVIF (or only favicons).")
+          (let [ok (atom 0)
+                need-generate? (fn [public-path out-path]
+                                 (let [src-path (str/replace public-path #"^public/" "src/")
+                                       src-f (io/file src-path)
+                                       out-f (io/file out-path)]
+                                   (or (not (.exists out-f))
+                                       (> (.lastModified src-f) (.lastModified out-f)))))]
+            (doseq [f files]
+              (let [path (.getPath f)
+                    out (str/replace path #"(?i)\.(png|jpe?g)$" ".avif")]
+                (when (and (not= path out) (need-generate? path out))
+                  (let [result (p/process ["npx" "--yes" "sharp-cli" "--input" path "--output" out "--format" "avif" "--quality" "70"]
+                                         {:dir (System/getProperty "user.dir")
+                                          :out :string :err :string})]
+                    (if (= (:exit @result) 0)
+                      (do (swap! ok inc) (println "AVIF:" out))
+                      (println "Note: AVIF skipped for" path ":" (:err @result)))))))
+            (when (> @ok 0)
+              (println "Generated" @ok "AVIF image(s). Add <source type=\"image/avif\"> before WebP in <picture> (see docs/performance.md)."))))))))
+
+(def ^:private responsive-widths [480 800 1200])
+(def ^:private photos-src-dir "src/assets/images/photos")
+
+(defn generate-responsive []
+  "Generate multi-width variants (480, 800, 1200) for content photos for srcset/sizes."
+  (let [src-dir (io/file photos-src-dir)
+        out-dir "public/assets/images/photos"]
+    (when (and (.exists src-dir) (.isDirectory src-dir))
+      (let [files (->> (file-seq src-dir)
+                      (filter #(.isFile %))
+                      (filter (fn [f]
+                                (let [p (.getPath f)
+                                      name (str/lower-case (.getName f))]
+                                  (and (not (skip-webp? p))
+                                       (or (str/ends-with? name ".png")
+                                           (str/ends-with? name ".jpg")
+                                           (str/ends-with? name ".jpeg")))))))]
+        (if (empty? files)
+          (println "No content photos to generate responsive variants.")
+          (let [ok (atom 0)
+                need? (fn [src-path out-path]
+                        (let [src-f (io/file src-path)
+                              out-f (io/file out-path)]
+                          (or (not (.exists out-f))
+                              (> (.lastModified src-f) (.lastModified out-f)))))
+                base-name (fn [path] (str/replace path #"(?i)\.(png|jpe?g)$" ""))]
+            (.mkdirs (io/file out-dir))
+            (doseq [f files]
+              (let [src-path (.getPath f)
+                    name-no-ext (fs/file-name (base-name src-path))]
+                (doseq [w responsive-widths]
+                  (let [suffix (str "-" w "w")
+                        out-png (str out-dir "/" name-no-ext suffix ".png")
+                        out-webp (str out-dir "/" name-no-ext suffix ".webp")
+                        out-avif (str out-dir "/" name-no-ext suffix ".avif")]
+                    (when (need? src-path out-png)
+                      (let [r (p/process ["npx" "--yes" "sharp-cli" "--input" src-path "--output" out-png "resize" (str w)]
+                                         {:dir (System/getProperty "user.dir") :out :string :err :string})]
+                        (when (= (:exit @r) 0) (swap! ok inc) (println "Responsive PNG:" out-png))))
+                    (when (need? src-path out-webp)
+                      (let [r (p/process ["npx" "--yes" "sharp-cli" "--input" src-path "--output" out-webp "resize" (str w) "--format" "webp" "--quality" "85"]
+                                         {:dir (System/getProperty "user.dir") :out :string :err :string})]
+                        (when (= (:exit @r) 0) (swap! ok inc) (println "Responsive WebP:" out-webp))))
+                    (when (need? src-path out-avif)
+                      (let [r (p/process ["npx" "--yes" "sharp-cli" "--input" src-path "--output" out-avif "resize" (str w) "--format" "avif" "--quality" "70"]
+                                         {:dir (System/getProperty "user.dir") :out :string :err :string})]
+                        (when (= (:exit @r) 0) (swap! ok inc) (println "Responsive AVIF:" out-avif))))))))
+            (when (> @ok 0)
+              (println "Generated" @ok "responsive image(s). Use srcset/sizes in templates (see docs/performance.md)."))))))))
 
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
@@ -212,16 +366,20 @@
 ;; Main build execution
 (println "Building HA4E website...")
 
-(when (.exists (io/file "public"))
-  (fs/delete-tree "public"))
+;; Keep public/ so WebP/AVIF from previous build can be skipped when src images unchanged.
 (ensure-dir "public")
 
 (generate-favicons)
 (println "Favicons generated")
 (copy-assets)
 (println "Assets copied")
+(generate-responsive)
+(generate-webp)
+(generate-avif)
+(minify-assets)
 (copy-robots-txt)
 (copy-redirects)
+(copy-headers)
 
 (let [base-template (read-template "base")
       pages [["index" "home" "Home"]
