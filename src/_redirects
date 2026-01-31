@@ -1,8 +1,4 @@
-# Netlify redirects file (for drag-and-drop deployments)
-# This file gets copied to public/ during build
-
-# Redirect contact page (without .html extension)
-/contact /contact.html 200
-
-# Redirect contact form success page (without .html extension)
-/contact-success /contact-success.html 200
+# Netlify redirects (copied to public/ during build)
+/contact          /contact.html          200
+/contact-success /contact-success.html  200
+/donate           /donate.html           200
