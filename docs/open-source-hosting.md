@@ -27,6 +27,20 @@ From [Netlify’s Open Source Plan Policy](https://www.netlify.com/legal/open-so
 
 ---
 
+## Open Source submission checklist (HA4E)
+
+| Requirement | Status | Where |
+|-------------|--------|--------|
+| **License** (OSI-approved or CC with attribution) | ✓ | [LICENSE](LICENSE) — MIT (logo/branding excluded) |
+| **Code of Conduct** (repo root or prominent in docs) | ✓ | [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) in repo root |
+| **Attribution** (link to Netlify on main page or all pages) | ✓ | Footer on all pages: “Deploys by Netlify” badge + link to netlify.com |
+| **Non-commercial** | ✓ | HA4E is a 501(c)(3) nonprofit |
+| **Site content** (docs, issue tracker, etc. for OSS project) | ⚠️ Gray area | Live site is an org site (donate, contact, programs). Policy targets OSS project docs; Netlify reviews case-by-case. |
+
+**Summary:** We meet the explicit requirements (license, CoC, attribution, non-commercial). The “site content” criterion is interpretive; you can still apply at [opensource-form.netlify.com](https://opensource-form.netlify.com/).
+
+---
+
 ## Netlify Free Plan (Alternative)
 
 Netlify’s general **Free plan** (no credit card):
