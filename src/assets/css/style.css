@@ -29,6 +29,21 @@
     box-sizing: border-box;
 }
 
+/* Honeypot: hide from view and layout everywhere (Netlify spam trap). */
+.form-honeypot {
+    position: absolute !important;
+    left: -9999px !important;
+    top: 0 !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+    clip-path: inset(50%) !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    pointer-events: none !important;
+}
+
 body {
     font-family: var(--font-primary);
     font-size: var(--font-size-base);
