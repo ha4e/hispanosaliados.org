@@ -940,6 +940,12 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     padding: var(--spacing-lg) 0;
 }
 
+/* HTMX: show loading state on submit button during request */
+.htmx-request button[type="submit"] {
+    opacity: 0.8;
+    cursor: wait;
+}
+
 .form-message {
     margin-bottom: var(--spacing-md);
     padding: var(--spacing-sm) var(--spacing-md);
