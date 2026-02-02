@@ -65,9 +65,14 @@ For **prioritized next steps** (e.g. WebP in templates, verifying headers on Net
 
 - **Image optimization (WebP, AVIF, responsive)**  
   After copying assets, the build runs `npx sharp-cli` to:
-  - Generate **responsive widths** (480, 800, 1200 px) for content photos in `src/assets/images/photos/`, in PNG, WebP, and AVIF. Outputs are named e.g. `name-480w.webp`. The first full run can take several minutes; later runs skip files that are up to date.
-  - Generate full-size WebP (quality 85) and AVIF (quality 70) for all PNG/JPG under `public/assets/images` (favicons and small favicon sizes are skipped).  
-  If `sharp-cli` isn’t available, these steps are skipped and the site still works with originals. Templates use `<picture>` with `<source type="image/avif">` and `<source type="image/webp">` plus `srcset` and `sizes` so browsers get appropriately sized, modern-format images; PNG/JPG remain as fallback.
+  - Generate **responsive widths** (480, 800, 1200 px) for content photos in `src/assets/images/photos/`, in PNG, WebP, and AVIF. Outputs are named e.g. `name-480w.webp`. Templates that use these reference them via `srcset` and `sizes`.
+  - Generate **full-size WebP** (quality 85) and **AVIF** (quality 70) only where needed: logo, spotlights, and the few photos that use full-size (no srcset) in templates. Photos that use only responsive srcset skip full-size WebP/AVIF to avoid redundant work.
+  - Skip favicons and small favicon sizes.  
+  If `sharp-cli` isn’t available, these steps are skipped and the site still works with originals.
+
+- **Netlify build cache (faster rebuilds)**  
+  The build skips regenerating an image when the output already exists and is **newer than the source** (see `need?` / `need-generate?` in `bb/build.clj`). On Netlify, `public/` is empty at the start of each build unless it is cached. This project uses **netlify-plugin-cache** in `netlify.toml` to restore and save `public/assets` between builds: the plugin restores that folder before the build and saves it after a successful build. `copy-assets` overwrites only files that exist in `src/assets`; generated files (e.g. `*.webp`, `*-480w.png`) stay from cache, so the build skips them unless the source image changed.
+  Without this cache, every build regenerates all images (~5+ minutes). With the plugin, only changed or new images are processed.
 
 - **Minification**  
   After WebP generation, the build runs:
