@@ -1,0 +1,5 @@
+{:source-paths ["src"]
+ :builds {:plugin {:target :node-library
+                  :output-to "target/cache-images.js"
+                  :exports {:onPreBuild cache-images.core/onPreBuild
+                  :onPostBuild cache-images.core/onPostBuild}}}}

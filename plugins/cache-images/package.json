@@ -1,0 +1,12 @@
+{
+  "name": "cache-images",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "build": "npx shadow-cljs release plugin"
+  },
+  "devDependencies": {
+    "shadow-cljs": "^2.26.2"
+  }
+}
