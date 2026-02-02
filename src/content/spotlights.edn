@@ -1,0 +1,11 @@
+;; Volunteer / Employee Spotlight — current and previous (abbreviated list).
+;; Update each month: move :current to :previous (add one entry), set new :current.
+;; :blurb supports markdown (e.g. **bold**, links). Image path is under /assets/images/spotlights/.
+
+{:current {:name "January 2026 Spotlight"
+           :role "Outreach Volunteer"
+           :image "/assets/images/spotlights/january-2026.png"
+           :month "January"
+           :year 2026
+           :blurb "Our first Volunteer Spotlight will be announced here. Add name, role, photo, and a short blurb in `src/content/spotlights.edn` and a photo at `src/assets/images/spotlights/january-2026.png`."}
+ :previous []}
