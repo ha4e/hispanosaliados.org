@@ -1,0 +1,2 @@
+name: cache-images
+description: Restore and save public/assets/images before deploy so the cache is full (avoids onSuccess-after-publish clearing)
