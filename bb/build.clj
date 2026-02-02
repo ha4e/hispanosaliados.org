@@ -161,6 +161,18 @@
     (let [base (str/replace (fs/file-name path) #"(?i)\.(png|jpe?g)$" "")]
       (not (contains? photos-need-full-size base)))))
 
+(defn- source-modified-time
+  "Last modified time (ms) for path: use git log if in repo (stable across checkout), else file mtime."
+  [src-path]
+  (let [f (io/file src-path)]
+    (when (.exists f)
+      (let [r (p/process ["git" "log" "-1" "--format=%ct" "--" src-path]
+                        {:dir (System/getProperty "user.dir") :out :string :err :string})
+            s (when (= (:exit @r) 0) (str/trim (or (:out @r) "")))]
+        (if (seq s)
+          (try (* 1000 (Long/parseLong s)) (catch Exception _ (.lastModified f)))
+          (.lastModified f))))))
+
 (defn generate-webp []
   "Generate WebP versions of PNG/JPG under public/assets/images when sharp-cli is available."
   (let [images-dir (io/file "public/assets/images")
@@ -177,13 +189,15 @@
         (if (empty? files)
           (println "No PNG/JPG images to convert to WebP (or only favicons / responsive-only photos).")
           (let [ok (atom 0)
-                ;; Compare output to source in src/, not copied file in public/ (copy updates mtime).
+                ;; Use git last-commit time for source so cached outputs skip after checkout (fs mtime changes).
                 need-generate? (fn [public-path out-path]
                                  (let [src-path (str/replace public-path #"^public/" "src/")
-                                       src-f (io/file src-path)
+                                       src-time (or (source-modified-time src-path)
+                                                    (.lastModified (io/file src-path)))
                                        out-f (io/file out-path)]
                                    (or (not (.exists out-f))
-                                       (> (.lastModified src-f) (.lastModified out-f)))))]
+                                       (nil? src-time)
+                                       (> src-time (.lastModified out-f)))))]
             (doseq [f files]
               (let [path (.getPath f)
                     out (str/replace path #"(?i)\.(png|jpe?g)$" ".webp")]
@@ -215,10 +229,12 @@
           (let [ok (atom 0)
                 need-generate? (fn [public-path out-path]
                                  (let [src-path (str/replace public-path #"^public/" "src/")
-                                       src-f (io/file src-path)
+                                       src-time (or (source-modified-time src-path)
+                                                    (.lastModified (io/file src-path)))
                                        out-f (io/file out-path)]
                                    (or (not (.exists out-f))
-                                       (> (.lastModified src-f) (.lastModified out-f)))))]
+                                       (nil? src-time)
+                                       (> src-time (.lastModified out-f)))))]
             (doseq [f files]
               (let [path (.getPath f)
                     out (str/replace path #"(?i)\.(png|jpe?g)$" ".avif")]
