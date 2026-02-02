@@ -2,3 +2,7 @@
 /contact          /contact.html          200
 /contact-success /contact-success.html  200
 /donate           /donate.html           200
+# Spanish locale pretty URLs
+/es/contact       /es/contact.html       200
+/es/contact-success /es/contact-success.html  200
+/es/donate        /es/donate.html        200
