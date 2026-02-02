@@ -8,7 +8,7 @@ JAMStack website for Hispanos Aliados for Education (HA4E), a 501(c)(3) non-prof
 - **HTMX + VanillaJS**: Forms via HTMX (no full reload); nav and message handling in main.js
 - **Markdown**: Content management
 - **Static HTML/CSS**: Simple, fast, CDN-friendly
-- **Netlify**: Hosting and CDN
+- **Netlify**: Hosting and CDN ([Open Source plan](https://www.netlify.com/legal/open-source-policy))
 
 ## Project Structure
 

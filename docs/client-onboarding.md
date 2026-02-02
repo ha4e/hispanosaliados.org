@@ -136,7 +136,7 @@ Same Proton account as Mail and Pass; sign in with your Proton credentials.
 
 - **Use for:** Deploying the live site (hispanosaliados.org), viewing form submissions (contact, newsletter), build logs  
 - **Credentials:** Stored in Proton Pass (search for “Netlify”)  
-- **Site:** The HA4E site is linked to the Netlify account; new deploys (e.g. from Git or drag‑and‑drop) go live from here.
+- **Site:** The HA4E site is linked to the Netlify account; new deploys (e.g. from Git or drag‑and‑drop) go live from here. The project is on [Netlify's Open Source plan](https://www.netlify.com/legal/open-source-policy) (free for qualifying open source projects).
 
 The website collects form input from visitors (e.g. the **Contact** form and **newsletter signup** in the footer). All submissions are stored in Netlify and can be viewed or exported from the Forms dashboard: **[Netlify Forms — hispanosaliados](https://app.netlify.com/projects/hispanosaliados/forms)**.
 
