@@ -1,25 +1,25 @@
 <section class="page-header">
     <div class="container">
-        <h1>Contact Us</h1>
+        <h1>{{contact_heading}}</h1>
     </div>
 </section>
 
 <section class="contact-info">
     <div class="container">
         <div class="contact-details">
-            <h2>Get in Touch</h2>
+            <h2>{{contact_get_in_touch}}</h2>
             <address>
-                <p><strong>Email:</strong> <a href="mailto:info@hispanosaliados.org" aria-label="Email HA4E">info@hispanosaliados.org</a></p>
-                <p><strong>Phone:</strong> <a href="tel:+12812109596" aria-label="Call HA4E">(281) 210-9596</a></p>
-                <p><strong>Address:</strong> 1404A Stonehollow Dr. Kingwood, TX 77339</p>
+                <p><strong>{{contact_email_label}}</strong> <a href="mailto:info@hispanosaliados.org" aria-label="{{contact_aria_email}}">info@hispanosaliados.org</a></p>
+                <p><strong>{{contact_phone_label}}</strong> <a href="tel:+12812109596" aria-label="{{contact_aria_call}}">(281) 210-9596</a></p>
+                <p><strong>{{contact_address_label}}</strong> 1404A Stonehollow Dr. Kingwood, TX 77339</p>
             </address>
             
-            <h3>Department Contacts</h3>
+            <h3>{{contact_dept_heading}}</h3>
             <ul>
-                <li><strong>General:</strong> <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></li>
-                <li><strong>Executive Director:</strong> <a href="mailto:rose@hispanosaliados.org">rose@hispanosaliados.org</a></li>
-                <li><strong>Scholarships:</strong> <a href="mailto:scholarships@hispanosaliados.org">scholarships@hispanosaliados.org</a></li>
-                <li><strong>Partnerships:</strong> <a href="mailto:partnerships@hispanosaliados.org">partnerships@hispanosaliados.org</a></li>
+                <li><strong>{{contact_general}}</strong> <a href="mailto:info@hispanosaliados.org">info@hispanosaliados.org</a></li>
+                <li><strong>{{contact_exec}}</strong> <a href="mailto:rose@hispanosaliados.org">rose@hispanosaliados.org</a></li>
+                <li><strong>{{contact_scholarships}}</strong> <a href="mailto:scholarships@hispanosaliados.org">scholarships@hispanosaliados.org</a></li>
+                <li><strong>{{contact_partnerships}}</strong> <a href="mailto:partnerships@hispanosaliados.org">partnerships@hispanosaliados.org</a></li>
             </ul>
         </div>
     </div>
@@ -27,37 +27,37 @@
 
 <section class="contact-form-section">
     <div class="container">
-        <h2>Send Us a Message</h2>
-        <form id="contact-form" name="contact" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" aria-label="Contact form"
+        <h2>{{contact_form_heading}}</h2>
+        <form id="contact-form" name="contact" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" aria-label="{{contact_form_aria}}"
               hx-post="/" hx-swap="none" hx-target="#contact-form-message">
             <input type="hidden" name="form-name" value="contact">
             <p class="form-honeypot" aria-hidden="true">
-                <label>Don't fill this out if you're human: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+                <label>{{contact_honeypot}}: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
             </p>
             <div id="contact-form-message" class="form-message hidden" aria-hidden="true"></div>
             <div class="form-group">
-                <label for="name">Name *</label>
+                <label for="name">{{contact_name_label}}</label>
                 <input type="text" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="email">Email *</label>
+                <label for="email">{{contact_email_field}}</label>
                 <input type="email" id="email" name="email" required>
             </div>
             <div class="form-group">
-                <label for="subject">Subject</label>
+                <label for="subject">{{contact_subject_label}}</label>
                 <select id="subject" name="subject">
-                    <option value="general">General Inquiry</option>
-                    <option value="scholarship">Scholarship Information</option>
-                    <option value="partnership">Partnership Opportunity</option>
-                    <option value="volunteer">Volunteer</option>
-                    <option value="donation">Donation</option>
+                    <option value="general">{{contact_subject_general}}</option>
+                    <option value="scholarship">{{contact_subject_scholarship}}</option>
+                    <option value="partnership">{{contact_subject_partnership}}</option>
+                    <option value="volunteer">{{contact_subject_volunteer}}</option>
+                    <option value="donation">{{contact_subject_donation}}</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="message">Message *</label>
+                <label for="message">{{contact_message_label}}</label>
                 <textarea id="message" name="message" rows="5" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Send Message</button>
+            <button type="submit" class="btn btn-primary">{{contact_btn_send}}</button>
         </form>
     </div>
 </section>

@@ -1,18 +1,18 @@
 <section class="hero" aria-label="Hero section">
     <div class="container">
         <div class="hero-content">
-            <h1>Empowering the Next Generation of <span class="text-gold">Skilled Professionals</span></h1>
-            <p class="hero-subtitle">Bridging the gap between high school and career success for Hispanic students through mentorship, scholarships, and trades education.</p>
+            <h1>{{hero_title}} <span class="text-gold">{{hero_title_highlight}}</span></h1>
+            <p class="hero-subtitle">{{hero_subtitle}}</p>
             <div class="hero-cta">
-                <a href="/programs.html" class="btn btn-primary">Our Programs</a>
-                <a href="/donate.html" class="btn btn-secondary" aria-label="Donate to support Hispanic students">Donate</a>
+                <a href="{{locale-prefix}}/programs.html" class="btn btn-primary">{{hero_btn_programs}}</a>
+                <a href="{{locale-prefix}}/donate.html" class="btn btn-secondary" aria-label="{{hero_btn_donate_aria}}">{{hero_btn_donate}}</a>
             </div>
         </div>
         <div class="hero-image photo-crop-wrap">
             <picture>
                 <source srcset="/assets/images/photos/home-hero-empowering-futures-promotional-480w.avif 480w, /assets/images/photos/home-hero-empowering-futures-promotional-800w.avif 800w, /assets/images/photos/home-hero-empowering-futures-promotional-1200w.avif 1200w" type="image/avif" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px">
                 <source srcset="/assets/images/photos/home-hero-empowering-futures-promotional-480w.webp 480w, /assets/images/photos/home-hero-empowering-futures-promotional-800w.webp 800w, /assets/images/photos/home-hero-empowering-futures-promotional-1200w.webp 1200w" type="image/webp" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px">
-                <img src="/assets/images/photos/home-hero-empowering-futures-promotional.png" srcset="/assets/images/photos/home-hero-empowering-futures-promotional-480w.png 480w, /assets/images/photos/home-hero-empowering-futures-promotional-800w.png 800w, /assets/images/photos/home-hero-empowering-futures-promotional-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" alt="Hispanic students in skilled trades training and educational settings" width="1200" height="630" loading="eager" fetchpriority="high">
+                <img src="/assets/images/photos/home-hero-empowering-futures-promotional.png" srcset="/assets/images/photos/home-hero-empowering-futures-promotional-480w.png 480w, /assets/images/photos/home-hero-empowering-futures-promotional-800w.png 800w, /assets/images/photos/home-hero-empowering-futures-promotional-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px" alt="{{hero_img_alt}}" width="1200" height="630" loading="eager" fetchpriority="high">
             </picture>
         </div>
     </div>
@@ -20,38 +20,38 @@
 
 <section class="core-pillars" aria-labelledby="core-pillars-heading">
     <div class="container">
-        <h2 id="core-pillars-heading">Our Core Pillars</h2>
+        <h2 id="core-pillars-heading">{{core_pillars_heading}}</h2>
         <div class="section-divider"></div>
         <div class="pillars-grid">
             <article class="pillar-card">
                 <picture>
                     <source srcset="/assets/images/photos/home-core-pillar-outreach-480w.avif 480w, /assets/images/photos/home-core-pillar-outreach-800w.avif 800w, /assets/images/photos/home-core-pillar-outreach-1200w.avif 1200w" type="image/avif" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px">
                     <source srcset="/assets/images/photos/home-core-pillar-outreach-480w.webp 480w, /assets/images/photos/home-core-pillar-outreach-800w.webp 800w, /assets/images/photos/home-core-pillar-outreach-1200w.webp 1200w" type="image/webp" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px">
-                    <img src="/assets/images/photos/home-core-pillar-outreach.png" srcset="/assets/images/photos/home-core-pillar-outreach-480w.png 480w, /assets/images/photos/home-core-pillar-outreach-800w.png 800w, /assets/images/photos/home-core-pillar-outreach-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px" alt="High school students learning about trade careers from professionals" class="pillar-image photo-crop-wrap" width="400" height="300" loading="lazy">
+                    <img src="/assets/images/photos/home-core-pillar-outreach.png" srcset="/assets/images/photos/home-core-pillar-outreach-480w.png 480w, /assets/images/photos/home-core-pillar-outreach-800w.png 800w, /assets/images/photos/home-core-pillar-outreach-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px" alt="{{pillar_outreach_img_alt}}" class="pillar-image photo-crop-wrap" width="400" height="300" loading="lazy">
                 </picture>
-                <h3>High School Outreach</h3>
-                <p>Connecting professionals with students to navigate the transition from classroom to career.</p>
-                <a href="/programs.html#outreach" class="pillar-link" aria-label="Learn more about High School Outreach programs">Learn More →</a>
+                <h3>{{pillar_outreach_title}}</h3>
+                <p>{{pillar_outreach_desc}}</p>
+                <a href="{{locale-prefix}}/programs.html#outreach" class="pillar-link" aria-label="{{pillar_outreach_link_aria}}">{{learn_more}}</a>
             </article>
             <article class="pillar-card">
                 <picture>
                     <source srcset="/assets/images/photos/home-core-pillar-trades-480w.avif 480w, /assets/images/photos/home-core-pillar-trades-800w.avif 800w, /assets/images/photos/home-core-pillar-trades-1200w.avif 1200w" type="image/avif" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px">
                     <source srcset="/assets/images/photos/home-core-pillar-trades-480w.webp 480w, /assets/images/photos/home-core-pillar-trades-800w.webp 800w, /assets/images/photos/home-core-pillar-trades-1200w.webp 1200w" type="image/webp" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px">
-                    <img src="/assets/images/photos/home-core-pillar-trades.png" srcset="/assets/images/photos/home-core-pillar-trades-480w.png 480w, /assets/images/photos/home-core-pillar-trades-800w.png 800w, /assets/images/photos/home-core-pillar-trades-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px" alt="Students receiving hands-on training in skilled trades including construction, electrical, and HVAC" class="pillar-image photo-crop-wrap" width="400" height="300" loading="lazy">
+                    <img src="/assets/images/photos/home-core-pillar-trades.png" srcset="/assets/images/photos/home-core-pillar-trades-480w.png 480w, /assets/images/photos/home-core-pillar-trades-800w.png 800w, /assets/images/photos/home-core-pillar-trades-1200w.png 1200w" sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 400px" alt="{{pillar_trades_img_alt}}" class="pillar-image photo-crop-wrap" width="400" height="300" loading="lazy">
                 </picture>
-                <h3>Skilled Trades Training</h3>
-                <p>Hands-on education in construction, electrical, HVAC, and welding with industry leaders.</p>
-                <a href="/programs.html#trades" class="pillar-link" aria-label="Learn more about Skilled Trades Training programs">Learn More →</a>
+                <h3>{{pillar_trades_title}}</h3>
+                <p>{{pillar_trades_desc}}</p>
+                <a href="{{locale-prefix}}/programs.html#trades" class="pillar-link" aria-label="{{pillar_trades_link_aria}}">{{learn_more}}</a>
             </article>
             <article class="pillar-card">
                 <picture>
                     <source srcset="/assets/images/photos/home-core-pillar-scholarships.avif" type="image/avif">
                     <source srcset="/assets/images/photos/home-core-pillar-scholarships.webp" type="image/webp">
-                    <img src="/assets/images/photos/home-core-pillar-scholarships.png" alt="Students receiving scholarships and celebrating educational achievements" class="pillar-image" loading="lazy">
+                    <img src="/assets/images/photos/home-core-pillar-scholarships.png" alt="{{pillar_scholarships_img_alt}}" class="pillar-image" loading="lazy">
                 </picture>
-                <h3>Achievement Scholarships</h3>
-                <p>Financial support for students pursuing technical degrees and vocational certifications.</p>
-                <a href="/programs.html#scholarships" class="pillar-link" aria-label="Learn more about Achievement Scholarships">Learn More →</a>
+                <h3>{{pillar_scholarships_title}}</h3>
+                <p>{{pillar_scholarships_desc}}</p>
+                <a href="{{locale-prefix}}/programs.html#scholarships" class="pillar-link" aria-label="{{pillar_scholarships_link_aria}}">{{learn_more}}</a>
             </article>
         </div>
     </div>
@@ -59,23 +59,23 @@
 
 <section class="impact-glimpse" aria-labelledby="impact-heading">
     <div class="container">
-        <h2 id="impact-heading">Our Impact at a Glance</h2>
+        <h2 id="impact-heading">{{impact_heading}}</h2>
         <div class="stats-grid" role="list">
             <div class="stat" role="listitem">
-                <div class="stat-number" aria-label="Schools visited">0</div>
-                <div class="stat-label">Schools Visited</div>
+                <div class="stat-number" aria-label="{{stat_schools_aria}}">0</div>
+                <div class="stat-label">{{stat_schools}}</div>
             </div>
             <div class="stat" role="listitem">
-                <div class="stat-number" aria-label="Students inspired">0</div>
-                <div class="stat-label">Students Inspired</div>
+                <div class="stat-number" aria-label="{{stat_students_aria}}">0</div>
+                <div class="stat-label">{{stat_students}}</div>
             </div>
             <div class="stat" role="listitem">
-                <div class="stat-number" aria-label="Scholarships awarded">0</div>
-                <div class="stat-label">Scholarships Awarded</div>
+                <div class="stat-number" aria-label="{{stat_scholarships_aria}}">0</div>
+                <div class="stat-label">{{stat_scholarships}}</div>
             </div>
             <div class="stat" role="listitem">
-                <div class="stat-number" aria-label="Trade partners">10</div>
-                <div class="stat-label">Trade Partners</div>
+                <div class="stat-number" aria-label="{{stat_partners_aria}}">10</div>
+                <div class="stat-label">{{stat_partners}}</div>
             </div>
         </div>
     </div>
@@ -83,38 +83,38 @@
 
 <section class="student-story">
     <div class="container">
-        <h2>Student Story Highlight</h2>
+        <h2>{{student_story_heading}}</h2>
         <div class="story-content">
             <div class="student-story-image-wrap photo-crop-wrap">
                 <picture>
                     <source srcset="/assets/images/photos/home-student-success-story-480w.avif 480w, /assets/images/photos/home-student-success-story-800w.avif 800w, /assets/images/photos/home-student-success-story-1200w.avif 1200w" type="image/avif" sizes="(max-width: 768px) 100vw, 800px">
                     <source srcset="/assets/images/photos/home-student-success-story-480w.webp 480w, /assets/images/photos/home-student-success-story-800w.webp 800w, /assets/images/photos/home-student-success-story-1200w.webp 1200w" type="image/webp" sizes="(max-width: 768px) 100vw, 800px">
-                    <img src="/assets/images/photos/home-student-success-story.png" srcset="/assets/images/photos/home-student-success-story-480w.png 480w, /assets/images/photos/home-student-success-story-800w.png 800w, /assets/images/photos/home-student-success-story-1200w.png 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="Student Success Story" class="story-image" width="800" height="450" loading="lazy">
+                    <img src="/assets/images/photos/home-student-success-story.png" srcset="/assets/images/photos/home-student-success-story-480w.png 480w, /assets/images/photos/home-student-success-story-800w.png 800w, /assets/images/photos/home-student-success-story-1200w.png 1200w" sizes="(max-width: 768px) 100vw, 800px" alt="{{student_story_alt}}" class="story-image" width="800" height="450" loading="lazy">
                 </picture>
             </div>
-            <p>Success stories coming soon as we begin our outreach programs.</p>
+            <p>{{student_story_coming}}</p>
         </div>
     </div>
 </section>
 
 <section class="cta-bar">
     <div class="container">
-        <h2>Ready to make an impact?</h2>
-        <p>Whether you're a student, a professional mentor, or a corporate partner, there's a place for you in the HA4E family.</p>
+        <h2>{{cta_heading}}</h2>
+        <p>{{cta_text}}</p>
         <div class="involvement-options">
             <div class="involvement-option">
                 <div class="option-indicator option-indicator-red"></div>
-                <span class="option-label">Volunteer</span>
+                <span class="option-label">{{cta_volunteer}}</span>
             </div>
             <div class="involvement-option">
                 <div class="option-indicator option-indicator-gold"></div>
-                <span class="option-label">Sponsor</span>
+                <span class="option-label">{{cta_sponsor}}</span>
             </div>
             <div class="involvement-option">
                 <div class="option-indicator option-indicator-blue"></div>
-                <span class="option-label">Partner</span>
+                <span class="option-label">{{cta_partner}}</span>
             </div>
         </div>
-        <a href="/get-involved.html" class="btn btn-primary">Get Started</a>
+        <a href="{{locale-prefix}}/get-involved.html" class="btn btn-primary">{{cta_btn}}</a>
     </div>
 </section>
