@@ -29,6 +29,11 @@
     box-sizing: border-box;
 }
 
+/* Utility: hide element (CSP-friendly; avoid inline style="display: none"). */
+.hidden {
+    display: none !important;
+}
+
 /* Honeypot: hide from view and layout everywhere (Netlify spam trap). */
 .form-honeypot {
     position: absolute !important;
