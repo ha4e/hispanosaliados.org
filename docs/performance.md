@@ -136,8 +136,8 @@ Use these to improve Lighthouse scores and Core Web Vitals. Tackle in order for 
 2. **Verify production headers**  
    Run Lighthouse or PageSpeed Insights against your **Netlify deploy URL**, not localhost. That confirms cache and security headers (CSP, HSTS, etc.) are applied and Best Practices items pass.
 
-3. **Reduce render-blocking CSS** — **Done.**  
-   The main stylesheet is loaded with `media="print" onload="this.media='all'"` so it doesn't block first paint; `<noscript>` provides a fallback. If you see a brief flash of unstyled content (FOUC), consider inlining critical above-the-fold CSS and keeping the async full stylesheet.
+3. **Reduce render-blocking CSS (optional)**  
+   We tried `media="print" onload="this.media='all'"` but reverted it: under our strict CSP (`script-src` without `'unsafe-inline'`), the inline `onload` handler is blocked and the stylesheet never applies to screen, so the site appears unstyled. To improve render-blocking without breaking CSP, use critical CSS inlining plus a non-inline loader (e.g. a small deferred script that sets `link.media='all'`), or accept the blocking stylesheet for now.
 
 4. **Responsive images** — **Done.** The build generates 480w, 800w, 1200w variants for content photos; templates use `srcset`/`sizes` so small viewports get smaller files (see “Responsive images” above).
 
@@ -155,7 +155,7 @@ Applied from Lighthouse audits (e.g. for `/privacy`):
 |---------------|--------------|
 | **unsized-images** | Netlify badge: added `width="114"` `height="51"`. |
 | **image-delivery-insight** | Header logo: generate 256w AVIF/WebP; use `srcset`/`sizes="80px"` so header loads small logo. |
-| **render-blocking-insight** | Main CSS: `media="print" onload="this.media='all'"` + `<noscript>` fallback. |
+| **render-blocking-insight** | Reverted async CSS: inline `onload` blocked by CSP, site broke. Main CSS is blocking again; use critical CSS + non-inline loader if needed. |
 | **inspector-issues (CSP)** | Add specific `sha256` hashes to `style-src` for any new inline styles (e.g. HTMX). Re-run Lighthouse on deploy and add hashes for any remaining CSP violations. |
 
 **Not fully in our control:** mainthread-work-breakdown and bootup-time often include Chrome extensions and third-party script (e.g. GiveButter). Unused/minified JS savings in Lighthouse may be from extensions; focus on first-party JS (e.g. HTMX, main.js) and consider self-hosting HTMX to shorten the critical request chain.
