@@ -127,6 +127,23 @@ header {
     color: var(--color-red);
 }
 
+.lang-switcher {
+    margin-left: var(--spacing-sm);
+    padding-left: var(--spacing-sm);
+    border-left: 1px solid var(--color-gray-dark);
+}
+
+.lang-switcher .lang-link[aria-current="true"] {
+    color: var(--color-gray-dark);
+    font-weight: 600;
+    cursor: default;
+}
+
+.lang-switcher .lang-sep {
+    margin: 0 0.35rem;
+    color: var(--color-gray-dark);
+}
+
 .nav-toggle {
     display: none;
     flex-direction: column;

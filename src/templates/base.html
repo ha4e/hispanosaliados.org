@@ -1,29 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{html-lang}}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{title}} - Hispanos Aliados for Education</title>
-    <meta name="description" content="Empowering Hispanic youth through education and skilled trades">
-    <meta name="keywords" content="Hispanic education, skilled trades, scholarships, mentorship, trade schools, Hispanic students, vocational training">
-    <meta name="author" content="Hispanos Aliados for Education">
+    <title>{{title}} - {{site_name}}</title>
+    <meta name="description" content="{{meta_description}}">
+    <meta name="keywords" content="{{meta_keywords}}">
+    <meta name="author" content="{{meta_author}}">
     
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.hispanosaliados.org{{canonical-path}}">
-    <meta property="og:title" content="{{title}} - Hispanos Aliados for Education">
-    <meta property="og:description" content="Empowering Hispanic youth through education and skilled trades">
+    <meta property="og:title" content="{{title}} - {{site_name}}">
+    <meta property="og:description" content="{{meta_description}}">
     <meta property="og:image" content="https://www.hispanosaliados.org/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png">
     
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://www.hispanosaliados.org{{canonical-path}}">
-    <meta property="twitter:title" content="{{title}} - Hispanos Aliados for Education">
-    <meta property="twitter:description" content="Empowering Hispanic youth through education and skilled trades">
+    <meta property="twitter:title" content="{{title}} - {{site_name}}">
+    <meta property="twitter:description" content="{{meta_description}}">
     <meta property="twitter:image" content="https://www.hispanosaliados.org/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png">
     
     <!-- Canonical URL -->
     <link rel="canonical" href="https://www.hispanosaliados.org{{canonical-path}}">
+    {{hreflang-links}}
     <link rel="preconnect" href="https://unpkg.com" crossorigin>
     <link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/images/favicon-32x32.png">
@@ -38,14 +39,14 @@
     {
       "@context": "https://schema.org",
       "@type": "NonProfitOrganization",
-      "name": "Hispanos Aliados for Education",
+      "name": "{{site_name}}",
       "alternateName": "HA4E",
       "url": "https://www.hispanosaliados.org",
       "logo": "https://www.hispanosaliados.org/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png",
-      "description": "Empowering Hispanic youth through education and skilled trades by providing mentorship, awareness, and scholarships",
+      "description": "{{jsonld_description}}",
       "foundingDate": "2024",
       "taxID": "501(c)(3)",
-      "legalName": "Hispanos Aliados for Education",
+      "legalName": "{{site_name}}",
       "contactPoint": {
         "@type": "ContactPoint",
         "telephone": "+1-281-210-9596",
@@ -62,7 +63,7 @@
       "knowsAbout": ["Education", "Skilled Trades", "Scholarships", "Mentorship", "Vocational Training", "Hispanic Community"],
       "audience": {
         "@type": "Audience",
-        "audienceType": "Hispanic students, high school students, trade school students"
+        "audienceType": "{{jsonld_audience_type}}"
       }
     }
     </script>
@@ -72,28 +73,33 @@
 </head>
 <body>
     <header role="banner">
-        <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <nav class="navbar" role="navigation" aria-label="{{aria_nav_label}}">
             <div class="container">
-                <a href="/" class="logo" aria-label="HA4E Home">
+                <a href="{{locale-prefix}}/" class="logo" aria-label="{{aria_logo_label}}">
                     <picture>
                         <source srcset="/assets/images/logo/FINAL-logo-HA4E-empowering-futures-256w.avif 256w, /assets/images/logo/FINAL-logo-HA4E-empowering-futures.avif 1024w" type="image/avif" sizes="80px">
                         <source srcset="/assets/images/logo/FINAL-logo-HA4E-empowering-futures-256w.webp 256w, /assets/images/logo/FINAL-logo-HA4E-empowering-futures.webp 1024w" type="image/webp" sizes="80px">
-                        <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo - Hispanos Aliados for Education" class="logo-img" width="80" height="80">
+                        <img src="/assets/images/logo/FINAL-logo-HA4E-empowering-futures.png" alt="HA4E Logo - {{site_name}}" class="logo-img" width="80" height="80">
                     </picture>
                 </a>
-                <button class="nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-menu">
+                <button class="nav-toggle" aria-label="{{aria_toggle_label}}" aria-expanded="false" aria-controls="nav-menu">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
                 <ul class="nav-menu" id="nav-menu" role="menubar">
-                    <li role="none"><a href="/" class="{{active-home}}" role="menuitem">Home</a></li>
-                    <li role="none"><a href="/about.html" class="{{active-about}}" role="menuitem">About</a></li>
-                    <li role="none"><a href="/programs.html" class="{{active-programs}}" role="menuitem">Programs</a></li>
-                    <li role="none"><a href="/impact.html" class="{{active-impact}}" role="menuitem">Impact</a></li>
-                    <li role="none"><a href="/get-involved.html" class="{{active-get-involved}}" role="menuitem">Get Involved</a></li>
-                    <li role="none"><a href="/donate.html" class="{{active-donate}}" role="menuitem">Donate</a></li>
-                    <li role="none"><a href="/contact.html" class="{{active-contact}}" role="menuitem">Contact</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/" class="{{active-home}}" role="menuitem">{{nav_home}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/about.html" class="{{active-about}}" role="menuitem">{{nav_about}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/programs.html" class="{{active-programs}}" role="menuitem">{{nav_programs}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/impact.html" class="{{active-impact}}" role="menuitem">{{nav_impact}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/get-involved.html" class="{{active-get-involved}}" role="menuitem">{{nav_get_involved}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/donate.html" class="{{active-donate}}" role="menuitem">{{nav_donate}}</a></li>
+                    <li role="none"><a href="{{locale-prefix}}/contact.html" class="{{active-contact}}" role="menuitem">{{nav_contact}}</a></li>
+                    <li class="lang-switcher" role="none">
+                        <a href="{{switch-to-en-url}}" class="lang-link lang-en" aria-current="{{current-lang-en}}">{{lang_english}}</a>
+                        <span class="lang-sep" aria-hidden="true">|</span>
+                        <a href="{{switch-to-es-url}}" class="lang-link lang-es" aria-current="{{current-lang-es}}">{{lang_spanish}}</a>
+                    </li>
                 </ul>
             </div>
         </nav>
@@ -107,47 +113,47 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>Hispanos Aliados for Education</h3>
-                    <p>Empowering Hispanic Youth Through Education and Skilled Trades</p>
+                    <h3>{{footer_org_name}}</h3>
+                    <p>{{footer_tagline}}</p>
                 </div>
                 <div class="footer-section">
-                    <h4>Quick Links</h4>
+                    <h4>{{footer_quick_links}}</h4>
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/about.html">About</a></li>
-                        <li><a href="/programs.html">Programs</a></li>
-                        <li><a href="/impact.html">Impact</a></li>
-                        <li><a href="/get-involved.html">Get Involved</a></li>
-                        <li><a href="/donate.html">Donate</a></li>
-                        <li><a href="/contact.html">Contact</a></li>
+                        <li><a href="{{locale-prefix}}/">{{nav_home}}</a></li>
+                        <li><a href="{{locale-prefix}}/about.html">{{nav_about}}</a></li>
+                        <li><a href="{{locale-prefix}}/programs.html">{{nav_programs}}</a></li>
+                        <li><a href="{{locale-prefix}}/impact.html">{{nav_impact}}</a></li>
+                        <li><a href="{{locale-prefix}}/get-involved.html">{{nav_get_involved}}</a></li>
+                        <li><a href="{{locale-prefix}}/donate.html">{{nav_donate}}</a></li>
+                        <li><a href="{{locale-prefix}}/contact.html">{{nav_contact}}</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
-                    <h4>Stay Connected</h4>
-                    <p class="footer-newsletter-text">Subscribe to our newsletter for updates on impact and events.</p>
+                    <h4>{{footer_stay_connected}}</h4>
+                    <p class="footer-newsletter-text">{{footer_newsletter_text}}</p>
                     <form name="newsletter" method="POST" action="/" data-netlify="true" data-netlify-honeypot="bot-field" class="newsletter-form" id="newsletter-form"
                           hx-post="/" hx-swap="none" hx-target="#newsletter-message">
                         <input type="hidden" name="form-name" value="newsletter">
                         <p class="form-honeypot" aria-hidden="true">
-                            <label>Don't fill this out: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+                            <label>{{footer_honeypot_label}}: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
                         </p>
                         <div class="newsletter-input-group">
-                            <input type="email" name="email" id="newsletter-email" placeholder="Email Address" required aria-label="Email address for newsletter">
-                            <button type="submit" class="btn btn-primary">Join</button>
+                            <input type="email" name="email" id="newsletter-email" placeholder="{{footer_email_placeholder}}" required aria-label="{{footer_email_aria}}">
+                            <button type="submit" class="btn btn-primary">{{footer_join_btn}}</button>
                         </div>
                         <div id="newsletter-message" class="newsletter-message hidden" aria-hidden="true"></div>
                     </form>
                     <div class="footer-contact-info">
                         <address>
-                            <p>Email: <a href="mailto:info@hispanosaliados.org" aria-label="Email HA4E at info@hispanosaliados.org">info@hispanosaliados.org</a></p>
-                            <p>Phone: <a href="tel:+12812109596" aria-label="Call HA4E at (281) 210-9596">(281) 210-9596</a></p>
+                            <p>Email: <a href="mailto:info@hispanosaliados.org" aria-label="{{footer_email_link_aria}}">info@hispanosaliados.org</a></p>
+                            <p>Phone: <a href="tel:+12812109596" aria-label="{{footer_phone_link_aria}}">(281) 210-9596</a></p>
                         </address>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2026 Hispanos Aliados for Education | 501(c)(3) Nonprofit Organization</p>
-                <p><a href="/privacy.html">Privacy Policy</a> &middot; <a href="https://www.netlify.com/" rel="noopener noreferrer">{{netlify-badge-content}}</a></p>
+                <p>{{footer_copyright}}</p>
+                <p><a href="{{locale-prefix}}/privacy.html">{{footer_privacy}}</a> &middot; <a href="https://www.netlify.com/" rel="noopener noreferrer">{{netlify-badge-content}}</a></p>
             </div>
         </div>
     </footer>
