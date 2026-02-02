@@ -2,6 +2,7 @@
 
 (require '[clojure.java.io :as io]
          '[clojure.string :as str]
+         '[clojure.edn :as edn]
          '[babashka.fs :as fs]
          '[babashka.process :as p])
 
@@ -347,13 +348,55 @@
           (println "Modern browsers support SVG favicons. For PNG fallbacks, install ImageMagick or use macOS sips.")
           true)))))
 
-(defn build-page [page-name base-template page-template content title]
+(defn read-spotlights []
+  (let [f (io/file "src/content/spotlights.edn")]
+    (when (.exists f)
+      (try (edn/read-string (slurp f))
+           (catch Exception _ nil)))))
+
+(def ^:private max-previous-spotlights 6)
+
+(defn render-spotlight-section []
+  (let [data (read-spotlights)
+        current (:current data)
+        previous (take max-previous-spotlights (:previous data))]
+    (if (empty? current)
+      ""
+      (let [blurb-html (process-markdown (:blurb current))
+            current-html (str "<div class=\"spotlight-current\">"
+                              "<div class=\"spotlight-photo-wrap\">"
+                              "<img src=\"" (:image current) "\" alt=\"\" class=\"spotlight-photo\" width=\"200\" height=\"200\" loading=\"lazy\">"
+                              "</div>"
+                              "<div class=\"spotlight-details\">"
+                              "<p class=\"spotlight-month-year\">" (:month current) " " (:year current) "</p>"
+                              "<h3 class=\"spotlight-name\">" (str/replace (str (:name current)) #"<" "&lt;") "</h3>"
+                              "<p class=\"spotlight-role\">" (str/replace (str (:role current)) #"<" "&lt;") "</p>"
+                              "<div class=\"spotlight-blurb\">" blurb-html "</div>"
+                              "</div></div>")
+            previous-html (if (empty? previous)
+                          ""
+                          (str "<div class=\"spotlight-previous\">"
+                               "<p class=\"spotlight-previous-title\">Previous spotlights</p>"
+                               "<ul class=\"spotlight-previous-list\" role=\"list\">"
+                               (str/join (for [p previous]
+                                           (str "<li>" (str/replace (str (:name p)) #"<" "&lt;")
+                                                " <span class=\"spotlight-previous-date\">– " (:month p) " " (:year p) "</span></li>")))
+                               "</ul></div>"))]
+        (str "<section class=\"volunteer-spotlight\" aria-labelledby=\"spotlight-heading\">"
+             "<div class=\"container\">"
+             "<h2 id=\"spotlight-heading\">Volunteer Spotlight</h2>"
+             "<div class=\"section-divider\"></div>"
+             current-html
+             previous-html
+             "</div></section>")))))
+
+(defn build-page [page-name base-template page-template content-map title]
   (let [output-dir "public"
         output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
     (ensure-dir output-dir)
-      (let [page-html (if page-template
-                      (render-template page-template {:content content})
-                      content)
+    (let [page-html (if page-template
+                      (render-template page-template content-map)
+                      (:content content-map))
           full-html (compose-page base-template page-html page-name title page-name)]
       (spit output-file full-html)
       (println "Built:" output-file))))
@@ -390,7 +433,9 @@
     (let [page-template (read-template template-name)
           content-file (str "src/content/" template-name ".md")
           content (read-markdown content-file)
-          processed-content (if content (process-markdown content) "")]
-      (build-page page-name base-template page-template processed-content title))))
+          processed-content (if content (process-markdown content) "")
+          content-map (cond-> {:content processed-content}
+                        (= page-name "get-involved") (merge {:spotlight-section (render-spotlight-section)}))]
+      (build-page page-name base-template page-template content-map title))))
 
 (println "Build complete!")
