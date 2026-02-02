@@ -21,11 +21,11 @@
      * HTMX does the POST; we only update the message div since Netlify returns a full-page redirect.
      */
     function initFormMessages() {
-        document.body.addEventListener('htmx:afterOnLoad', function(ev) {
-            var target = ev.detail.target;
+        document.body.addEventListener('htmx:afterRequest', function(ev) {
+            var elt = ev.detail.elt;
             var ok = ev.detail.successful;
 
-            if (target.id === 'contact-form') {
+            if (elt.id === 'contact-form') {
                 var msg = document.getElementById('contact-form-message');
                 if (!msg) return;
                 msg.style.display = 'block';
@@ -33,13 +33,13 @@
                 if (ok) {
                     msg.className = 'form-message form-message-success';
                     msg.innerHTML = '<strong>Thank you!</strong> Your message has been sent successfully. We\'ll get back to you as soon as possible.';
-                    target.reset();
+                    elt.reset();
                     msg.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
                     msg.className = 'form-message form-message-error';
                     msg.innerHTML = '<strong>Error:</strong> There was a problem sending your message. Please try again or contact us directly.';
                 }
-            } else if (target.id === 'newsletter-form') {
+            } else if (elt.id === 'newsletter-form') {
                 var msg = document.getElementById('newsletter-message');
                 if (!msg) return;
                 msg.style.display = 'block';
