@@ -397,7 +397,7 @@
                               img-html
                               "</div>"
                               "<div class=\"spotlight-details\">"
-                              "<p class=\"spotlight-month-year\">" (:month current) " " (:year current) "</p>"
+                              "<p class=\"spotlight-date\"><em>" (:month current) " " (:year current) "</em></p>"
                               "<h3 class=\"spotlight-name\">" (str/replace (str (:name current)) #"<" "&lt;") "</h3>"
                               "<p class=\"spotlight-role\">" (str/replace (str (:role current)) #"<" "&lt;") "</p>"
                               "<div class=\"spotlight-blurb\">" blurb-html "</div>"
