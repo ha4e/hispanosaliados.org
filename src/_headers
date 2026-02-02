@@ -17,6 +17,13 @@
   Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
   Cache-Control: no-cache, no-store, must-revalidate
 
+# Spanish donate page: same relaxed CSP so GiveButter widget loads on /es/donate.html
+/es/donate.html
+  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
+/es/donate
+  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
+  Cache-Control: no-cache, no-store, must-revalidate
+
 # Rewrite paths: same Cache-Control as /*.html so CDN/browser don't cache HTML
 # (_redirects 200: /contact, /contact-success → .html; request path has no .html so /*.html doesn't match)
 /contact
