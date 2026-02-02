@@ -1,0 +1,240 @@
+# Spanish UI strings for HA4E. Edit only the value (right side); keep keys unchanged.
+# Use quotes if the value contains a colon. Non-technical guide: docs/i18n.md
+
+site_name: "Hispanos Aliados for Education"
+meta_description: "Impulsando a la juventud hispana a través de la educación y los oficios especializados"
+meta_keywords: "educación hispana, oficios especializados, becas, mentoría, escuelas técnicas, estudiantes hispanos, formación profesional"
+meta_author: "Hispanos Aliados for Education"
+jsonld_description: "Impulsando a la juventud hispana a través de la educación y los oficios especializados mediante mentoría, concientización y becas"
+jsonld_audience_type: "Estudiantes hispanos, estudiantes de secundaria, estudiantes de escuelas técnicas"
+
+nav_home: Inicio
+nav_about: Nosotros
+nav_programs: Programas
+nav_impact: Impacto
+nav_get_involved: Participar
+nav_donate: Donar
+nav_contact: Contacto
+
+aria_nav_label: "Navegación principal"
+aria_logo_label: "HA4E Inicio"
+aria_toggle_label: "Abrir o cerrar menú de navegación"
+
+footer_org_name: "Hispanos Aliados for Education"
+footer_tagline: "Impulsando a la Juventud Hispana a través de la Educación y los Oficios Especializados"
+footer_quick_links: "Enlaces rápidos"
+footer_stay_connected: "Mantente conectado"
+footer_newsletter_text: "Suscríbete a nuestro boletín para novedades sobre impacto y eventos."
+footer_honeypot_label: "No completes esto"
+footer_email_placeholder: "Correo electrónico"
+footer_email_aria: "Correo electrónico para el boletín"
+footer_join_btn: Unirse
+footer_email_link_aria: "Enviar correo a HA4E a info@hispanosaliados.org"
+footer_phone_link_aria: "Llamar a HA4E al (281) 210-9596"
+footer_copyright: "© 2026 Hispanos Aliados for Education | Organización sin fines de lucro 501(c)(3)"
+footer_privacy: "Política de privacidad"
+
+lang_english: English
+lang_spanish: "Español"
+
+# Spotlight (Get Involved)
+spotlight_heading: "Voluntario Destacado"
+spotlight_previous_title: "Destacados anteriores"
+
+# Home
+hero_title: "Impulsando la Próxima Generación de"
+hero_title_highlight: "Profesionales Calificados"
+hero_subtitle: "Cerrando la brecha entre la secundaria y el éxito profesional para estudiantes hispanos mediante mentoría, becas y educación en oficios."
+hero_btn_programs: "Nuestros Programas"
+hero_btn_donate: Donar
+hero_btn_donate_aria: "Donar para apoyar a estudiantes hispanos"
+hero_img_alt: "Estudiantes hispanos en formación en oficios especializados y entornos educativos"
+core_pillars_heading: "Nuestros Pilares Principales"
+pillar_outreach_title: "Outreach en Secundarias"
+pillar_outreach_desc: "Conectando profesionales con estudiantes para navegar la transición del aula al trabajo."
+pillar_outreach_link_aria: "Más información sobre programas de outreach en secundarias"
+pillar_trades_title: "Formación en Oficios Especializados"
+pillar_trades_desc: "Educación práctica en construcción, electricidad, HVAC y soldadura con líderes de la industria."
+pillar_trades_link_aria: "Más información sobre programas de formación en oficios"
+pillar_scholarships_title: "Becas al Mérito"
+pillar_scholarships_desc: "Apoyo financiero para estudiantes que cursan títulos técnicos y certificaciones profesionales."
+pillar_scholarships_link_aria: "Más información sobre Becas al Mérito"
+pillar_outreach_img_alt: "Estudiantes de secundaria aprendiendo sobre carreras en oficios de profesionales"
+pillar_trades_img_alt: "Estudiantes recibiendo formación práctica en oficios como construcción, electricidad y HVAC"
+pillar_scholarships_img_alt: "Estudiantes recibiendo becas y celebrando logros educativos"
+learn_more: "Más información →"
+impact_heading: "Nuestro Impacto en Resumen"
+stat_schools: "Escuelas Visitadas"
+stat_students: "Estudiantes Inspirados"
+stat_scholarships: "Becas Otorgadas"
+stat_partners: "Socios en Oficios"
+stat_schools_aria: "Escuelas visitadas"
+stat_students_aria: "Estudiantes inspirados"
+stat_scholarships_aria: "Becas otorgadas"
+stat_partners_aria: "Socios en oficios"
+student_story_heading: "Historia Destacada de un Estudiante"
+student_story_alt: "Historia de Éxito Estudiantil"
+student_story_coming: "Historias de éxito próximamente a medida que iniciamos nuestros programas de outreach."
+cta_heading: "¿Listo para marcar la diferencia?"
+cta_text: "Ya seas estudiante, mentor profesional o socio corporativo, hay un lugar para ti en la familia HA4E."
+cta_volunteer: Voluntario
+cta_sponsor: Patrocinador
+cta_partner: Socio
+cta_btn: "Comenzar"
+
+# Contact
+contact_heading: "Contáctenos"
+contact_get_in_touch: "Póngase en Contacto"
+contact_email_label: "Correo electrónico:"
+contact_phone_label: "Teléfono:"
+contact_address_label: "Dirección:"
+contact_dept_heading: "Contactos por Departamento"
+contact_general: "General:"
+contact_exec: "Director Ejecutivo:"
+contact_scholarships: "Becas:"
+contact_partnerships: "Alianzas:"
+contact_form_heading: "Envíenos un Mensaje"
+contact_form_aria: "Formulario de contacto"
+contact_honeypot: "No complete esto si es humano:"
+contact_name_label: "Nombre *"
+contact_email_field: "Correo electrónico *"
+contact_subject_label: "Asunto"
+contact_subject_general: "Consulta general"
+contact_subject_scholarship: "Información sobre becas"
+contact_subject_partnership: "Oportunidad de alianza"
+contact_subject_volunteer: Voluntario
+contact_subject_donation: Donación
+contact_message_label: "Mensaje *"
+contact_btn_send: "Enviar Mensaje"
+contact_aria_email: "Enviar correo a HA4E"
+contact_aria_call: "Llamar a HA4E"
+
+# Get Involved
+get_involved_heading: "Participar"
+ways_to_participate: "Formas de Participar"
+participation_volunteer: Voluntario
+participation_volunteer_desc: "Ayuda en eventos escolares o mentoría a estudiantes"
+participation_volunteer_btn: "Contáctenos para ser voluntario"
+participation_partner: "Alianza con Nosotros"
+participation_partner_desc: "Escuelas, empresas e instituciones técnicas pueden colaborar"
+participation_partner_btn: "Contáctenos sobre alianzas"
+participation_sponsor: "Patrocinar una Beca"
+participation_sponsor_desc: "Empresas e individuos pueden financiar la educación de estudiantes"
+participation_donate: Donar
+participation_donate_desc: "Las contribuciones apoyan directamente outreach y becas"
+participation_donate_btn: "Donar para apoyar outreach y becas"
+participation_volunteer_alt: Voluntario
+participation_partner_alt: "Alianza con Nosotros"
+participation_sponsor_alt: "Patrocinar una Beca"
+participation_donate_alt: Donar
+donate_now: "Donar Ahora"
+outreach_plan_heading: "Nuestro Plan de Outreach en 3 Fases"
+outreach_phase1_title: "Fase 1 - Escuelas Técnicas"
+outreach_phase1_desc: "Construir relaciones para colocación de estudiantes y alianzas de becas"
+outreach_phase2_title: "Fase 2 - Secundarias"
+outreach_phase2_desc: "Ampliar acceso a programas juveniles, inspirar a estudiantes a explorar oficios"
+outreach_phase3_title: "Fase 3 - Recaudación"
+outreach_phase3_desc: "Construir fondo sostenible de becas mediante alianzas y subvenciones"
+cta_join_text: "Únase a nosotros para impulsar la próxima generación de líderes hispanos en educación y oficios."
+cta_contact_btn: "Contáctenos para comenzar"
+
+# Programs
+programs_heading: Programas
+programs_outreach_heading: "Programas de Outreach en Secundarias"
+programs_outreach_intro: "Visitamos secundarias y nos conectamos directamente con estudiantes para hablar sobre carreras en oficios, educación e historias de éxito reales."
+programs_what_students_learn: "Lo que Aprenden los Estudiantes"
+programs_learn_value: "El valor de la educación"
+programs_learn_trade: "Cómo ingresar a una escuela técnica"
+programs_learn_financial: "Ayuda financiera y becas"
+programs_trade_heading: "Iniciativa de Concientización sobre Escuelas Técnicas"
+programs_trade_intro: "Cerramos la brecha entre escuelas e instituciones técnicas, ayudando a estudiantes a descubrir caminos profesionales gratificantes."
+programs_partner_heading: "Escuelas Técnicas Aliadas"
+programs_partner_1_desc: "Soldadura, tubería, HVAC/R, electricidad y mantenimiento industrial"
+programs_partner_2_desc: "Automotriz, industrial, soldadura y oficios especializados afines"
+programs_partner_3_desc: "Formación en oficios especializados incluyendo HVAC, más áreas de salud"
+programs_partner_4_desc: "Programas cortos y enfocados en carrera en oficios y campos afines"
+programs_partner_5_desc: "Institución pública; programas en supervisión de construcción, electricidad, HVAC y refrigeración"
+programs_partner_6_desc: "Escuela aprobada por TWC con formación práctica en electricidad, HVAC y oficios relacionados con construcción"
+programs_partner_7_desc: "Escuela más pequeña enfocada en HVAC y programas de certificación (plazo más corto)"
+programs_partner_8_desc: "Variedad de programas técnicos y de oficios"
+programs_partner_9_desc: "Enfocada en aviación y oficios técnicos afines"
+programs_partner_10_desc: "Enfocada en carpintería, formación como técnico eléctrico, HVAC y oficios similares"
+programs_scholarship_heading: "Programa de Becas"
+programs_scholarship_intro: "Proporcionamos becas para ayudar a estudiantes hispanos a cursar educación en escuelas técnicas."
+programs_impact_heading: "Ejemplos de Impacto"
+programs_impact_25: "Materiales educativos para un estudiante"
+programs_impact_100: "Apoyo para solicitud de beca"
+programs_impact_500: "Beca completa o parcial para oficios"
+programs_btn_sponsor: "Patrocinar a un Estudiante"
+programs_outreach_img_alt: "Outreach en Secundarias"
+programs_trades_img_alt: "Formación en Oficios Especializados"
+programs_scholarship_img_alt: "Premio de Beca"
+programs_partner_links: "Enlaces a sitios aliados:"
+
+# Impact
+impact_heading_page: Impacto
+impact_by_numbers: "En Cifras"
+impact_students_mentored: "Estudiantes con Mentoría"
+impact_scholarships_awarded: "Becas Otorgadas"
+impact_partner_schools: "Escuelas Aliadas"
+impact_testimonials_heading: "Testimonios de Estudiantes"
+impact_testimonials_alt: "Mentoría Estudiantil"
+impact_testimonials_coming: "Los testimonios e historias de éxito de estudiantes se publicarán aquí a medida que crezcan nuestros programas."
+impact_feedback_heading: "Comentarios de la Comunidad"
+impact_feedback_alt: "Participación Comunitaria"
+impact_feedback_coming: "Citas de educadores, padres y profesionales de oficios se añadirán aquí."
+
+# Donate
+donate_heading: Donar
+donate_why_heading: "Por Qué Importa Tu Donación"
+donate_why_text: "Cada dólar ayuda a proporcionar becas y ampliar la concientización sobre oficios en las escuelas."
+donate_ways_heading: "Formas de Dar"
+donate_way_one: "Donación única"
+donate_way_monthly: "Recurrente mensual"
+donate_way_sponsor: "Patrocinar una beca específica"
+donate_impact_heading: "Ejemplos de Impacto"
+donate_impact_25: "Materiales educativos para un estudiante"
+donate_impact_100: "Apoyo para solicitud de beca"
+donate_impact_500: "Beca completa o parcial para oficios"
+donate_form_heading: "Hacer una Donación"
+donate_form_text: "Apoya a estudiantes hispanos mediante becas y educación en oficios. Donación única o recurrente—cada regalo ayuda."
+donate_form_aria: "Formulario de donación GiveButter"
+donate_contact_fallback: "¿Prefieres dar por cheque o hablar de una donación mayor?"
+donate_contact_link: "Contáctenos"
+donate_corporate_heading: "Patrocinios Corporativos"
+donate_corporate_text: "Oportunidades de reconocimiento para empresas que apoyan nuestra misión."
+donate_corporate_btn: "Contáctenos"
+
+# About
+about_heading: "Nosotros"
+about_story_heading: "Nuestra Historia"
+about_story_img_alt: "Empoderamiento Comunitario"
+about_mission_heading: Misión
+about_mission_text: "Empoderar a estudiantes hispanos mediante educación y oficios especializados, proporcionando mentoría, concientización y becas que convierten el potencial en oportunidad."
+about_vision_heading: Visión
+about_vision_text: "Una generación de jóvenes hispanos empoderados prosperando en educación y oficios especializados, transformando familias y comunidades."
+about_values_heading: "Nuestros Valores"
+about_value_education: Educación
+about_value_empowerment: Empoderamiento
+about_value_family: Familia
+about_value_opportunity: Oportunidad
+about_value_community: Comunidad
+about_leadership_heading: Liderazgo
+about_leadership_img_alt: "Equipo de Liderazgo"
+about_leadership_coming: "Información de liderazgo próximamente."
+about_partners_heading: "Nuestros Aliados"
+about_partners_text: "Escuelas aliadas, instituciones técnicas y patrocinadores se listarán aquí."
+
+# Privacy
+privacy_heading: "Política de Privacidad"
+
+# 404
+error_404_heading: "Página no encontrada"
+error_404_back: "Volver al Inicio"
+
+# Contact success
+contact_success_heading: "¡Gracias!"
+contact_success_message: "Tu mensaje ha sido enviado correctamente."
+contact_success_followup: "Te responderemos lo antes posible."
+contact_success_home_btn: "Volver al Inicio"
+contact_success_another_btn: "Enviar Otro Mensaje"

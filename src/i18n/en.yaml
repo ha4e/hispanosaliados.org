@@ -1,0 +1,240 @@
+# English UI strings for HA4E. Edit only the value (right side); keep keys unchanged.
+# Use quotes if the value contains a colon. Non-technical guide: docs/i18n.md
+
+site_name: "Hispanos Aliados for Education"
+meta_description: "Empowering Hispanic youth through education and skilled trades"
+meta_keywords: "Hispanic education, skilled trades, scholarships, mentorship, trade schools, Hispanic students, vocational training"
+meta_author: "Hispanos Aliados for Education"
+jsonld_description: "Empowering Hispanic youth through education and skilled trades by providing mentorship, awareness, and scholarships"
+jsonld_audience_type: "Hispanic students, high school students, trade school students"
+
+nav_home: Home
+nav_about: About
+nav_programs: Programs
+nav_impact: Impact
+nav_get_involved: Get Involved
+nav_donate: Donate
+nav_contact: Contact
+
+aria_nav_label: "Main navigation"
+aria_logo_label: "HA4E Home"
+aria_toggle_label: "Toggle navigation menu"
+
+footer_org_name: "Hispanos Aliados for Education"
+footer_tagline: "Empowering Hispanic Youth Through Education and Skilled Trades"
+footer_quick_links: "Quick Links"
+footer_stay_connected: "Stay Connected"
+footer_newsletter_text: "Subscribe to our newsletter for updates on impact and events."
+footer_honeypot_label: "Don't fill this out"
+footer_email_placeholder: "Email Address"
+footer_email_aria: "Email address for newsletter"
+footer_join_btn: Join
+footer_email_link_aria: "Email HA4E at info@hispanosaliados.org"
+footer_phone_link_aria: "Call HA4E at (281) 210-9596"
+footer_copyright: "© 2026 Hispanos Aliados for Education | 501(c)(3) Nonprofit Organization"
+footer_privacy: "Privacy Policy"
+
+lang_english: English
+lang_spanish: "Español"
+
+# Spotlight (Get Involved)
+spotlight_heading: "Volunteer Spotlight"
+spotlight_previous_title: "Previous spotlights"
+
+# Home
+hero_title: "Empowering the Next Generation of"
+hero_title_highlight: "Skilled Professionals"
+hero_subtitle: "Bridging the gap between high school and career success for Hispanic students through mentorship, scholarships, and trades education."
+hero_btn_programs: "Our Programs"
+hero_btn_donate: Donate
+hero_btn_donate_aria: "Donate to support Hispanic students"
+hero_img_alt: "Hispanic students in skilled trades training and educational settings"
+core_pillars_heading: "Our Core Pillars"
+pillar_outreach_title: "High School Outreach"
+pillar_outreach_desc: "Connecting professionals with students to navigate the transition from classroom to career."
+pillar_outreach_link_aria: "Learn more about High School Outreach programs"
+pillar_trades_title: "Skilled Trades Training"
+pillar_trades_desc: "Hands-on education in construction, electrical, HVAC, and welding with industry leaders."
+pillar_trades_link_aria: "Learn more about Skilled Trades Training programs"
+pillar_scholarships_title: "Achievement Scholarships"
+pillar_scholarships_desc: "Financial support for students pursuing technical degrees and vocational certifications."
+pillar_scholarships_link_aria: "Learn more about Achievement Scholarships"
+pillar_outreach_img_alt: "High school students learning about trade careers from professionals"
+pillar_trades_img_alt: "Students receiving hands-on training in skilled trades including construction, electrical, and HVAC"
+pillar_scholarships_img_alt: "Students receiving scholarships and celebrating educational achievements"
+learn_more: "Learn More →"
+impact_heading: "Our Impact at a Glance"
+stat_schools: "Schools Visited"
+stat_students: "Students Inspired"
+stat_scholarships: "Scholarships Awarded"
+stat_partners: "Trade Partners"
+stat_schools_aria: "Schools visited"
+stat_students_aria: "Students inspired"
+stat_scholarships_aria: "Scholarships awarded"
+stat_partners_aria: "Trade partners"
+student_story_heading: "Student Story Highlight"
+student_story_alt: "Student Success Story"
+student_story_coming: "Success stories coming soon as we begin our outreach programs."
+cta_heading: "Ready to make an impact?"
+cta_text: "Whether you're a student, a professional mentor, or a corporate partner, there's a place for you in the HA4E family."
+cta_volunteer: Volunteer
+cta_sponsor: Sponsor
+cta_partner: Partner
+cta_btn: "Get Started"
+
+# Contact
+contact_heading: "Contact Us"
+contact_get_in_touch: "Get in Touch"
+contact_email_label: "Email:"
+contact_phone_label: "Phone:"
+contact_address_label: "Address:"
+contact_dept_heading: "Department Contacts"
+contact_general: "General:"
+contact_exec: "Executive Director:"
+contact_scholarships: "Scholarships:"
+contact_partnerships: "Partnerships:"
+contact_form_heading: "Send Us a Message"
+contact_form_aria: "Contact form"
+contact_honeypot: "Don't fill this out if you're human:"
+contact_name_label: "Name *"
+contact_email_field: "Email *"
+contact_subject_label: "Subject"
+contact_subject_general: "General Inquiry"
+contact_subject_scholarship: "Scholarship Information"
+contact_subject_partnership: "Partnership Opportunity"
+contact_subject_volunteer: Volunteer
+contact_subject_donation: Donation
+contact_message_label: "Message *"
+contact_btn_send: "Send Message"
+contact_aria_email: "Email HA4E"
+contact_aria_call: "Call HA4E"
+
+# Get Involved
+get_involved_heading: "Get Involved"
+ways_to_participate: "Ways to Participate"
+participation_volunteer: Volunteer
+participation_volunteer_desc: "Help at school events or mentor students"
+participation_volunteer_btn: "Contact us to volunteer"
+participation_partner: "Partner With Us"
+participation_partner_desc: "Schools, companies, and trade institutions can collaborate"
+participation_partner_btn: "Contact us about partnering"
+participation_sponsor: "Sponsor a Scholarship"
+participation_sponsor_desc: "Businesses and individuals can fund student education"
+participation_donate: Donate
+participation_donate_desc: "Contributions directly support outreach and scholarships"
+participation_donate_btn: "Donate to support outreach and scholarships"
+participation_volunteer_alt: Volunteer
+participation_partner_alt: "Partner With Us"
+participation_sponsor_alt: "Sponsor a Scholarship"
+participation_donate_alt: Donate
+donate_now: "Donate Now"
+outreach_plan_heading: "Our 3-Phase Outreach Plan"
+outreach_phase1_title: "Phase 1 - Trade Schools"
+outreach_phase1_desc: "Build relationships for student placement and scholarship partnerships"
+outreach_phase2_title: "Phase 2 - High Schools"
+outreach_phase2_desc: "Expand youth program access, inspire students to explore trades"
+outreach_phase3_title: "Phase 3 - Fundraising"
+outreach_phase3_desc: "Build sustainable scholarship fund through partnerships and grants"
+cta_join_text: "Join us in empowering the next generation of Hispanic leaders in education and the trades."
+cta_contact_btn: "Contact us to get started"
+
+# Programs
+programs_heading: Programs
+programs_outreach_heading: "High School Outreach Programs"
+programs_outreach_intro: "We visit high schools and connect directly with students to talk about trade careers, education, and real-world success stories."
+programs_what_students_learn: "What Students Learn"
+programs_learn_value: "The value of education"
+programs_learn_trade: "How to get into trade school"
+programs_learn_financial: "Financial aid and scholarships"
+programs_trade_heading: "Trade School Awareness Initiative"
+programs_trade_intro: "We bridge the gap between schools and trade institutions, helping students discover rewarding career paths."
+programs_partner_heading: "Partner Trade Schools"
+programs_partner_1_desc: "Welding, pipe-fitting, HVAC/R, electrical & industrial maintenance"
+programs_partner_2_desc: "Automotive, industrial, welding and related skilled trades"
+programs_partner_3_desc: "Training in skilled trades including HVAC, plus healthcare fields"
+programs_partner_4_desc: "Short-term, career-focused programs in skilled trades and allied fields"
+programs_partner_5_desc: "Public institution; programs in construction supervision, electrical, HVAC & refrigeration"
+programs_partner_6_desc: "TWC-approved school offering hands-on training in electrical, HVAC, and construction-related trades"
+programs_partner_7_desc: "Smaller school focusing on HVAC and certification programs (shorter term)"
+programs_partner_8_desc: "Variety of trade and technical programs"
+programs_partner_9_desc: "Focuses on aviation and related technical trades"
+programs_partner_10_desc: "Focused on carpentry, electrical technician training, HVAC and similar trades"
+programs_scholarship_heading: "Scholarship Program"
+programs_scholarship_intro: "We provide scholarships to help Hispanic students pursue trade school education."
+programs_impact_heading: "Impact Examples"
+programs_impact_25: "Educational materials for one student"
+programs_impact_100: "Scholarship application support"
+programs_impact_500: "Full or partial trade scholarship"
+programs_btn_sponsor: "Sponsor a Student"
+programs_outreach_img_alt: "High School Outreach"
+programs_trades_img_alt: "Skilled Trades Training"
+programs_scholarship_img_alt: "Scholarship Award"
+programs_partner_links: "Links to partner sites:"
+
+# Impact
+impact_heading_page: Impact
+impact_by_numbers: "By the Numbers"
+impact_students_mentored: "Students Mentored"
+impact_scholarships_awarded: "Scholarships Awarded"
+impact_partner_schools: "Partner Schools"
+impact_testimonials_heading: "Student Testimonials"
+impact_testimonials_alt: "Student Mentorship"
+impact_testimonials_coming: "Student testimonials and success stories will be featured here as our programs grow."
+impact_feedback_heading: "Community Feedback"
+impact_feedback_alt: "Community Engagement"
+impact_feedback_coming: "Quotes from educators, parents, and trade professionals will be added here."
+
+# Donate
+donate_heading: Donate
+donate_why_heading: "Why Your Donation Matters"
+donate_why_text: "Every dollar helps provide scholarships and expand trade awareness in schools."
+donate_ways_heading: "Ways to Give"
+donate_way_one: "One-time donation"
+donate_way_monthly: "Monthly recurring"
+donate_way_sponsor: "Sponsor a specific scholarship"
+donate_impact_heading: "Impact Examples"
+donate_impact_25: "Educational materials for one student"
+donate_impact_100: "Scholarship application support"
+donate_impact_500: "Full or partial trade scholarship"
+donate_form_heading: "Make a Donation"
+donate_form_text: "Support Hispanic students through scholarships and trade education. One-time or recurring—every gift helps."
+donate_form_aria: "GiveButter donation form"
+donate_contact_fallback: "Prefer to give by check or discuss a larger gift?"
+donate_contact_link: "Contact us"
+donate_corporate_heading: "Corporate Sponsorships"
+donate_corporate_text: "Recognition opportunities for businesses that support our mission."
+donate_corporate_btn: "Contact Us"
+
+# About
+about_heading: "About Us"
+about_story_heading: "Our Story"
+about_story_img_alt: "Community Empowerment"
+about_mission_heading: Mission
+about_mission_text: "To empower Hispanic students through education and skilled trades by providing mentorship, awareness, and scholarships that turn potential into opportunity."
+about_vision_heading: Vision
+about_vision_text: "A generation of empowered Hispanic youth thriving in education and the skilled trades, transforming families and communities."
+about_values_heading: "Our Values"
+about_value_education: Education
+about_value_empowerment: Empowerment
+about_value_family: Family
+about_value_opportunity: Opportunity
+about_value_community: Community
+about_leadership_heading: Leadership
+about_leadership_img_alt: "Leadership Team"
+about_leadership_coming: "Leadership information coming soon."
+about_partners_heading: "Our Partners"
+about_partners_text: "Partner schools, trade institutions, and sponsors will be listed here."
+
+# Privacy (page title only; body from content)
+privacy_heading: "Privacy Policy"
+
+# 404
+error_404_heading: "Page not found"
+error_404_back: "Back to Home"
+
+# Contact success
+contact_success_heading: "Thank You!"
+contact_success_message: "Your message has been sent successfully."
+contact_success_followup: "We'll get back to you as soon as possible."
+contact_success_home_btn: "Return to Home"
+contact_success_another_btn: "Send Another Message"

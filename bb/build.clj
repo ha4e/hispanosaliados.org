@@ -82,6 +82,38 @@
           with-paragraphs (wrap-paragraphs with-lists)]
       (wrap-paragraph with-paragraphs))))
 
+(defn read-yaml-flat
+  "Parse flat YAML (key: value per line). Values may be quoted with \" or '. Returns map with keyword keys."
+  [content]
+  (when content
+    (let [lines (str/split-lines content)
+          unquote (fn [v]
+                    (let [v (str/trim v)]
+                      (cond
+                        (and (str/starts-with? v "\"") (str/ends-with? v "\""))
+                        (str/replace (subs v 1 (dec (count v))) #"\\\"" "\"")
+                        (and (str/starts-with? v "'") (str/ends-with? v "'"))
+                        (str/replace (subs v 1 (dec (count v))) #"\\'" "'")
+                        :else v)))
+          parse-line (fn [line]
+                       (let [trimmed (str/trim line)]
+                         (when (and (seq trimmed) (not (str/starts-with? trimmed "#")))
+                           (let [colon-idx (str/index-of trimmed ": ")]
+                             (when colon-idx
+                               (let [k (str/trim (subs trimmed 0 colon-idx))
+                                     v-raw (str/trim (subs trimmed (+ 2 colon-idx)))]
+                                 (when (seq k)
+                                   [(keyword (str/replace k #"\s+" "_")) (unquote v-raw)])))))))]
+      (into {} (keep parse-line lines)))))
+
+(defn read-i18n [locale]
+  "Load i18n strings for locale from src/i18n/<locale>.yaml. Returns map with keyword keys (empty if missing)."
+  (let [path (str "src/i18n/" locale ".yaml")
+        f (io/file path)]
+    (if (.exists f)
+      (read-yaml-flat (slurp path))
+      {})))
+
 (defn read-template [template-name]
   (let [file (str "src/templates/" template-name ".html")]
     (when (.exists (io/file file))
@@ -101,33 +133,56 @@
 (def ^:private lcp-preload
   "<!-- LCP hero image preload (homepage only) -->\n    <link rel=\"preload\" as=\"image\" href=\"/assets/images/photos/home-hero-empowering-futures-promotional-800w.avif\" type=\"image/avif\">")
 
-(defn compose-page [base-template page-content active-page title page-name]
-  (let [active-class (fn [page] (if (= page active-page) "active" ""))
-        canonical-path (if (= page-name "index") "/" (str "/" page-name ".html"))
+(def ^:private site-base "https://www.hispanosaliados.org")
+
+(defn compose-page [base-template page-content title page-name locale i18n]
+  (let [active-nav-page (if (= page-name "index") "home" page-name)
+        active-class (fn [page] (if (= page active-nav-page) "active" ""))
+        locale-prefix (if (= locale "en") "" (str "/" locale))
+        canonical-path (if (= page-name "index")
+                         (if (= locale "en") "/" (str "/" locale "/"))
+                         (str locale-prefix "/" page-name ".html"))
         head-extra (cond (= page-name "donate") givebutter-script
                          (= page-name "index") lcp-preload
                          :else "")
         robots-meta (if (= page-name "404")
                      "noindex, nofollow"
                      "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1")
-        ;; Use Netlify's official status badge only when SITE_ID is set (on Netlify); otherwise text link only (no unofficial graphic)
         site-id (System/getenv "SITE_ID")
         netlify-badge-content (if (and site-id (not (str/blank? (str/trim site-id))))
                                 (str "<img src=\"https://api.netlify.com/api/v1/badges/" (str/trim site-id) "/deploy-status\" alt=\"Deploys by Netlify\" class=\"netlify-badge\" width=\"114\" height=\"51\" loading=\"lazy\">")
                                 "Deploys by Netlify")
-        content-map {:content page-content
-                     :robots robots-meta
-                     :title title
-                     :canonical-path canonical-path
-                     :head-extra head-extra
-                     :netlify-badge-content netlify-badge-content
-                     :active-home (active-class "home")
-                     :active-about (active-class "about")
-                     :active-programs (active-class "programs")
-                     :active-impact (active-class "impact")
-                     :active-get-involved (active-class "get-involved")
-                     :active-donate (active-class "donate")
-                     :active-contact (active-class "contact")}]
+        ;; Alternate language URLs for switcher and hreflang
+        path-en (if (= page-name "index") "/" (str "/" page-name ".html"))
+        path-es (if (= page-name "index") "/es/" (str "/es/" page-name ".html"))
+        switch-to-en-url path-en
+        switch-to-es-url path-es
+        hreflang-links (str "<link rel=\"alternate\" hreflang=\"en\" href=\"" site-base path-en "\">\n    "
+                           "<link rel=\"alternate\" hreflang=\"es\" href=\"" site-base path-es "\">")
+        html-lang (if (= locale "en") "en" "es")
+        curr-lang-en (if (= locale "en") "true" "")
+        curr-lang-es (if (= locale "es") "true" "")
+        content-map (merge i18n
+                           {:content page-content
+                            :robots robots-meta
+                            :title title
+                            :canonical-path canonical-path
+                            :head-extra head-extra
+                            :netlify-badge-content netlify-badge-content
+                            :locale-prefix locale-prefix
+                            :html-lang html-lang
+                            :switch-to-en-url switch-to-en-url
+                            :switch-to-es-url switch-to-es-url
+                            :hreflang-links hreflang-links
+                            :current-lang-en curr-lang-en
+                            :current-lang-es curr-lang-es
+                            :active-home (active-class "home")
+                            :active-about (active-class "about")
+                            :active-programs (active-class "programs")
+                            :active-impact (active-class "impact")
+                            :active-get-involved (active-class "get-involved")
+                            :active-donate (active-class "donate")
+                            :active-contact (active-class "contact")})]
     (render-template base-template content-map)))
 
 (defn copy-assets
@@ -161,18 +216,23 @@
 
 (def ^:private sitemap-base "https://www.hispanosaliados.org")
 
-(defn write-sitemap [pages]
-  "Write public/sitemap.xml with indexable pages (excludes 404)."
+(defn write-sitemap [locales pages]
+  "Write public/sitemap.xml with indexable pages for all locales (excludes 404)."
   (let [today (str (java.time.LocalDate/now))
-        indexable (remove (fn [[page-name _ _]] (= page-name "404")) pages)
-        url-entry (fn [[page-name _ _]]
-                    (let [path (if (= page-name "index") "/" (str "/" page-name ".html"))
+        indexable-pages (remove (fn [[page-name _ _]] (= page-name "404")) pages)
+        url-entry (fn [locale page-name]
+                    (let [prefix (if (= locale "en") "" (str "/" locale))
+                          path (if (= page-name "index")
+                                 (if (= locale "en") "/" (str prefix "/"))
+                                 (str prefix "/" page-name ".html"))
                           loc (str sitemap-base path)]
                       (str "  <url>\n    <loc>" loc "</loc>\n    <lastmod>" today "</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>")))
-        entries (str/join "\n" (map url-entry indexable))
+        entries (for [locale locales
+                     [page-name _ _] indexable-pages]
+                 (url-entry locale page-name))
         xml (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                  "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
-                 entries "\n"
+                 (str/join "\n" entries) "\n"
                  "</urlset>\n")]
     (spit "public/sitemap.xml" xml)
     (println "Wrote sitemap.xml")))
@@ -477,10 +537,13 @@
           (println "Modern browsers support SVG favicons. For PNG fallbacks, install ImageMagick or use macOS sips.")
           true)))))
 
-(defn read-spotlights []
-  (let [f (io/file "src/content/spotlights.edn")]
+(defn read-spotlights [locale]
+  "Read spotlights for locale from src/content/<locale>/spotlights.edn, fallback to src/content/spotlights.edn."
+  (let [locale-file (io/file (str "src/content/" locale "/spotlights.edn"))
+        legacy-file (io/file "src/content/spotlights.edn")
+        f (if (.exists locale-file) locale-file legacy-file)]
     (when (.exists f)
-      (try (edn/read-string (slurp f))
+      (try (edn/read-string (slurp (.getPath f)))
            (catch Exception _ nil)))))
 
 (def ^:private max-previous-spotlights 6)
@@ -494,10 +557,12 @@
       (str "<a href=\"" (str/replace (str/trim url) #"\"" "&quot;") "\" rel=\"noopener noreferrer\" target=\"_blank\" class=\"spotlight-name-link\">" safe-name "</a>")
       safe-name)))
 
-(defn render-spotlight-section []
-  (let [data (read-spotlights)
+(defn render-spotlight-section [locale i18n]
+  (let [data (read-spotlights locale)
         current (:current data)
-        previous (take max-previous-spotlights (:previous data))]
+        previous (take max-previous-spotlights (:previous data))
+        spotlight-heading (get i18n :spotlight_heading "Volunteer Spotlight")
+        spotlight-previous-title (get i18n :spotlight_previous_title "Previous spotlights")]
     (if (empty? current)
       ""
       (let [blurb-html (process-markdown (:blurb current))
@@ -523,7 +588,7 @@
             previous-html (if (empty? previous)
                           ""
                           (str "<div class=\"spotlight-previous\">"
-                               "<p class=\"spotlight-previous-title\">Previous spotlights</p>"
+                               "<p class=\"spotlight-previous-title\">" spotlight-previous-title "</p>"
                                "<ul class=\"spotlight-previous-list\" role=\"list\">"
                                (str/join (for [p previous]
                                            (let [name-html (spotlight-name-html (:name p) (:url p))
@@ -539,20 +604,19 @@
                                "</ul></div>"))]
         (str "<section class=\"volunteer-spotlight\" aria-labelledby=\"spotlight-heading\">"
              "<div class=\"container\">"
-             "<h2 id=\"spotlight-heading\">Volunteer Spotlight</h2>"
+             "<h2 id=\"spotlight-heading\">" spotlight-heading "</h2>"
              "<div class=\"section-divider\"></div>"
              current-html
              previous-html
              "</div></section>")))))
 
-(defn build-page [page-name base-template page-template content-map title]
-  (let [output-dir "public"
-        output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
+(defn build-page [page-name base-template page-template content-map title locale i18n output-dir]
+  (let [output-file (str output-dir "/" (if (= page-name "index") "index.html" (str page-name ".html")))]
     (ensure-dir output-dir)
     (let [page-html (if page-template
                       (render-template page-template content-map)
                       (:content content-map))
-          full-html (compose-page base-template page-html page-name title page-name)]
+          full-html (compose-page base-template page-html title page-name locale i18n)]
       (spit output-file full-html)
       (println "Built:" output-file))))
 
@@ -575,6 +639,14 @@
 (copy-redirects)
 (copy-headers)
 
+(def ^:private locales ["en" "es"])
+
+(def ^:private page-title-keys
+  "Map page-name to i18n key for locale-specific page title (used in <title> and og:title)."
+  {"index" :nav_home "about" :about_heading "programs" :programs_heading "impact" :impact_heading_page
+   "get-involved" :get_involved_heading "donate" :donate_heading "contact" :contact_heading
+   "contact-success" :contact_success_heading "privacy" :privacy_heading "404" :error_404_heading})
+
 (let [base-template (read-template "base")
       pages [["index" "home" "Home"]
              ["about" "about" "About Us"]
@@ -586,14 +658,25 @@
              ["contact-success" "contact-success" "Thank You"]
              ["privacy" "privacy" "Privacy Policy"]
              ["404" "404" "Page Not Found"]]]
-  (doseq [[page-name template-name title] pages]
-    (let [page-template (read-template template-name)
-          content-file (str "src/content/" template-name ".md")
-          content (read-markdown content-file)
-          processed-content (if content (process-markdown content) "")
-          content-map (cond-> {:content processed-content}
-                        (= page-name "get-involved") (merge {:spotlight-section (render-spotlight-section)}))]
-      (build-page page-name base-template page-template content-map title)))
-  (write-sitemap pages))
+  (doseq [locale locales]
+    (let [i18n (read-i18n locale)
+          output-dir (if (= locale "en") "public" (str "public/" locale))
+          content-dir (str "src/content/" locale "/")]
+      (ensure-dir output-dir)
+      (doseq [[page-name template-name title] pages]
+        (let [locale-prefix (if (= locale "en") "" (str "/" locale))
+              page-title (or (get i18n (get page-title-keys page-name)) title)
+              content-file (str content-dir template-name ".md")
+              fallback-file (when (= locale "en") (str "src/content/" template-name ".md"))
+              content (or (read-markdown content-file)
+                          (read-markdown (or fallback-file "")))
+              processed-content (if content (process-markdown content) "")
+              content-map (-> {:content processed-content :title page-title :locale-prefix locale-prefix}
+                              (merge i18n)
+                              (cond-> (= page-name "get-involved")
+                                (merge {:spotlight-section (render-spotlight-section locale i18n)})))
+              page-template (read-template template-name)]
+          (build-page page-name base-template page-template content-map page-title locale i18n output-dir)))))
+  (write-sitemap locales pages))
 
 (println "Build complete!")
