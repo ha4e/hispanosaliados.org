@@ -89,7 +89,7 @@
         ;; Use Netlify's official status badge only when SITE_ID is set (on Netlify); otherwise text link only (no unofficial graphic)
         site-id (System/getenv "SITE_ID")
         netlify-badge-content (if (and site-id (not (str/blank? (str/trim site-id))))
-                                (str "<img src=\"https://api.netlify.com/api/v1/badges/" (str/trim site-id) "/deploy-status\" alt=\"Deploys by Netlify\" class=\"netlify-badge\" loading=\"lazy\">")
+                                (str "<img src=\"https://api.netlify.com/api/v1/badges/" (str/trim site-id) "/deploy-status\" alt=\"Deploys by Netlify\" class=\"netlify-badge\" width=\"114\" height=\"51\" loading=\"lazy\">")
                                 "Deploys by Netlify")
         content-map {:content page-content
                      :title title
