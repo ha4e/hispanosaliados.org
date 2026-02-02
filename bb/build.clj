@@ -498,8 +498,7 @@
              ["donate" "donate" "Donate"]
              ["contact" "contact" "Contact"]
              ["contact-success" "contact-success" "Thank You"]
-             ["privacy" "privacy" "Privacy Policy"]
-             ["netlify-forms" "netlify-forms" "Forms"]]]
+             ["privacy" "privacy" "Privacy Policy"]]]
   (doseq [[page-name template-name title] pages]
     (let [page-template (read-template template-name)
           content-file (str "src/content/" template-name ".md")
