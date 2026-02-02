@@ -1,5 +1,3 @@
-# Programs
-
 Our programs focus on three main areas: High School Outreach, Trade School Awareness, and Scholarships.
 
 ## High School Outreach Programs

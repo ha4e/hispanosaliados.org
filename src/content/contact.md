@@ -1,5 +1,3 @@
-# Contact Us
-
 We'd love to hear from you! Get in touch with us through any of the methods below.
 
 ## Contact Information

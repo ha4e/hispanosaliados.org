@@ -1,5 +1,3 @@
-# Donate
-
 Your donation helps us provide scholarships and expand trade awareness in schools.
 
 ## Ways to Give

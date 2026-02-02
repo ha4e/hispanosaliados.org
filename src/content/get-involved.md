@@ -1,5 +1,3 @@
-# Get Involved
-
 There are many ways to support Hispanos Aliados for Education and help empower Hispanic youth through education and skilled trades.
 
 ## Ways to Participate
