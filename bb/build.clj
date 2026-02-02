@@ -105,11 +105,21 @@
                      :active-contact (active-class "contact")}]
     (render-template base-template content-map)))
 
-(defn copy-assets []
-  (let [assets-dir "src/assets"
-        public-assets "public/assets"]
-    (when (.exists (io/file assets-dir))
-      (fs/copy-tree assets-dir public-assets {:replace-existing true}))))
+(defn copy-assets
+  "Copy src/assets into public/assets, merging without deleting existing files.
+   Preserves cached build outputs (e.g. .webp, .avif) restored by netlify-plugin-cache."
+  []
+  (let [assets-dir (io/file "src/assets")
+        public-assets "public/assets"
+        prefix (str (.getPath assets-dir) "/")]
+    (when (.exists assets-dir)
+      (doseq [f (file-seq assets-dir)]
+        (when (.isFile f)
+          (let [path-str (.getPath f)
+                rel (subs path-str (count prefix))
+                dest (str public-assets "/" rel)]
+            (fs/create-dirs (fs/parent dest))
+            (fs/copy path-str dest {:replace-existing true})))))))
 
 (defn copy-static-file [src-path public-path]
   (when (.exists (io/file src-path))
