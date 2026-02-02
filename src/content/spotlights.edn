@@ -1,5 +1,6 @@
 ;; Volunteer / Employee Spotlight — current and previous (abbreviated list).
 ;; Update each month: move :current to :previous (add one entry), set new :current.
+;; Keep full data (name, role, month, year, image, blurb) for previous entries; list shows name – month year – role + small photo.
 ;; :blurb supports markdown (e.g. **bold**, links). Image path is under /assets/images/spotlights/.
 
 {:current {:name "John Jelinek"
