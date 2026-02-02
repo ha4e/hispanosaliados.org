@@ -48,6 +48,8 @@ make serve
 
 Deploy to Netlify by connecting the repository. The build runs `scripts/netlify-build.sh`, which installs Babashka (if needed) and runs `make build`. Publish directory is `public/`.
 
+For staff who update **content** (text) only: edit Markdown files in `src/content/` via GitHub; Netlify builds and deploys automatically. See [docs/website-maintenance.md](docs/website-maintenance.md).
+
 ## License and trademarks
 
 - **Code:** MIT License — see [LICENSE](LICENSE). Logo and branding assets are excluded (see LICENSE).

@@ -152,6 +152,8 @@ Use **Netlify Drop** when you have an updated version of the site and want to pu
 
 Each new drop replaces the current live site with what you uploaded. To preview before going live, you can use a different Netlify site or a draft deploy if you use Git-based deploys later.
 
+**To edit page content (text) only:** Edit Markdown files in GitHub; Netlify will build and deploy automatically. See [Website maintenance](website-maintenance.md).
+
 ---
 
 ## Quick checklist for new staff
