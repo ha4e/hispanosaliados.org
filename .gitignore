@@ -10,6 +10,11 @@ node_modules/
 .venv/
 __pycache__/
 
+# Plugin: lockfile not needed (target/cache-images.js is checked in)
+plugins/cache-images/package-lock.json
+# Plugin: shadow-cljs build cache (only target/cache-images.js is committed)
+plugins/cache-images/.shadow-cljs/
+
 # IDE
 .vscode/
 .idea/
