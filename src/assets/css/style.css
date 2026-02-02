@@ -29,6 +29,15 @@
     box-sizing: border-box;
 }
 
+/* Restore paragraph spacing so content has space between blocks */
+p {
+    margin-bottom: var(--spacing-md);
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
 /* Utility: hide element (CSP-friendly; avoid inline style="display: none"). */
 .hidden {
     display: none !important;
@@ -224,7 +233,7 @@ a.btn.btn-secondary:hover {
     text-decoration: none;
 }
 
-/* Global Heading Styles - Standardized spacing across all pages */
+/* Global Heading Styles - Balanced spacing above and below (like template page-header) */
 h1, h2, h3, h4, h5, h6 {
     margin-top: 0;
     margin-bottom: var(--spacing-md);
@@ -241,7 +250,7 @@ h2 {
     font-size: 2.25rem;
     font-weight: 900;
     margin-top: var(--spacing-lg);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
     line-height: 1.2;
 }
 
@@ -252,13 +261,13 @@ h2:first-child {
 h3 {
     font-size: 1.5rem;
     margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
 }
 
 h4 {
     font-size: 1.25rem;
     margin-top: var(--spacing-md);
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
 }
 
 /* Sections */
