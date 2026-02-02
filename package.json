@@ -1,0 +1,8 @@
+{
+  "name": "hispanosaliados.org",
+  "version": "1.0.0",
+  "private": true,
+  "devDependencies": {
+    "netlify-plugin-cache": "^1.0.3"
+  }
+}
