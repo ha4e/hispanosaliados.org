@@ -1158,6 +1158,14 @@ footer {
     opacity: 1;
 }
 
+/* Netlify badge: preserve aspect ratio (API returns SVG; fixed width/height can stretch it) */
+.footer-bottom .netlify-badge {
+    height: 1.25rem;
+    width: auto;
+    vertical-align: middle;
+    display: inline-block;
+}
+
 /* Values Grid */
 .values-grid {
     display: grid;
