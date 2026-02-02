@@ -16,11 +16,13 @@ JAMStack website for Hispanos Aliados for Education (HA4E), a 501(c)(3) non-prof
 ha4e/
 ├── src/
 │   ├── templates/          # HTML templates
-│   ├── content/            # Markdown content files
-│   └── assets/             # CSS, JS, images
-├── bb/                     # Babashka build scripts
-├── scripts/                # Netlify build script, etc.
-└── public/                 # Built static site (generated)
+│   ├── content/             # Markdown content files
+│   └── assets/              # CSS, JS, images
+├── bb/                      # Babashka build scripts
+├── docs/                    # Project documentation
+├── plugins/                 # Netlify build plugins (e.g. cache-images)
+├── scripts/                 # Netlify build script, etc.
+└── public/                  # Built static site (generated)
 ```
 
 ## Development
@@ -32,6 +34,8 @@ make build
 ```
 
 (or `bb bb/build.clj` if you have Babashka in PATH)
+
+To rebuild the Netlify cache-images plugin (ClojureScript → JS): `make plugin`.
 
 ### Serve Locally
 
