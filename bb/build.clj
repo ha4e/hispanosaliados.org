@@ -316,6 +316,35 @@
             (when (> @ok 0)
               (println "Generated" @ok "responsive image(s). Use srcset/sizes in templates (see docs/performance.md)."))))))))
 
+(def ^:private logo-256w-name "FINAL-logo-HA4E-empowering-futures")
+(def ^:private logo-256w-size 256)
+
+(defn generate-logo-256w
+  "Generate 256px logo variants for header (smaller than full-size for LCP)."
+  []
+  (let [src-png (str "public/assets/images/logo/" logo-256w-name ".png")
+        src-file (io/file src-png)
+        out-dir "public/assets/images/logo"
+        out-webp (str out-dir "/" logo-256w-name "-256w.webp")
+        out-avif (str out-dir "/" logo-256w-name "-256w.avif")
+        src-for-mtime (str "src/assets/images/logo/" logo-256w-name ".png")
+        src-time (or (source-modified-time src-for-mtime)
+                     (when (.exists (io/file src-png)) (.lastModified (io/file src-png))))]
+    (when (.exists src-file)
+      (.mkdirs (io/file out-dir))
+      (doseq [[out-path fmt qual] [[out-webp "webp" 85] [out-avif "avif" 70]]]
+        (let [out-f (io/file out-path)
+              need? (or (not (.exists out-f))
+                        (nil? src-time)
+                        (> src-time (.lastModified out-f)))]
+          (when need?
+            (let [result (p/process ["npx" "--yes" "sharp-cli" "--input" src-png "--output" out-path
+                                    "resize" (str logo-256w-size) "--format" fmt "--quality" (str qual)]
+                                   {:dir (System/getProperty "user.dir") :out :string :err :string})]
+              (if (= (:exit @result) 0)
+                (println (str (str/upper-case (subs fmt 0 1)) (subs fmt 1) " 256w logo:" out-path))
+                (println "Note: 256w logo skipped for" out-path ":" (:err @result))))))))))
+
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
@@ -497,6 +526,7 @@
 (generate-responsive)
 (generate-webp)
 (generate-avif)
+(generate-logo-256w)
 (minify-assets)
 (copy-robots-txt)
 (copy-redirects)
