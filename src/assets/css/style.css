@@ -910,9 +910,21 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     margin: 0;
 }
 
-.spotlight-previous-list li {
+.spotlight-previous-item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
     font-size: 0.9375rem;
-    margin-bottom: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+}
+
+.spotlight-previous-photo {
+    flex-shrink: 0;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center 25%;
 }
 
 .spotlight-previous-date {

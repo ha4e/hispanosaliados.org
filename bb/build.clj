@@ -408,8 +408,16 @@
                                "<p class=\"spotlight-previous-title\">Previous spotlights</p>"
                                "<ul class=\"spotlight-previous-list\" role=\"list\">"
                                (str/join (for [p previous]
-                                           (str "<li>" (str/replace (str (:name p)) #"<" "&lt;")
-                                                " <span class=\"spotlight-previous-date\">– " (:month p) " " (:year p) "</span></li>")))
+                                           (let [name (str/replace (str (:name p)) #"<" "&lt;")
+                                                 date (str (:month p) " " (:year p))
+                                                 role (some-> (:role p) str (str/replace #"<" "&lt;"))
+                                                 label (if (seq role) (str date " – " role) date)
+                                                 img-path (:image p)
+                                                 img-html (when (seq img-path)
+                                                            (str "<img src=\"" img-path "\" alt=\"\" class=\"spotlight-previous-photo\" width=\"48\" height=\"48\" loading=\"lazy\">"))]
+                                             (str "<li class=\"spotlight-previous-item\">"
+                                                  (when img-html (str img-html " "))
+                                                  "<span class=\"spotlight-previous-text\">" name " <span class=\"spotlight-previous-date\">– " label "</span></span></li>"))))
                                "</ul></div>"))]
         (str "<section class=\"volunteer-spotlight\" aria-labelledby=\"spotlight-heading\">"
              "<div class=\"container\">"
