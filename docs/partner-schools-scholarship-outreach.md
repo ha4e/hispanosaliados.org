@@ -91,7 +91,7 @@ Guide for reaching out to HA4E partner trade schools to gather current scholarsh
 | 8 | **Interactive College of Technology** | [Financial Aid](https://www.ict.edu/financial-aid/) · [Paying for school](https://www.ict.edu/paying-for-school/) · [Texas campuses](https://www.ict.edu/texas/) · [Connect / contact](https://www.ict.edu/connect/contact/) | Financial Planning / Financial Aid | (800) 375-1010 | Forms on financial aid and Connect pages |
 | 9 | **Aviation Institute of Maintenance – Houston** | [Tuition & financing](https://aviationmaintenance.edu/admissions/financing/) · [Scholarships](https://aviationmaintenance.edu/admissions/financing/scholarship/) · [Student resources](https://aviationmaintenance.edu/your-rights/student-resources/) | Financial Aid / campus | (713) 644-7777 (Houston); 1-888-349-5387 (financial aid) | 7651 Airport Blvd., Houston, TX 77061; contact via campus or financial aid line |
 | 10 | **Houston School of Carpentry** | [housoc.com](http://housoc.com) | Juan Gonzalez, President & CEO | (713) 225-1955 | info@housoc.com; 3522 Polk St., Houston, TX 77003 |
-| — | **NTI Training Houston** | [Houston location](https://www.ntitraining.com/locations/houston/) · [Contact us](https://www.ntitraining.com/contact-us/) | Campus / Admissions | (346) 245-8705 | Contact form; 9001 Jameel Rd, Houston, TX 77040 |
+| 11 | **NTI Training Houston** | [Houston location](https://www.ntitraining.com/locations/houston/) · [Contact us](https://www.ntitraining.com/contact-us/) | Campus / Admissions | (346) 245-8705 | Contact form; 9001 Jameel Rd, Houston, TX 77040 |
 
 **Note:** Best-Trade-School.net is a directory site, not a school; no outreach needed for scholarship info.
 
@@ -109,8 +109,7 @@ Guide for reaching out to HA4E partner trade schools to gather current scholarsh
 
 | Item | Detail |
 |------|--------|
-| Partner trade schools with contact info | 10 |
-| Additional partner (NTI) | 1 |
+| Partner trade schools with contact info | 11 |
 | Best first contact | Financial Aid or Admissions; Lone Star has named workforce contacts |
 | HA4E email to use | partnerships@hispanosaliados.org |
 
