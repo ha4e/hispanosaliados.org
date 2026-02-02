@@ -838,10 +838,13 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     background-color: var(--color-gray-light);
 }
 
-.spotlight-photo {
+/* Crop to circle; preserve aspect (no stretch). Center head in frame. */
+.spotlight-photo-wrap .spotlight-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center 25%;
+    display: block;
 }
 
 .spotlight-details {
