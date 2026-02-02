@@ -470,6 +470,29 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     gap: var(--spacing-md);
 }
 
+/* Impact page: Student Mentorship image – same size as Community Feedback photo below */
+.impact-mentorship-image-wrap {
+    overflow: hidden;
+    height: 320px;
+    max-width: 600px;
+    width: 100%;
+    min-width: 0;
+    border-radius: var(--border-radius);
+}
+.impact-mentorship-image-wrap picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.impact-mentorship-image-wrap img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+    border-radius: var(--border-radius);
+}
+
 /* Reusable crop wrapper to hide watermark on photos */
 .photo-crop-wrap {
     overflow: hidden;
