@@ -1,0 +1,13 @@
+;; Volunteer / Employee Spotlight — current and previous (abbreviated list).
+;; Update each month: move :current to :previous (add one entry), set new :current.
+;; Keep full data (name, role, month, year, image, blurb, url) for previous entries; list shows name – month year – role + small photo.
+;; Optional :url (e.g. LinkedIn) makes the name a link. :blurb supports markdown. Image path under /assets/images/spotlights/.
+
+{:current {:name "John Jelinek"
+           :role "Tech volunteer"
+           :url "https://www.linkedin.com/in/jjelinek/"
+           :image "/assets/images/spotlights/january-2026.jpg"
+           :month "January"
+           :year 2026
+           :blurb "John brings over 17 years in technology and a passion for teaching others—from course authoring to developer advocacy and community engagement. He volunteers with HA4E to help students see pathways into tech and skilled trades and to support mentorship that turns potential into opportunity."}
+ :previous []}
