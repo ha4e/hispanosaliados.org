@@ -369,9 +369,17 @@
     (if (empty? current)
       ""
       (let [blurb-html (process-markdown (:blurb current))
+            img-path (:image current)
+            img-avif (str/replace img-path #"(?i)\.(png|jpe?g)$" ".avif")
+            img-webp (str/replace img-path #"(?i)\.(png|jpe?g)$" ".webp")
+            img-html (str "<picture>"
+                         "<source srcset=\"" img-avif "\" type=\"image/avif\">"
+                         "<source srcset=\"" img-webp "\" type=\"image/webp\">"
+                         "<img src=\"" img-path "\" alt=\"\" class=\"spotlight-photo\" width=\"200\" height=\"200\" loading=\"lazy\">"
+                         "</picture>")
             current-html (str "<div class=\"spotlight-current\">"
                               "<div class=\"spotlight-photo-wrap\">"
-                              "<img src=\"" (:image current) "\" alt=\"\" class=\"spotlight-photo\" width=\"200\" height=\"200\" loading=\"lazy\">"
+                              img-html
                               "</div>"
                               "<div class=\"spotlight-details\">"
                               "<p class=\"spotlight-month-year\">" (:month current) " " (:year current) "</p>"
