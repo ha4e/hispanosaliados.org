@@ -73,6 +73,7 @@ For **prioritized next steps** (e.g. WebP in templates, verifying headers on Net
 - **Netlify build cache (faster rebuilds)**  
   The build skips regenerating an image when the output already exists and is **newer than the source** (see `need?` / `need-generate?` in `bb/build.clj`). On Netlify, `public/` is empty at the start of each build unless it is cached. This project uses **netlify-plugin-cache** in `netlify.toml` to restore and save `public/assets` between builds: the plugin restores that folder before the build and saves it after a successful build. `copy-assets` overwrites only files that exist in `src/assets`; generated files (e.g. `*.webp`, `*-480w.png`) stay from cache, so the build skips them unless the source image changed.
   Without this cache, every build regenerates all images (~5+ minutes). With the plugin, only changed or new images are processed.
+  **Note:** If you use **Clear cache and deploy** in the Netlify UI, the build runs with "Building without cache" and the plugin cache is cleared too, so images will be regenerated that run. Use a normal deploy (push to branch or "Trigger deploy") to keep the cache and skip unchanged images.
 
 - **Minification**  
   After WebP generation, the build runs:
