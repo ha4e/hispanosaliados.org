@@ -136,12 +136,29 @@ Use these to improve Lighthouse scores and Core Web Vitals. Tackle in order for 
 2. **Verify production headers**  
    Run Lighthouse or PageSpeed Insights against your **Netlify deploy URL**, not localhost. That confirms cache and security headers (CSP, HSTS, etc.) are applied and Best Practices items pass.
 
-3. **Reduce render-blocking CSS (optional)**  
-   If FCP/LCP remain high after image fixes, consider inlining critical above-the-fold CSS in `<head>` and loading the full stylesheet with `media="print" onload="this.media='all'"` or a small async loader so the main stylesheet doesn’t block first paint.
+3. **Reduce render-blocking CSS** — **Done.**  
+   The main stylesheet is loaded with `media="print" onload="this.media='all'"` so it doesn't block first paint; `<noscript>` provides a fallback. If you see a brief flash of unstyled content (FOUC), consider inlining critical above-the-fold CSS and keeping the async full stylesheet.
 
 4. **Responsive images** — **Done.** The build generates 480w, 800w, 1200w variants for content photos; templates use `srcset`/`sizes` so small viewports get smaller files (see “Responsive images” above).
 
 5. **AVIF (optional)** — **Done.** The build generates `.avif` files and templates include `<source type="image/avif">` before WebP so supporting browsers get smaller images.
+
+6. **Unsized images** — **Done.** The Netlify badge `<img>` has explicit `width="114"` and `height="51"` so layout is stable (Lighthouse: unsized-images).
+
+7. **Header logo size** — **Done.** The build generates 256w logo variants; the header `<picture>` uses `srcset` with 256w/1024w and `sizes="80px"` so the browser fetches the smaller image (Lighthouse: image-delivery).
+
+## Lighthouse-driven optimizations (reference)
+
+Applied from Lighthouse audits (e.g. for `/privacy`):
+
+| Audit / issue | Action taken |
+|---------------|--------------|
+| **unsized-images** | Netlify badge: added `width="114"` `height="51"`. |
+| **image-delivery-insight** | Header logo: generate 256w AVIF/WebP; use `srcset`/`sizes="80px"` so header loads small logo. |
+| **render-blocking-insight** | Main CSS: `media="print" onload="this.media='all'"` + `<noscript>` fallback. |
+| **inspector-issues (CSP)** | Add specific `sha256` hashes to `style-src` for any new inline styles (e.g. HTMX). Re-run Lighthouse on deploy and add hashes for any remaining CSP violations. |
+
+**Not fully in our control:** mainthread-work-breakdown and bootup-time often include Chrome extensions and third-party script (e.g. GiveButter). Unused/minified JS savings in Lighthouse may be from extensions; focus on first-party JS (e.g. HTMX, main.js) and consider self-hosting HTMX to shorten the critical request chain.
 
 ---
 
