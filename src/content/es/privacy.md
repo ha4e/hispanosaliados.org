@@ -1,30 +1,30 @@
-*Last updated: January 19, 2026*
+*Última actualización: 19 de enero de 2026*
 
-Hispanos Aliados for Education (HA4E) ("us", "we", or "our") operates the Hispanos Aliados for Education website (the "Service"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information when you use our Service.
+Hispanos Aliados for Education (HA4E) ("nosotros" o "nuestro") opera el sitio web de Hispanos Aliados for Education (el "Servicio"). Esta página le informa sobre nuestras políticas respecto a la recopilación, el uso y la divulgación de información personal cuando utiliza nuestro Servicio.
 
-We will not use or share your information with anyone except as described in this Privacy Policy. We use your Personal Information for providing and improving the Service. By using the Service, you agree to the collection and use of information in accordance with this policy.
+No usaremos ni compartiremos su información con nadie excepto según se describe en esta Política de Privacidad. Usamos su información personal para proporcionar y mejorar el Servicio. Al utilizar el Servicio, usted acepta la recopilación y el uso de la información de acuerdo con esta política.
 
-## Information Collected And its Use
+## Información recopilada y su uso
 
-While using our Service, we may ask you to provide us with certain personally identifiable information that can be used to contact or identify you. Personally identifiable information ("Personal Information") may include, but is not limited to:
+Al utilizar nuestro Servicio, podemos pedirle que nos proporcione cierta información de identificación personal que puede usarse para contactarlo o identificarlo. La información de identificación personal ("Información Personal") puede incluir, entre otros:
 
-- Name
-- Email address
-- Phone number
-- Mailing address
+- Nombre
+- Dirección de correo electrónico
+- Número de teléfono
+- Dirección postal
 
-## Log Data
+## Datos de registro
 
-We collect information that your browser sends whenever you visit our Service ("Log Data"). This Log Data may include information such as your computer's Internet Protocol ("IP") address, browser type, browser version, the pages of our Service that you visit, the time and date of your visit, the time spent on those pages and other statistics.
+Recopilamos información que su navegador envía cada vez que visita nuestro Servicio ("Datos de registro"). Estos Datos de registro pueden incluir información como la dirección de Protocolo de Internet ("IP") de su computadora, el tipo de navegador, la versión del navegador, las páginas de nuestro Servicio que visita, la fecha y hora de su visita, el tiempo dedicado a esas páginas y otras estadísticas.
 
 ## Cookies
 
-Cookies are files with small amount of data, which may include an anonymous unique identifier. Cookies are sent to your browser from a web site and stored on your computer's hard drive. We use "cookies" to collect information. You can instruct your browser to refuse all cookies or to indicate when a cookie is being sent. However, if you do not accept cookies, you may not be able to use some portions of our Service.
+Las cookies son archivos con una pequeña cantidad de datos, que pueden incluir un identificador único anónimo. Las cookies se envían a su navegador desde un sitio web y se almacenan en el disco duro de su computadora. Utilizamos "cookies" para recopilar información. Puede indicar a su navegador que rechace todas las cookies o que indique cuándo se está enviando una cookie. Sin embargo, si no acepta las cookies, es posible que no pueda utilizar algunas partes de nuestro Servicio.
 
-## Service Providers
+## Proveedores de servicios
 
-We may employ third party companies and individuals to facilitate our Service, to provide the Service on our behalf, to perform Service-related services or to assist us in analyzing how our Service is used. These third parties have access to your Personal Information only to perform these tasks on our behalf and are obligated not to disclose or use it for any other purpose.
+Podemos emplear empresas e individuos terceros para facilitar nuestro Servicio, para proporcionar el Servicio en nuestro nombre, para realizar servicios relacionados con el Servicio o para ayudarnos a analizar cómo se utiliza nuestro Servicio. Estos terceros tienen acceso a su Información Personal solo para realizar estas tareas en nuestro nombre y están obligados a no divulgarla ni usarla para ningún otro propósito.
 
-## Security
+## Seguridad
 
-The security of your Personal Information is important to us but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While we strive to use commercially acceptable means to protect your Personal Information, we cannot guarantee its absolute security.
+La seguridad de su Información Personal es importante para nosotros, pero recuerde que ningún método de transmisión por Internet ni método de almacenamiento electrónico es 100% seguro. Aunque nos esforzamos por utilizar medios comercialmente aceptables para proteger su Información Personal, no podemos garantizar su seguridad absoluta.
