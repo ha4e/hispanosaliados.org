@@ -6,6 +6,12 @@
   # Pin Babashka for reproducible builds; omit or set "latest" to use newest
   BABASHKA_VERSION = "1.12.214"
 
+# Cache public/assets between builds so image generation skips unchanged files (~5min → ~1min).
+[[plugins]]
+  package = "netlify-plugin-cache"
+  [plugins.inputs]
+  paths = ["public/assets"]
+
 # Redirects are defined in src/_redirects (copied to public/ by build).
 # Note: Netlify Forms handle form submissions before redirects.
 # Forms with data-netlify="true" are processed before any redirects
