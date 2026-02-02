@@ -2,6 +2,8 @@
 
 This guide is for staff who update the HA4E website content with **minimal technical experience**. You can edit text directly in GitHub; when you save your changes, Netlify will automatically rebuild and publish the site.
 
+**The site is available in English and Spanish.** Menus, buttons, and footer text are translated via `src/i18n/en.yaml` and `src/i18n/es.yaml`. Page content lives in `src/content/en/` (English) and `src/content/es/` (Spanish). For details, see [i18n (internationalization)](./i18n.md).
+
 ---
 
 ## How updates go live
@@ -31,14 +33,14 @@ All **page content** lives in the **`src/content`** folder. Each file correspond
 | `privacy.md` | **Privacy Policy** |
 | `404.md` | **404 (Page not found)** message |
 
-**Note:** The **Volunteer Spotlight** on the Get Involved page (current and previous spotlights) is stored in `spotlights.edn`, which uses a different format. If you need to change a spotlight, ask a developer or someone familiar with the project to update it.
+**Note:** The **Volunteer Spotlight** on the Get Involved page is in **`spotlights.edn`** in each content folder (`src/content/en/spotlights.edn` and `src/content/es/spotlights.edn`). If you need to change a spotlight, ask a developer or someone familiar with the project to update it.
 
 ---
 
 ## How to edit a file in GitHub
 
 1. Open the **HA4E website repository** on GitHub (your team will have the link; it’s the same repo used for the site).
-2. Go to the **`src/content`** folder.
+2. Go to **`src/content/en/`** (English) or **`src/content/es/`** (Spanish), or **`src/i18n/`** for menus/footer (edit both `en.yaml` and `es.yaml`).
 3. Click the **file** you want to edit (e.g. `programs.md`).
 4. Click the **pencil icon** (“Edit this file”) near the top right.
 5. Edit the text in the box. You can use the simple formatting below.
