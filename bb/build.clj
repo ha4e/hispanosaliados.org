@@ -82,10 +82,15 @@
 (def ^:private givebutter-script
   "<!-- GiveButter donation widget (loaded only on Donate page) -->\n    <script src=\"https://widgets.givebutter.com/latest.umd.cjs?acct=tU1dQXJcQXXOpiB7&p=other\"></script>")
 
+(def ^:private lcp-preload
+  "<!-- LCP hero image preload (homepage only) -->\n    <link rel=\"preload\" as=\"image\" href=\"/assets/images/photos/home-hero-empowering-futures-promotional-800w.avif\" type=\"image/avif\">")
+
 (defn compose-page [base-template page-content active-page title page-name]
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
         canonical-path (if (= page-name "index") "/" (str "/" page-name ".html"))
-        head-extra (if (= page-name "donate") givebutter-script "")
+        head-extra (cond (= page-name "donate") givebutter-script
+                         (= page-name "index") lcp-preload
+                         :else "")
         robots-meta (if (= page-name "404")
                      "noindex, nofollow"
                      "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1")
