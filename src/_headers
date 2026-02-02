@@ -10,8 +10,19 @@
   Permissions-Policy: geolocation=(), microphone=(), camera=()
 
 # Donate page: allow GiveButter widget + payment iframes (Stripe, PayPal, etc.)
+# Apply to both /donate and /donate.html so rewritten URL gets same CSP
 /donate.html
   Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
+/donate
+  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://widgets.givebutter.com; style-src 'self' https://widgets.givebutter.com 'unsafe-inline'; frame-src https:; connect-src 'self' https:; font-src 'self' https:
+  Cache-Control: no-cache, no-store, must-revalidate
+
+# Rewrite paths: same Cache-Control as /*.html so CDN/browser don't cache HTML
+# (_redirects 200: /contact, /contact-success → .html; request path has no .html so /*.html doesn't match)
+/contact
+  Cache-Control: no-cache, no-store, must-revalidate
+/contact-success
+  Cache-Control: no-cache, no-store, must-revalidate
 
 # Cache static assets (YSlow: Add Expires headers)
 # One segment under /assets (e.g. /assets/css)
