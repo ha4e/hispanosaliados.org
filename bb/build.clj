@@ -25,6 +25,21 @@
     text
     (str "<p>" (str/trim text) "</p>")))
 
+(defn wrap-paragraphs
+  "Split content by blank lines and wrap each non-block segment in <p> so that
+   e.g. 'Last updated' on its own line stays on its own line (block)."
+  [text]
+  (let [segments (str/split (str/trim text) #"\n\n+")
+        wrap-if-inline (fn [s]
+                         (let [t (str/trim s)]
+                           (if (or (str/blank? t)
+                                   (str/starts-with? t "<h")
+                                   (str/starts-with? t "<ul")
+                                   (str/starts-with? t "<p>"))
+                             t
+                             (str "<p>" t "</p>"))))]
+    (str/join "\n\n" (map wrap-if-inline segments))))
+
 (defn wrap-lists
   "Wrap consecutive <li> elements in <ul> tags"
   [text]
@@ -63,8 +78,9 @@
                               (str/replace #"\*\*([^*]+)\*\*" "<strong>$1</strong>")
                               (str/replace #"\*([^*]+)\*" "<em>$1</em>")
                               (str/replace #"\[([^\]]+)\]\(([^\)]+)\)" "<a href=\"$2\">$1</a>"))
-          with-lists (wrap-lists with-formatting)]
-      (wrap-paragraph with-lists))))
+          with-lists (wrap-lists with-formatting)
+          with-paragraphs (wrap-paragraphs with-lists)]
+      (wrap-paragraph with-paragraphs))))
 
 (defn read-template [template-name]
   (let [file (str "src/templates/" template-name ".html")]
