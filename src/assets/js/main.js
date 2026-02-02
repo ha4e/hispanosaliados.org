@@ -28,7 +28,8 @@
             if (elt.id === 'contact-form') {
                 var msg = document.getElementById('contact-form-message');
                 if (!msg) return;
-                msg.style.display = 'block';
+                msg.classList.remove('hidden');
+                msg.setAttribute('aria-hidden', 'false');
                 msg.setAttribute('role', 'alert');
                 if (ok) {
                     msg.className = 'form-message form-message-success';
@@ -42,7 +43,8 @@
             } else if (elt.id === 'newsletter-form') {
                 var msg = document.getElementById('newsletter-message');
                 if (!msg) return;
-                msg.style.display = 'block';
+                msg.classList.remove('hidden');
+                msg.setAttribute('aria-hidden', 'false');
                 msg.setAttribute('role', 'alert');
                 if (ok) {
                     msg.className = 'newsletter-message newsletter-message-success';
@@ -53,7 +55,7 @@
                     msg.className = 'newsletter-message newsletter-message-error';
                     msg.textContent = 'Something went wrong. Please try again or email us.';
                 }
-                setTimeout(function() { msg.style.display = 'none'; }, 5000);
+                setTimeout(function() { msg.classList.add('hidden'); msg.setAttribute('aria-hidden', 'true'); }, 5000);
             }
         });
     }
