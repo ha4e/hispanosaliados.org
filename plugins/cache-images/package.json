@@ -7,6 +7,6 @@
     "build": "npx shadow-cljs release plugin"
   },
   "devDependencies": {
-    "shadow-cljs": "^2.26.2"
+    "shadow-cljs": "^3.0.0"
   }
 }
