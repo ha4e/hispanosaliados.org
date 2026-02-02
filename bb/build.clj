@@ -283,11 +283,14 @@
         (if (empty? files)
           (println "No content photos to generate responsive variants.")
           (let [ok (atom 0)
+                ;; Use git last-commit time for source so cached outputs skip after restore (fs mtime changes).
                 need? (fn [src-path out-path]
-                        (let [src-f (io/file src-path)
+                        (let [src-time (or (source-modified-time src-path)
+                                           (.lastModified (io/file src-path)))
                               out-f (io/file out-path)]
                           (or (not (.exists out-f))
-                              (> (.lastModified src-f) (.lastModified out-f)))))
+                              (nil? src-time)
+                              (> src-time (.lastModified out-f)))))
                 base-name (fn [path] (str/replace path #"(?i)\.(png|jpe?g)$" ""))]
             (.mkdirs (io/file out-dir))
             (doseq [f files]
