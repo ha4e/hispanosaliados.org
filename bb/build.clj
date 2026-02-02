@@ -86,10 +86,16 @@
   (let [active-class (fn [page] (if (= page active-page) "active" ""))
         canonical-path (if (= page-name "index") "/" (str "/" page-name ".html"))
         head-extra (if (= page-name "donate") givebutter-script "")
+        ;; Use Netlify's official status badge only when SITE_ID is set (on Netlify); otherwise text link only (no unofficial graphic)
+        site-id (System/getenv "SITE_ID")
+        netlify-badge-content (if (and site-id (not (str/blank? (str/trim site-id))))
+                                (str "<img src=\"https://api.netlify.com/api/v1/badges/" (str/trim site-id) "/deploy-status\" alt=\"Deploys by Netlify\" width=\"114\" height=\"51\" loading=\"lazy\">")
+                                "Deploys by Netlify")
         content-map {:content page-content
                      :title title
                      :canonical-path canonical-path
                      :head-extra head-extra
+                     :netlify-badge-content netlify-badge-content
                      :active-home (active-class "home")
                      :active-about (active-class "about")
                      :active-programs (active-class "programs")
