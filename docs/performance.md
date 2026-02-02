@@ -71,9 +71,11 @@ For **prioritized next steps** (e.g. WebP in templates, verifying headers on Net
   If `sharp-cli` isn’t available, these steps are skipped and the site still works with originals.
 
 - **Netlify build cache (faster rebuilds)**  
-  The build skips regenerating an image when the output already exists and is **newer than the source** (see `need?` / `need-generate?` in `bb/build.clj`). On Netlify, `public/` is empty at the start of each build unless it is cached. This project uses **netlify-plugin-cache** in `netlify.toml` to restore and save `public/assets` between builds: the plugin restores that folder before the build and saves it after a successful build. `copy-assets` overwrites only files that exist in `src/assets`; generated files (e.g. `*.webp`, `*-480w.png`) stay from cache, so the build skips them unless the source image changed.
+  The build skips regenerating an image when the output already exists and is **newer than the source** (see `need?` / `need-generate?` in `bb/build.clj`). On Netlify, `public/` is empty at the start of each build unless it is cached. This project uses **netlify-plugin-cache** in `netlify.toml` to restore and save **only `public/assets/images`** between builds (not all of `public/assets`), so HTML, CSS, and JS are always fresh; only the image directory is cached. The plugin restores that folder before the build and saves it after a successful build. `copy-assets` merges `src/assets` into `public/assets` without deleting existing files, so cached WebP/AVIF/responsive outputs in `public/assets/images` are preserved and the build skips them unless the source image changed.
   Without this cache, every build regenerates all images (~5+ minutes). With the plugin, only changed or new images are processed.
   **Note:** If you use **Clear cache and deploy** in the Netlify UI, the build runs with "Building without cache" and the plugin cache is cleared too, so images will be regenerated that run. Use a normal deploy (push to branch or "Trigger deploy") to keep the cache and skip unchanged images.
+
+  **If the plugin says it only restored 2 files:** That means the cache for `public/assets` only had 2 files when it was restored (the plugin logs "Successfully restored: public/assets ... X files in total"). To see exactly what’s cached and restored, add [netlify-plugin-debug-cache](https://github.com/netlify-labs/netlify-plugin-debug-cache) after this plugin in `netlify.toml`; it writes `cache-output.json` into the publish directory.
 
 - **Minification**  
   After WebP generation, the build runs:
