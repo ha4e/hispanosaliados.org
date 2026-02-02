@@ -143,6 +143,24 @@
 (defn copy-headers []
   (copy-static-file "src/_headers" "public/_headers"))
 
+(def ^:private sitemap-base "https://www.hispanosaliados.org")
+
+(defn write-sitemap [pages]
+  "Write public/sitemap.xml with indexable pages (excludes 404)."
+  (let [today (str (java.time.LocalDate/now))
+        indexable (remove (fn [[page-name _ _]] (= page-name "404")) pages)
+        url-entry (fn [[page-name _ _]]
+                    (let [path (if (= page-name "index") "/" (str "/" page-name ".html"))
+                          loc (str sitemap-base path)]
+                      (str "  <url>\n    <loc>" loc "</loc>\n    <lastmod>" today "</lastmod>\n    <changefreq>weekly</changefreq>\n  </url>")))
+        entries (str/join "\n" (map url-entry indexable))
+        xml (str "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
+                 "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
+                 entries "\n"
+                 "</urlset>\n")]
+    (spit "public/sitemap.xml" xml)
+    (println "Wrote sitemap.xml")))
+
 (defn minify-assets
   "Optional: minify CSS and JS when npx/csso-cli and npx/terser are available."
   []
@@ -559,6 +577,7 @@
           processed-content (if content (process-markdown content) "")
           content-map (cond-> {:content processed-content}
                         (= page-name "get-involved") (merge {:spotlight-section (render-spotlight-section)}))]
-      (build-page page-name base-template page-template content-map title))))
+      (build-page page-name base-template page-template content-map title)))
+  (write-sitemap pages))
 
 (println "Build complete!")
