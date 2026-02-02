@@ -148,6 +148,19 @@
         (str/ends-with? (str/lower-case name) "-16x16.png")
         (str/ends-with? (str/lower-case name) "-32x32.png"))))
 
+;; Photos that use full-size .webp/.avif in templates (no srcset); others use responsive -480w/-800w/-1200w only.
+(def ^:private photos-need-full-size #{"programs-high-school-outreach-presentation"
+                                       "about-community-empowerment"
+                                       "impact-student-mentorship"
+                                       "home-core-pillar-scholarships"
+                                       "get-involved-volunteer-mentorship"})
+
+(defn skip-full-size-webp? [path]
+  "Skip full-size WebP/AVIF for photos that only use responsive srcset in templates."
+  (when (str/includes? path "/photos/")
+    (let [base (str/replace (fs/file-name path) #"(?i)\.(png|jpe?g)$" "")]
+      (not (contains? photos-need-full-size base)))))
+
 (defn generate-webp []
   "Generate WebP versions of PNG/JPG under public/assets/images when sharp-cli is available."
   (let [images-dir (io/file "public/assets/images")
@@ -159,9 +172,10 @@
                       (filter (fn [f]
                                 (let [p (.getPath f)]
                                   (and (not (skip-webp? p))
-                                       (or (ext? f "png") (ext? f "jpg") (ext? f "jpeg"))))))) ]
+                                       (not (skip-full-size-webp? p))
+                                       (or (ext? f "png") (ext? f "jpg") (ext? f "jpeg")))))))]
         (if (empty? files)
-          (println "No PNG/JPG images to convert to WebP (or only favicons).")
+          (println "No PNG/JPG images to convert to WebP (or only favicons / responsive-only photos).")
           (let [ok (atom 0)
                 ;; Compare output to source in src/, not copied file in public/ (copy updates mtime).
                 need-generate? (fn [public-path out-path]
@@ -194,9 +208,10 @@
                       (filter (fn [f]
                                 (let [p (.getPath f)]
                                   (and (not (skip-webp? p))
+                                       (not (skip-full-size-webp? p))
                                        (or (ext? f "png") (ext? f "jpg") (ext? f "jpeg")))))))]
         (if (empty? files)
-          (println "No PNG/JPG images to convert to AVIF (or only favicons).")
+          (println "No PNG/JPG images to convert to AVIF (or only favicons / responsive-only photos).")
           (let [ok (atom 0)
                 need-generate? (fn [public-path out-path]
                                  (let [src-path (str/replace public-path #"^public/" "src/")
