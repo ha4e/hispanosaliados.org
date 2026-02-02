@@ -2,10 +2,10 @@
 ;; Update each month: move :current to :previous (add one entry), set new :current.
 ;; :blurb supports markdown (e.g. **bold**, links). Image path is under /assets/images/spotlights/.
 
-{:current {:name "January 2026 Spotlight"
-           :role "Outreach Volunteer"
-           :image "/assets/images/spotlights/january-2026.png"
+{:current {:name "John Jelinek"
+           :role "Tech volunteer"
+           :image "/assets/images/spotlights/january-2026.jpg"
            :month "January"
            :year 2026
-           :blurb "Our first Volunteer Spotlight will be announced here. Add name, role, photo, and a short blurb in `src/content/spotlights.edn` and a photo at `src/assets/images/spotlights/january-2026.png`."}
+           :blurb "John brings over 17 years in technology and a passion for teaching others—from course authoring to developer advocacy and community engagement. He volunteers with HA4E to help students see pathways into tech and skilled trades and to support mentorship that turns potential into opportunity."}
  :previous []}
