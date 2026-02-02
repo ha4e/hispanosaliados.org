@@ -2,13 +2,26 @@
 // so the directory is still full when we save. netlify-plugin-cache uses
 // onSuccess (after deploy), which can see an empty/moved public/ and save
 // only 2 files, causing alternating full/empty cache.
+const fs = require("fs");
+const path = require("path");
+
 const PATH = "public/assets/images";
+
+function countFilesRecursive(dir) {
+  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) return 0;
+  let n = 0;
+  for (const name of fs.readdirSync(dir)) {
+    const full = path.join(dir, name);
+    n += fs.statSync(full).isDirectory() ? countFilesRecursive(full) : 1;
+  }
+  return n;
+}
 
 module.exports = {
   onPreBuild: async ({ utils: { cache } }) => {
     if (await cache.restore(PATH)) {
-      const files = await cache.list(PATH);
-      console.log(`Successfully restored: ${PATH} ... ${files.length} files in total.`);
+      const n = countFilesRecursive(PATH);
+      console.log(`Successfully restored: ${PATH} ... ${n} files in total.`);
     } else {
       console.log(`A cache of '${PATH}' doesn't exist (yet).`);
     }
@@ -16,10 +29,10 @@ module.exports = {
 
   onPostBuild: async ({ utils: { cache, status } }) => {
     if (await cache.save(PATH)) {
-      const files = await cache.list(PATH);
-      console.log(`Successfully cached: ${PATH} ... ${files.length} files in total.`);
+      const n = countFilesRecursive(PATH);
+      console.log(`Successfully cached: ${PATH} ... ${n} files in total.`);
       status.show({
-        title: `${files.length} files cached`,
+        title: `${n} files cached`,
         summary: "Restored on the next build (saved before deploy).",
         text: PATH,
       });
