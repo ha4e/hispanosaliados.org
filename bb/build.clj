@@ -377,6 +377,15 @@
 
 (def ^:private max-previous-spotlights 6)
 
+(defn- escape-html [s]
+  (when s (str/replace (str s) #"<" "&lt;")))
+
+(defn- spotlight-name-html [name url]
+  (let [safe-name (escape-html name)]
+    (if (and url (seq (str/trim url)))
+      (str "<a href=\"" (str/replace (str/trim url) #"\"" "&quot;") "\" rel=\"noopener noreferrer\" target=\"_blank\" class=\"spotlight-name-link\">" safe-name "</a>")
+      safe-name)))
+
 (defn render-spotlight-section []
   (let [data (read-spotlights)
         current (:current data)
@@ -392,14 +401,15 @@
                          "<source srcset=\"" img-webp "\" type=\"image/webp\">"
                          "<img src=\"" img-path "\" alt=\"\" class=\"spotlight-photo\" width=\"200\" height=\"200\" loading=\"lazy\">"
                          "</picture>")
+            name-html (spotlight-name-html (:name current) (:url current))
             current-html (str "<div class=\"spotlight-current\">"
                               "<div class=\"spotlight-photo-wrap\">"
                               img-html
                               "</div>"
                               "<div class=\"spotlight-details\">"
                               "<p class=\"spotlight-date\"><em>" (:month current) " " (:year current) "</em></p>"
-                              "<h3 class=\"spotlight-name\">" (str/replace (str (:name current)) #"<" "&lt;") "</h3>"
-                              "<p class=\"spotlight-role\">" (str/replace (str (:role current)) #"<" "&lt;") "</p>"
+                              "<h3 class=\"spotlight-name\">" name-html "</h3>"
+                              "<p class=\"spotlight-role\">" (escape-html (:role current)) "</p>"
                               "<div class=\"spotlight-blurb\">" blurb-html "</div>"
                               "</div></div>")
             previous-html (if (empty? previous)
@@ -408,7 +418,7 @@
                                "<p class=\"spotlight-previous-title\">Previous spotlights</p>"
                                "<ul class=\"spotlight-previous-list\" role=\"list\">"
                                (str/join (for [p previous]
-                                           (let [name (str/replace (str (:name p)) #"<" "&lt;")
+                                           (let [name-html (spotlight-name-html (:name p) (:url p))
                                                  date (str (:month p) " " (:year p))
                                                  role (some-> (:role p) str (str/replace #"<" "&lt;"))
                                                  label (if (seq role) (str date " – " role) date)
@@ -417,7 +427,7 @@
                                                             (str "<img src=\"" img-path "\" alt=\"\" class=\"spotlight-previous-photo\" width=\"48\" height=\"48\" loading=\"lazy\">"))]
                                              (str "<li class=\"spotlight-previous-item\">"
                                                   (when img-html (str img-html " "))
-                                                  "<span class=\"spotlight-previous-text\">" name " <span class=\"spotlight-previous-date\">– " label "</span></span></li>"))))
+                                                  "<span class=\"spotlight-previous-text\">" name-html " <span class=\"spotlight-previous-date\">– " label "</span></span></li>"))))
                                "</ul></div>"))]
         (str "<section class=\"volunteer-spotlight\" aria-labelledby=\"spotlight-heading\">"
              "<div class=\"container\">"

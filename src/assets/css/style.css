@@ -870,6 +870,15 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     margin-bottom: 0;
 }
 
+.spotlight-name a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.spotlight-name a:hover {
+    text-decoration: underline;
+}
+
 /* Role as subtitle: distinct from name, smaller and italic */
 .spotlight-role {
     font-size: 1rem;
@@ -925,6 +934,15 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
     border-radius: 50%;
     object-fit: cover;
     object-position: center 25%;
+}
+
+.spotlight-previous-text a {
+    color: var(--color-blue);
+    text-decoration: none;
+}
+
+.spotlight-previous-text a:hover {
+    text-decoration: underline;
 }
 
 .spotlight-previous-date {
