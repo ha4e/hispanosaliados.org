@@ -124,8 +124,9 @@
 (defn copy-headers []
   (copy-static-file "src/_headers" "public/_headers"))
 
-(defn minify-assets []
+(defn minify-assets
   "Optional: minify CSS and JS when npx/csso-cli and npx/terser are available."
+  []
   (let [css-src "public/assets/css/style.css"
         js-src "public/assets/js/main.js"]
     (when (and (.exists (io/file css-src)) (.exists (io/file js-src)))
@@ -155,8 +156,9 @@
                                        "home-core-pillar-scholarships"
                                        "get-involved-volunteer-mentorship"})
 
-(defn skip-full-size-webp? [path]
+(defn skip-full-size-webp?
   "Skip full-size WebP/AVIF for photos that only use responsive srcset in templates."
+  [path]
   (when (str/includes? path "/photos/")
     (let [base (str/replace (fs/file-name path) #"(?i)\.(png|jpe?g)$" "")]
       (not (contains? photos-need-full-size base)))))
@@ -173,8 +175,9 @@
           (try (* 1000 (Long/parseLong s)) (catch Exception _ (.lastModified f)))
           (.lastModified f))))))
 
-(defn generate-webp []
+(defn generate-webp
   "Generate WebP versions of PNG/JPG under public/assets/images when sharp-cli is available."
+  []
   (let [images-dir (io/file "public/assets/images")
         ext? (fn [f ext]
                (str/ends-with? (str/lower-case (.getName f)) (str "." ext)))]
@@ -211,8 +214,9 @@
             (when (> @ok 0)
               (println "Generated" @ok "WebP image(s). Use <picture> in templates to serve them (see docs/performance.md)."))))))))
 
-(defn generate-avif []
+(defn generate-avif
   "Generate AVIF versions of PNG/JPG under public/assets/images when sharp-cli supports it."
+  []
   (let [images-dir (io/file "public/assets/images")
         ext? (fn [f ext]
                (str/ends-with? (str/lower-case (.getName f)) (str "." ext)))]
@@ -251,8 +255,9 @@
 (def ^:private responsive-widths [480 800 1200])
 (def ^:private photos-src-dir "src/assets/images/photos")
 
-(defn generate-responsive []
+(defn generate-responsive
   "Generate multi-width variants (480, 800, 1200) for content photos for srcset/sizes."
+  []
   (let [src-dir (io/file photos-src-dir)
         out-dir "public/assets/images/photos"]
     (when (and (.exists src-dir) (.isDirectory src-dir))
@@ -301,8 +306,9 @@
 (defn ensure-dir [path]
   (.mkdirs (io/file path)))
 
-(defn generate-svg-favicon [size]
+(defn generate-svg-favicon
   "Generate SVG favicon with HA (blue) and 4E (red) text on white background"
+  [size]
   (let [text-ha "HA"
         text-4e "4E"
         ;; Smaller font size to ensure all text fits (40% of size)
@@ -325,8 +331,9 @@
          "  </text>\n"
          "</svg>")))
 
-(defn generate-favicons []
+(defn generate-favicons
   "Generate favicon files with HA4E text - pure Clojure solution"
+  []
   (let [output-dir "src/assets/images"
         ;; Generate SVG favicon (works everywhere, modern browsers support it)
         svg-favicon (generate-svg-favicon 64)
