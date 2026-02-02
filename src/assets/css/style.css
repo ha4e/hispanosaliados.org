@@ -424,9 +424,15 @@ section a:not(.btn):not(.nav-menu a):not(.footer-section a):not(.footer-bottom a
 .student-story-image-wrap {
     overflow: hidden;
     height: 400px;
-    max-width: 600px;
+    max-width: min(600px, 100%);
     width: 100%;
+    min-width: 0; /* allow flex item to shrink on mobile */
     border-radius: var(--border-radius);
+}
+.student-story-image-wrap picture,
+.student-story-image-wrap .story-image {
+    max-width: 100%;
+    display: block;
 }
 .student-story-image-wrap .story-image {
     width: 100%;
