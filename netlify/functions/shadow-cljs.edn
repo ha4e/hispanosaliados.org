@@ -1,6 +1,6 @@
 {:source-paths ["src"]
  :builds {:cms-auth {:target :node-library
-                     :output-to "cms-auth.js"
+                     :output-to "cms-auth-handler.js"
                      :main cms-auth
                      :exports {:handler cms-auth/handler}}
           :cms-callback {:target :node-library
