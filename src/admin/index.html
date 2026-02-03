@@ -24,7 +24,7 @@
   </script>
   <script>
     (function() {
-      var retryDelays = [0, 200, 500, 1000, 1500, 2000, 3000, 4000, 5000, 7000, 10000];
+      var retryDelays = [0, 300, 1000, 2000];
       function dispatchAuth(msg) {
         if (msg == null) return;
         var data = typeof msg === 'string' ? msg : JSON.stringify(msg);
@@ -41,49 +41,27 @@
       function applyPending() {
         try {
           var msg = localStorage.getItem('cms-oauth-pending');
-          if (msg) {
-            retryDelays.forEach(function(delay) {
-              setTimeout(function() { dispatchAuth(msg); }, delay);
-            });
-          }
+          if (msg) retryDelays.forEach(function(d) { setTimeout(function() { dispatchAuth(msg); }, d); });
         } catch (e) {}
-      }
-      function pollPendingWhileVisible() {
-        if (document.visibilityState !== 'visible') return;
-        var end = Date.now() + 10000;
-        var t = setInterval(function() {
-          if (Date.now() > end) { clearInterval(t); return; }
-          if (document.visibilityState !== 'visible') return;
-          applyPending();
-        }, 500);
       }
       window.addEventListener('storage', function(e) {
         if (e.key === 'cms-oauth-pending' && e.newValue) applyPending();
       });
-      window.addEventListener('focus', function() {
-        applyPending();
-        setTimeout(applyPending, 100);
-        setTimeout(applyPending, 500);
-        pollPendingWhileVisible();
-      });
+      window.addEventListener('focus', function() { applyPending(); });
       document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'visible') {
-          applyPending();
-          setTimeout(applyPending, 100);
-          setTimeout(applyPending, 500);
-          pollPendingWhileVisible();
-        }
+        if (document.visibilityState === 'visible') applyPending();
       });
       retryDelays.forEach(function(delay) {
         setTimeout(function() {
           try {
             var msg = localStorage.getItem('cms-oauth-pending');
-            if (msg) retryDelays.forEach(function(d) {
-              setTimeout(function() { dispatchAuth(msg); }, d);
-            });
+            if (msg) retryDelays.forEach(function(d) { setTimeout(function() { dispatchAuth(msg); }, d); });
           } catch (e) {}
         }, delay);
       });
+      setTimeout(function() {
+        try { if (localStorage.getItem('cms-oauth-pending')) localStorage.removeItem('cms-oauth-pending'); } catch (e) {}
+      }, 12000);
     })();
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" defer></script>
