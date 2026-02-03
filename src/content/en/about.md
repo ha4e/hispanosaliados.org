@@ -1,3 +1,7 @@
+---
+title: About Us
+---
+
 Hispanos Aliados for Education (HA4E) is more than just a non-profit; it's a movement that aims to transform communities!
 
 ## Why Us?

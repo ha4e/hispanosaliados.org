@@ -87,9 +87,9 @@ collections:
     format: "frontmatter"
     create: true
     slug: "{{slug}}"
-    summary: "{{slug}}"
+    summary: "{{title}}"
     fields:
-      - { label: "Title", name: "title", widget: "string", required: false, hint: "Optional; used for new pages. List view shows filename (e.g. about, contact) when empty." }
+      - { label: "Title", name: "title", widget: "string", required: false, hint: "Shown in the Pages list; keep it short (e.g. About Us, Contact)." }
       - { label: "Body", name: "body", widget: "markdown" }
 
   - name: "pages-es"
@@ -99,7 +99,7 @@ collections:
     format: "frontmatter"
     create: true
     slug: "{{slug}}"
-    summary: "{{slug}}"
+    summary: "{{title}}"
     fields:
-      - { label: "Título", name: "title", widget: "string", required: false, hint: "Opcional; para páginas nuevas. La lista muestra el nombre del archivo (ej. about, contact) si está vacío." }
+      - { label: "Título", name: "title", widget: "string", required: false, hint: "Se muestra en la lista de páginas; manténgalo corto (ej. Nosotros, Contacto)." }
       - { label: "Cuerpo", name: "body", widget: "markdown" }

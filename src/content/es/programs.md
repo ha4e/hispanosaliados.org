@@ -1,3 +1,7 @@
+---
+title: Programas
+---
+
 Nuestros programas se centran en tres áreas principales: Outreach en Secundarias, Concientización sobre Escuelas Técnicas y Becas.
 
 ## Programas de Outreach en Secundarias

@@ -1,3 +1,7 @@
+---
+title: Privacy Policy
+---
+
 *Last updated: January 19, 2026*
 
 Hispanos Aliados for Education (HA4E) ("us", "we", or "our") operates the Hispanos Aliados for Education website (the "Service"). This page informs you of our policies regarding the collection, use and disclosure of Personal Information when you use our Service.

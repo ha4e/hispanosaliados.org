@@ -1,3 +1,7 @@
+---
+title: Impact
+---
+
 As a new organization, we are just beginning our journey to make a lasting impact on Hispanic youth through education and skilled trades.
 
 ## Our Goals

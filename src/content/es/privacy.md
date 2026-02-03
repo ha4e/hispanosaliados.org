@@ -1,3 +1,7 @@
+---
+title: Política de Privacidad
+---
+
 *Última actualización: 19 de enero de 2026*
 
 Hispanos Aliados for Education (HA4E) ("nosotros" o "nuestro") opera el sitio web de Hispanos Aliados for Education (el "Servicio"). Esta página le informa sobre nuestras políticas respecto a la recopilación, el uso y la divulgación de información personal cuando utiliza nuestro Servicio.

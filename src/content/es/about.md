@@ -1,3 +1,7 @@
+---
+title: Nosotros
+---
+
 Hispanos Aliados for Education (HA4E) es más que una organización sin fines de lucro; ¡es un movimiento que busca transformar comunidades!
 
 ## ¿Por qué nosotros?
