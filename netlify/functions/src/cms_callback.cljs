@@ -10,55 +10,14 @@
   [s]
   (str/replace (str s) #"(?i)</script" "<\\/script"))
 
-(defn- escape-js-string-literal
-  "Escape string for embedding inside a JavaScript double-quoted string literal."
+(defn- escape-for-html-script
+  "Escape inline script content so </script> in the source does not close the tag; then we close with real </script>."
   [s]
-  (-> (str s)
-      (str/replace #"\\" "\\\\")
-      (str/replace #"\"" "\\\"")
-      (str/replace #"\n" "\\n")
-      (str/replace #"\r" "\\r")))
+  (str/replace (str s) #"(?i)</script" "<\\/script"))
 
 (def ^:private -msg-id "msg")
 (def ^:private -data-id "cms-oauth-msg")
-(def ^:private -no-response "No response. Close this window and try again.")
-(def ^:private -error-prefix "authorization:github:error:")
-(def ^:private -fail-html-prefix "Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\"white-space:pre-wrap;font-size:12px;\">")
-(def ^:private -fail-html-suffix "</pre>")
-(def ^:private -authorizing "authorizing:github")
-(def ^:private -target-origin "*")
-(def ^:private -success-msg "Sign-in complete. You can close this window.")
-(def ^:private -error-msg "Something went wrong. Close this window.")
 (def ^:private -completing-msg "Completing sign-in…")
-
-(defn- callback-page-script
-  "Return the JavaScript source for the callback page inline script (run in browser)."
-  []
-  (let [q escape-js-string-literal]
-    (str "(function(){"
-         "var msgEl=document.getElementById(\"" (q -msg-id) "\");"
-         "function done(t){if(msgEl)msgEl.textContent=t;}"
-         "function run(){"
-         "try{"
-         "var el=document.getElementById(\"" (q -data-id) "\");"
-         "var rawMsg=el&&el.textContent?el.textContent.trim():\"\";"
-         "if(!rawMsg){done(\"" (q -no-response) "\");return;}"
-         "var isError=rawMsg.indexOf(\"" (q -error-prefix) "\")===0;"
-         "if(isError){"
-         "var esc=rawMsg.replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\");"
-         "if(msgEl)msgEl.innerHTML=\"" (q -fail-html-prefix) "\"+esc+\"" (q -fail-html-suffix) "\";"
-         "return;}"
-         "if(window.opener){"
-         "try{window.opener.postMessage(\"" (q -authorizing) "\",\"" (q -target-origin) "\");"
-         "setTimeout(function(){try{window.opener.postMessage(rawMsg,\"" (q -target-origin) "\");}catch(e){}},400);"
-         "}catch(e){}}"
-         "done(\"" (q -success-msg) "\");"
-         "}catch(e){done(\"" (q -error-msg) "\");}"
-         "finally{"
-         "if(msgEl&&msgEl.textContent===\"" (q -completing-msg) "\")msgEl.textContent=\"" (q -success-msg) "\";"
-         "}}"
-         "if(document.readyState===\"loading\")document.addEventListener(\"DOMContentLoaded\",run);else run();"
-         "})();")))
 
 (def ^:private page-script-cache (atom nil))
 
@@ -69,25 +28,32 @@
     (try
       (let [fs (js/require "fs")
             path (js/require "path")
-            dir (.-dirname js/__dirname)
+            dir js/__dirname
             script-path (.join path dir "main.js")]
         (reset! page-script-cache (.readFileSync fs script-path "utf8")))
       (catch :default _
         (reset! page-script-cache false))))
   (when (string? @page-script-cache) @page-script-cache))
 
-(defn- inline-script []
-  (or (load-page-script) (callback-page-script)))
+(defn- inline-script
+  "Return transpiled cms-callback-page (main.js). Nil if not built/deployed."
+  []
+  (load-page-script))
+
+(def ^:private -no-script-msg "Callback script not loaded. Rebuild netlify/functions (npm run build) and redeploy.")
 
 (defn- html-response [message content]
   (let [auth-msg (str "authorization:github:" message ":" content)
         safe-payload (escape-for-json-script auth-msg)
-        script (inline-script)
-        body (str "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Signing in…</title></head><body><main><p id=\"" -msg-id "\">" -completing-msg "</p></main><script type=\"application/json\" id=\"" -data-id "\">"
+        raw-script (inline-script)
+        script (when raw-script (escape-for-html-script raw-script))
+        body (str "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Signing in…</title></head><body><main><p id=\"" -msg-id "\">"
+                  (if script -completing-msg -no-script-msg)
+                  "</p></main><script type=\"application/json\" id=\"" -data-id "\">"
                   safe-payload
-                  "<\\/script><script>"
-                  script
-                  "<\\/script></body></html>")]
+                  "</script>"
+                  (or (when script (str "<script>" script "</script>")) "")
+                  "</body></html>")]
     (clj->js {:statusCode 200
               :headers (clj->js {"Content-Type" "text/html; charset=utf-8"
                                  "Content-Security-Policy" "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
