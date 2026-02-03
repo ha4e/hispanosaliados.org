@@ -1,10 +1,10 @@
 /**
  * Modern Netlify Function (Request/Response) wrapper for cms-auth.
  * Redirects /auth to GitHub OAuth; uses legacy handler built from ClojureScript.
+ * Sibling cms-auth-handler.js is in this directory so the bundler includes both.
  */
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { handler } = require("./cms-auth-handler.js");
+import cmsAuthHandler from "./cms-auth-handler.js";
+const { handler } = cmsAuthHandler;
 
 export default async (request) => {
   const url = new URL(request.url);

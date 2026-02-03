@@ -14,3 +14,4 @@
 # Redirects are defined in src/_redirects (copied to public/ by build).
 # Note: Netlify Forms handle form submissions before redirects.
 # Forms with data-netlify="true" are processed before any redirects
+
