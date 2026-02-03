@@ -10,8 +10,19 @@ exports.handler = async (event) => {
   const siteUrl = process.env.URL || (event.headers['x-forwarded-proto'] + '://' + event.headers['x-forwarded-host']);
   const callbackUrl = `${siteUrl.replace(/\/$/, '')}/.netlify/functions/cms-callback`;
 
-  if (!code || !clientId || !clientSecret) {
-    return htmlResponse('error', JSON.stringify({ error: 'missing code or env' }));
+  if (!code) {
+    return htmlResponse('error', JSON.stringify({
+      error: 'missing code',
+      hint: 'GitHub did not send a code. Check the OAuth App callback URL matches exactly: ' + callbackUrl,
+    }));
+  }
+  if (!clientId || !clientSecret) {
+    return htmlResponse('error', JSON.stringify({
+      error: 'missing env',
+      hint: 'In Netlify, set CMS_GITHUB_CLIENT_ID and CMS_GITHUB_CLIENT_SECRET and scope them to Runtime/Functions (not only Build). Redeploy after changing.',
+      clientIdSet: !!clientId,
+      clientSecretSet: !!clientSecret,
+    }));
   }
 
   const body = new URLSearchParams({

@@ -24,7 +24,11 @@ Editors log in with their **GitHub account**. Only users who have **push access*
    - `CMS_GITHUB_CLIENT_ID` = the OAuth App Client ID  
    - `CMS_GITHUB_CLIENT_SECRET` = the OAuth App Client Secret  
 
-3. **Redeploy** so the functions see the new env vars.
+3. **Redeploy** so the functions see the new env vars. (Functions only see variables set in Netlify; a local `.env` does not apply to deployed callbacks.)
+
+**If login fails and localStorage has `authorization:github:error:...`:**  
+- `"missing env"` → Set `CMS_GITHUB_CLIENT_ID` and `CMS_GITHUB_CLIENT_SECRET` in Netlify → Project configuration → Environment variables, then redeploy.  
+- `"missing code"` → The callback URL in your GitHub OAuth App must match exactly (e.g. `https://www.hispanosaliados.org/.netlify/functions/cms-callback`); no trailing slash. Add the same URL for each environment (production, branch deploys) you use.
 
 After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, which redirects to GitHub; after authorization, GitHub redirects to the callback function, which posts the token to the opener and closes the popup so Decap can complete login.
 
