@@ -1,15 +1,34 @@
 # Admin (Decap CMS)
 
-The content editor is at **`/admin`** (e.g. [www.hispanosaliados.org/admin](https://www.hispanosaliados.org/admin)). Staff sign in with Netlify Identity to edit Volunteer Spotlights and other CMS-backed content.
+The content editor is at **`/admin`** (e.g. [www.hispanosaliados.org/admin](https://www.hispanosaliados.org/admin)). Staff sign in with **GitHub** to edit Volunteer Spotlights and other CMS-backed content. The CMS uses the GitHub backend (no deprecated Netlify Identity or Git Gateway).
 
-## Invite links and setting a password
+## Authentication (GitHub)
 
-Netlify Identity invite emails send users to the **site URL** (often the home page) with a token in the URL (hash or query). The widget that lets them **set a password** only runs on a dedicated page so Decap CMS on `/admin` doesn’t overwrite the URL and lose the token.
+Editors log in with their **GitHub account**. Only users who have **push access** to the content repository (`ha4e/hispanosaliados.org`) can use the CMS. To add an editor, add them as a collaborator on the repo (or to the GitHub org with access to the repo).
 
-The site **redirects** any page load that has an Identity token (`invite_token`, `confirmation_token`, `recovery_token`, or `email_change_token`) in the **hash or query string** to **`/admin/accept-invite.html`**, with the token in the hash so the Identity widget can read it and show the set-password flow.
+### Netlify OAuth setup (one-time)
 
-- If the user **never sees a set-password form** and later gets **“invalid_grant: Email not confirmed”** when signing in, the invite link didn’t complete (token was lost or not processed). Use a **fresh invite link** from the email and ensure you land on `…/admin/accept-invite.html` with the token in the URL. If your email client or Netlify sends the token as a query parameter, the site now normalizes it to the hash on accept-invite so the widget can process it.
-- For the most reliable flow, customize the **Invitation** email in Netlify so the link goes straight to the accept-invite page: **Site configuration → Identity → Emails → Invitation**, and set the link to `{{ .SiteURL }}/admin/accept-invite.html#invite_token={{ .Token }}` (instead of `{{ .ConfirmationURL }}`).
+For “Login with GitHub” to work on the live site, Netlify must have a GitHub OAuth provider configured:
+
+1. **Create a GitHub OAuth App**  
+   GitHub → Settings → Developer settings → OAuth Apps → **New OAuth App**  
+   - **Authorization callback URL:** `https://api.netlify.com/auth/done`  
+   - Note the **Client ID** and create a **Client Secret**.
+
+2. **Add the provider in Netlify**  
+   Netlify → your site → **Project configuration** → **Access & security** → **OAuth**  
+   Under **Authentication Providers**, **Install Provider** → **GitHub**, then enter the Client ID and Client Secret and save.
+
+After that, `/admin` will show “Login with GitHub”; after login, Decap CMS talks to the GitHub API directly to read and commit content.
+
+### Migrating from Netlify Identity
+
+This project previously used Netlify Identity + Git Gateway (both deprecated). It now uses:
+
+- **Backend:** `github` with repo `ha4e/hispanosaliados.org`
+- **Auth:** Netlify’s OAuth provider (GitHub), which is **not** deprecated
+
+You can turn off **Identity** and **Git Gateway** in Netlify (Site configuration → Identity / Git Gateway) after the GitHub backend and OAuth are working. Existing Identity users need to be given access via GitHub (repo collaborator or org membership) instead of invites.
 
 ## Indexing and SEO
 
