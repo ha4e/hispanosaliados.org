@@ -1,4 +1,6 @@
 # Netlify redirects (copied to public/ during build)
+# Decap CMS GitHub OAuth: /auth handled by netlify function (redirects to GitHub)
+/auth            /.netlify/functions/cms-auth   200
 /contact          /contact.html          200
 /contact-success /contact-success.html  200
 /donate           /donate.html           200

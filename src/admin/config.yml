@@ -1,10 +1,12 @@
 # Decap CMS config for HA4E. Editors use /admin on the live site.
-# Auth: GitHub backend (no deprecated Netlify Identity/Git Gateway).
-# Netlify OAuth: add GitHub provider in Project config > Access & security > OAuth.
+# Auth: GitHub backend via our OAuth proxy (netlify/functions/cms-auth, cms-callback).
+# Set base_url so Decap opens our /auth instead of api.netlify.com (which doesn't postMessage correctly).
 backend:
   name: github
   repo: ha4e/hispanosaliados.org
   branch: main
+  base_url: https://www.hispanosaliados.org
+  auth_endpoint: auth
 
 media_folder: "src/assets/images"
 public_folder: "/assets/images"
