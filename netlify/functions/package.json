@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "npx shadow-cljs release cms-auth cms-callback"
+    "build": "npx shadow-cljs release cms-auth cms-callback-page cms-callback"
   },
   "devDependencies": {
     "shadow-cljs": "^3.3.5"
