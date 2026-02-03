@@ -3,6 +3,7 @@
 (require '[clojure.java.io :as io]
          '[clojure.string :as str]
          '[clojure.edn :as edn]
+         '[babashka.json :as json]
          '[babashka.fs :as fs]
          '[babashka.process :as p])
 
@@ -213,6 +214,20 @@
 
 (defn copy-headers []
   (copy-static-file "src/_headers" "public/_headers"))
+
+(defn copy-admin
+  "Copy src/admin (Decap CMS) to public/admin so /admin is available on the live site."
+  []
+  (let [admin-dir (io/file "src/admin")
+        public-admin "public/admin"]
+    (when (.exists admin-dir)
+      (.mkdirs (io/file public-admin))
+      (doseq [f (file-seq admin-dir)]
+        (when (.isFile f)
+          (let [name (.getName f)
+                dest (str public-admin "/" name)]
+            (fs/copy (.getPath f) dest {:replace-existing true})
+            (println "Copied admin:" name)))))))
 
 (def ^:private sitemap-base "https://www.hispanosaliados.org")
 
@@ -538,13 +553,21 @@
           true)))))
 
 (defn read-spotlights [locale]
-  "Read spotlights for locale from src/content/<locale>/spotlights.edn, fallback to src/content/spotlights.edn."
-  (let [locale-file (io/file (str "src/content/" locale "/spotlights.edn"))
-        legacy-file (io/file "src/content/spotlights.edn")
-        f (if (.exists locale-file) locale-file legacy-file)]
-    (when (.exists f)
-      (try (edn/read-string (slurp (.getPath f)))
-           (catch Exception _ nil)))))
+  "Read spotlights for locale from src/content/<locale>/spotlights.json (Decap CMS), fallback to spotlights.edn."
+  (let [json-file (io/file (str "src/content/" locale "/spotlights.json"))
+        edn-file (io/file (str "src/content/" locale "/spotlights.edn"))
+        legacy-edn (io/file "src/content/spotlights.edn")]
+    (cond
+      (.exists json-file)
+      (try (json/read-str (slurp (.getPath json-file)))
+           (catch Exception _ nil))
+      (.exists edn-file)
+      (try (edn/read-string (slurp (.getPath edn-file)))
+           (catch Exception _ nil))
+      (.exists legacy-edn)
+      (try (edn/read-string (slurp (.getPath legacy-edn)))
+           (catch Exception _ nil))
+      :else nil)))
 
 (def ^:private max-previous-spotlights 6)
 
@@ -638,6 +661,7 @@
 (copy-robots-txt)
 (copy-redirects)
 (copy-headers)
+(copy-admin)
 
 (def ^:private locales ["en" "es"])
 
