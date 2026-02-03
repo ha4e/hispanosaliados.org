@@ -26,15 +26,7 @@ Editors log in with their **GitHub account**. Only users who have **push access*
 
 3. **Redeploy** so the functions see the new env vars. (Functions only see variables set in Netlify; a local `.env` does not apply to deployed callbacks.)
 
-**If login fails and localStorage has `authorization:github:error:...`:**  
-- `"missing env"` with `clientSecretSet: false` → The function cannot read `CMS_GITHUB_CLIENT_SECRET`. In Netlify → Environment variables, open that variable: set **Scopes** to include **Runtime** (or **Functions**), ensure **Production** (and **Deploy Previews** if you use them) has a value, then **Trigger deploy** (re-deploy) so the function sees the updated variable.  
-- `"missing env"` with `clientIdSet: false` → Same steps for `CMS_GITHUB_CLIENT_ID`.  
-- `"missing code"` → The callback URL in your GitHub OAuth App must match exactly (e.g. `https://www.hispanosaliados.org/.netlify/functions/cms-callback`); no trailing slash. Add the same URL for each environment (production, branch deploys) you use.
-
-**If `clientSecretSet` stays false after setting the secret:**  
-- **Re-create the variable:** Remove `CMS_GITHUB_CLIENT_SECRET`, then add it again with the same value. Set Scopes to **Runtime** (and optionally Build), set a value for **Production** (and **Deploy Previews** if needed), save, then **Trigger deploy** → **Clear cache and deploy site**.  
-- **Check scoped values:** In the variable’s edit view, under “Deploy contexts” / “Values”, confirm **Production** (and the context you’re testing) has a value filled in, not only “sensitive” or empty.  
-- **Confirm you’re on production:** Test login on the production URL (e.g. `https://www.hispanosaliados.org/admin`). Branch/preview deploys only see variables that have a value set for that context.
+**If login fails:** The OAuth popup shows the error. `"missing env"` (and `clientIdSet` / `clientSecretSet` in the message) → set both env vars in Netlify, scope them to **Runtime/Functions**, set a value for your deploy context (Production / Deploy Previews), then **Trigger deploy**. `"missing code"` → set the GitHub OAuth App callback URL exactly to `https://YOUR_SITE/.netlify/functions/cms-callback` (no trailing slash). If the secret still isn’t seen, re-create the variable and use **Clear cache and deploy site**.
 
 After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, which redirects to GitHub; after authorization, GitHub redirects to the callback function, which posts the token to the opener and closes the popup so Decap can complete login.
 
@@ -64,6 +56,6 @@ Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS
 
 **Lighthouse clues that affected sign-in:**
 
-- **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`. That isolates the opener, so after the OAuth popup navigates to GitHub and back, `window.opener` is null in the callback and the callback cannot `postMessage` the token to the admin tab. We override COOP for `/admin` with `unsafe-none` in a **second** `/admin` block at the **end** of `_headers` so it wins over the catch-all (Netlify merges headers; last match wins). The admin page also has a localStorage fallback (retry dispatch on storage and focus, with delays up to 5s) in case the popup loses the opener in some environments.
+- **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`, which can make `window.opener` null in the OAuth callback. We override COOP for `/admin` with `unsafe-none` in a **second** `/admin` block at the **end** of `_headers` so it wins (Netlify merges headers; last match wins). The admin page has a localStorage fallback (dispatch on storage, focus, visibility) if the popup loses the opener.
 - **IndexedDB run warning:** Lighthouse may warn that stored data (e.g. IndexedDB) affects loading; re-running in incognito gives a cleaner performance baseline.
 - **SEO “blocked from indexing”:** Expected for `/admin`; see Indexing and SEO above.
