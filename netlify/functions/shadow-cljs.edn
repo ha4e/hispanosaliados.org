@@ -3,6 +3,9 @@
                      :output-to "cms-auth/cms-auth-handler.js"
                      :main cms-auth
                      :exports {:handler cms-auth/handler}}
+          :cms-callback-page {:target :browser
+                     :output-dir "cms-callback"
+                     :modules {:main {:init-fn cms-callback-page/run}}}
           :cms-callback {:target :node-library
                          :output-to "cms-callback/cms-callback.js"
                          :main cms-callback
