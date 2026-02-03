@@ -9,6 +9,21 @@
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
   <script>
     (function() {
+      var origAddEventListener = window.addEventListener;
+      window.addEventListener = function(type, listener, options) {
+        if (type === 'message' && listener) {
+          var wrapped = function(e) {
+            if (typeof e.data !== 'string') return;
+            return listener.call(this, e);
+          };
+          return origAddEventListener.call(this, type, wrapped, options);
+        }
+        return origAddEventListener.apply(this, arguments);
+      };
+    })();
+  </script>
+  <script>
+    (function() {
       var retryDelays = [0, 200, 500, 1000, 1500, 2000, 3000, 4000, 5000];
       function dispatchAuth(msg) {
         if (msg == null) return;
