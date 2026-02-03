@@ -52,6 +52,6 @@ Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS
 
 **Lighthouse clues that affected sign-in:**
 
-- **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`. That isolates the opener, so after the OAuth popup navigates to GitHub and back, `window.opener` is null in the callback and the callback cannot `postMessage` the token to the admin tab. We override COOP for `/admin` with `unsafe-none` so the popup keeps the opener and sign-in completes. The admin page also has a localStorage fallback (check on focus and delayed timeouts) in case the popup loses the opener in some environments.
+- **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`. That isolates the opener, so after the OAuth popup navigates to GitHub and back, `window.opener` is null in the callback and the callback cannot `postMessage` the token to the admin tab. We override COOP for `/admin` with `unsafe-none` in a **second** `/admin` block at the **end** of `_headers` so it wins over the catch-all (Netlify merges headers; last match wins). The admin page also has a localStorage fallback (retry dispatch on storage and focus, with delays up to 5s) in case the popup loses the opener in some environments.
 - **IndexedDB run warning:** Lighthouse may warn that stored data (e.g. IndexedDB) affects loading; re-running in incognito gives a cleaner performance baseline.
 - **SEO “blocked from indexing”:** Expected for `/admin`; see Indexing and SEO above.
