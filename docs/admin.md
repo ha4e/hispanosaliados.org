@@ -35,7 +35,7 @@ After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, whi
 This project previously used Netlify Identity + Git Gateway (both deprecated). It now uses:
 
 - **Backend:** `github` with repo `ha4e/hispanosaliados.org`
-- **Auth:** Our OAuth proxy (`netlify/functions/cms-auth.mjs` + `cms-auth-handler.js`, `cms-callback.js`) with a dedicated GitHub OAuth App. The auth endpoint uses the modern Netlify Functions API (Request/Response) via `cms-auth.mjs`, which calls the ClojureScript-built handler. Source is in `netlify/functions/src/`; compiled JS is checked in. Rebuild with `make netlify-fns` after editing the `.cljs` files.
+- **Auth:** Our OAuth proxy (`netlify/functions/cms-auth/` and `netlify/functions/cms-callback/`) with a dedicated GitHub OAuth App. The auth endpoint uses the modern Netlify Functions API (Request/Response) via `cms-auth/index.mjs`, which calls the ClojureScript-built handler. Source is in `netlify/functions/src/`; compiled JS is checked in. Rebuild with `make netlify-fns` after editing the `.cljs` files.
 
 You can turn off **Identity** and **Git Gateway** in Netlify (Site configuration → Identity / Git Gateway). The “Authentication Providers” OAuth in Netlify (api.netlify.com/auth/done) is not used for the CMS; the CMS uses the proxy above.
 
