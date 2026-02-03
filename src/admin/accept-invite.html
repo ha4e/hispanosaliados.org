@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Accept invite – HA4E Content Editor</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 28em; margin: 4em auto; padding: 0 1rem; text-align: center; }
+    .message { color: #555; margin-bottom: 1.5rem; }
+    .back { margin-top: 2rem; }
+    .back a { color: #0066cc; }
+  </style>
+</head>
+<body>
+  <p class="message" id="msg">Loading…</p>
+  <p class="back"><a href="/admin/">Back to editor</a></p>
+  <script>
+    (function() {
+      var q = (window.location.search || '').replace(/^\?/, '');
+      var tokenInQuery = /(invite|confirmation|recovery|email_change)_token=/.test(q);
+      if (tokenInQuery && !/(invite|confirmation|recovery|email_change)_token=/.test(window.location.hash || '')) {
+        var hashPart = q.split('&').filter(function(p) { return /^(invite|confirmation|recovery|email_change)_token=/.test(p); }).join('&');
+        window.history.replaceState(null, '', window.location.pathname + '#' + hashPart);
+      }
+    })();
+  </script>
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    document.getElementById('msg').textContent = 'Setting up your account…';
+    if (window.netlifyIdentity) {
+      netlifyIdentity.on('init', function() {
+        var h = window.location.hash || '';
+        if (h.indexOf('invite_token=') === -1 && h.indexOf('confirmation_token=') === -1 && h.indexOf('recovery_token=') === -1 && h.indexOf('email_change_token=') === -1) {
+          document.getElementById('msg').textContent = 'No invite link found. Go to the editor to sign in.';
+        }
+      });
+      netlifyIdentity.on('login', function() {
+        document.getElementById('msg').textContent = 'Success! Taking you to the editor…';
+        window.location.replace('/admin/');
+      });
+      netlifyIdentity.on('error', function(err) {
+        document.getElementById('msg').textContent = 'Something went wrong. Try the link from your email again, or contact an admin.';
+        console.error('Netlify Identity error:', err);
+      });
+      netlifyIdentity.init();
+    } else {
+      document.getElementById('msg').textContent = 'Could not load sign-in. Try again or use the link from your email.';
+    }
+  </script>
+</body>
+</html>
