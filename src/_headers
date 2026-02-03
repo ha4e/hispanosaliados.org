@@ -1,3 +1,9 @@
+# Admin (Decap CMS): do not index; allow unpkg + Netlify API for Git Gateway
+/admin
+/admin/*
+  X-Robots-Tag: noindex, nofollow
+  Content-Security-Policy: default-src 'self'; img-src 'self' https:; script-src 'self' https://unpkg.com; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.netlify.com https://app.netlify.com
+
 # Security: CSP and hardening (adjust CSP if you add external scripts/fonts)
 # GiveButter donation widget: script + frame from widgets.givebutter.com
 /*
