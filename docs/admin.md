@@ -31,6 +31,11 @@ Editors log in with their **GitHub account**. Only users who have **push access*
 - `"missing env"` with `clientIdSet: false` → Same steps for `CMS_GITHUB_CLIENT_ID`.  
 - `"missing code"` → The callback URL in your GitHub OAuth App must match exactly (e.g. `https://www.hispanosaliados.org/.netlify/functions/cms-callback`); no trailing slash. Add the same URL for each environment (production, branch deploys) you use.
 
+**If `clientSecretSet` stays false after setting the secret:**  
+- **Re-create the variable:** Remove `CMS_GITHUB_CLIENT_SECRET`, then add it again with the same value. Set Scopes to **Runtime** (and optionally Build), set a value for **Production** (and **Deploy Previews** if needed), save, then **Trigger deploy** → **Clear cache and deploy site**.  
+- **Check scoped values:** In the variable’s edit view, under “Deploy contexts” / “Values”, confirm **Production** (and the context you’re testing) has a value filled in, not only “sensitive” or empty.  
+- **Confirm you’re on production:** Test login on the production URL (e.g. `https://www.hispanosaliados.org/admin`). Branch/preview deploys only see variables that have a value set for that context.
+
 After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, which redirects to GitHub; after authorization, GitHub redirects to the callback function, which posts the token to the opener and closes the popup so Decap can complete login.
 
 ### Migrating from Netlify Identity
