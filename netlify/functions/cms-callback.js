@@ -17,9 +17,12 @@ exports.handler = async (event) => {
     }));
   }
   if (!clientId || !clientSecret) {
+    const hint = !clientSecret
+      ? 'CMS_GITHUB_CLIENT_SECRET is not visible to the function. In Netlify → Environment variables: ensure it is scoped to Runtime/Functions, has a value for this deploy context (Production/Previews), and trigger a new deploy after saving.'
+      : 'CMS_GITHUB_CLIENT_ID is not visible. Set it in Netlify → Environment variables, scope to Runtime/Functions, then redeploy.';
     return htmlResponse('error', JSON.stringify({
       error: 'missing env',
-      hint: 'In Netlify, set CMS_GITHUB_CLIENT_ID and CMS_GITHUB_CLIENT_SECRET and scope them to Runtime/Functions (not only Build). Redeploy after changing.',
+      hint,
       clientIdSet: !!clientId,
       clientSecretSet: !!clientSecret,
     }));
