@@ -4,11 +4,12 @@ The content editor is at **`/admin`** (e.g. [www.hispanosaliados.org/admin](http
 
 ## Invite links and setting a password
 
-Netlify Identity invite emails send users to the **site URL** (often the home page) with a token in the URL hash. The Identity widget that lets them set a password only runs on **`/admin`**.
+Netlify Identity invite emails send users to the **site URL** (often the home page) with a token in the URL (hash or query). The widget that lets them **set a password** only runs on a dedicated page so Decap CMS on `/admin` doesn’t overwrite the URL and lose the token.
 
-The site handles this by **redirecting** any page load that has an Identity token in the hash (`invite_token`, `confirmation_token`, `recovery_token`, or `email_change_token`) to **`/admin`** with the same hash. So when a new user clicks “Accept the invite” in the email, they land on the home page, are immediately redirected to `/admin`, and the Decap/Identity widget there can complete the signup (set password).
+The site **redirects** any page load that has an Identity token (`invite_token`, `confirmation_token`, `recovery_token`, or `email_change_token`) in the **hash or query string** to **`/admin/accept-invite.html`**, with the token in the hash so the Identity widget can read it and show the set-password flow.
 
-If invite links still take users to the home page and they never see a password form, check that the link in the email goes to your site (e.g. `https://www.hispanosaliados.org/...`) and not only to `app.netlify.com`. As an alternative, you can customize the **Invitation** email template in Netlify so the link points straight to `/admin`: **Site configuration → Identity → Emails → Invitation**, and use a custom link like `{{ .SiteURL }}/admin/#invite_token={{ .Token }}` instead of `{{ .ConfirmationURL }}`.
+- If the user **never sees a set-password form** and later gets **“invalid_grant: Email not confirmed”** when signing in, the invite link didn’t complete (token was lost or not processed). Use a **fresh invite link** from the email and ensure you land on `…/admin/accept-invite.html` with the token in the URL. If your email client or Netlify sends the token as a query parameter, the site now normalizes it to the hash on accept-invite so the widget can process it.
+- For the most reliable flow, customize the **Invitation** email in Netlify so the link goes straight to the accept-invite page: **Site configuration → Identity → Emails → Invitation**, and set the link to `{{ .SiteURL }}/admin/accept-invite.html#invite_token={{ .Token }}` (instead of `{{ .ConfirmationURL }}`).
 
 ## Indexing and SEO
 
