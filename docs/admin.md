@@ -50,7 +50,7 @@ So it’s expected that Lighthouse’s SEO audit reports “Page is blocked from
 
 ## Performance and Lighthouse
 
-Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS** JavaScript bundle (loaded from unpkg). The bundle is large and causes most of the main-thread time and total blocking time (e.g. TBT ~900 ms, LCP ~1.8 s with most time in “element render delay”). That’s a limitation of the CMS; improving scores significantly would require self-hosting or switching to a lighter editor.
+Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS** JavaScript bundle (self-hosted at `/admin/decap-cms.js`; the build downloads it from unpkg when missing, pinned to 3.10.0). That removes the unpkg redirect and third-party fetch. The bundle is still large (~1.5 MB) and causes most of the main-thread time and total blocking time (e.g. TBT ~900 ms, LCP ~1.8 s with most time in “element render delay”). That’s a limitation of the CMS; further gains would require a lighter editor.
 
 **Content Security Policy (CSP):** Decap CMS uses `eval()`-style code, so we allow string evaluation via `script-src ... 'unsafe-eval'` for `/admin` (in `src/_headers`, including the block at the end so it wins over the catch-all) and for the OAuth callback (in the cms-callback function’s response headers, built from `netlify/functions/src/cms_callback.cljs`). If a tool still reports “script-src blocked” or “CSP prevents evaluation”, verify the **deployed** response headers (DevTools → Network → select the request → Response Headers); `_headers` only apply on Netlify, not when serving locally.
 
@@ -59,3 +59,12 @@ Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS
 - **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`, which can make `window.opener` null in the OAuth callback. We override COOP for `/admin` with `unsafe-none` in a **second** `/admin` block at the **end** of `_headers` so it wins (Netlify merges headers; last match wins).
 - **IndexedDB run warning:** Lighthouse may warn that stored data (e.g. IndexedDB) affects loading; re-running in incognito gives a cleaner performance baseline.
 - **SEO “blocked from indexing”:** Expected for `/admin`; see Indexing and SEO above.
+
+## Accessibility
+
+Lighthouse accessibility audits for `/admin` report issues that come from **Decap CMS's own UI**, not from our templates. We do not control Decap's markup or styles. Typical findings:
+
+- **Buttons/controls without accessible names:** e.g. the avatar dropdown and view-control buttons (list/card) have no `aria-label` or visible text. Screen readers may announce them as "button" with no context.
+- **Color contrast:** Some Decap UI text (e.g. "Media" nav, sidebar links) does not meet 4.5:1 contrast; Decap uses its own palette.
+
+These are upstream limitations. Improving them would require changes in [Decap CMS](https://github.com/decaporg/decap-cms) (or switching to another editor). We document them here so maintainers know they are expected and not caused by our admin page or headers.
