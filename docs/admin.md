@@ -50,6 +50,8 @@ So it’s expected that Lighthouse’s SEO audit reports “Page is blocked from
 
 Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS** JavaScript bundle (loaded from unpkg). The bundle is large and causes most of the main-thread time and total blocking time (e.g. TBT ~900 ms, LCP ~1.8 s with most time in “element render delay”). That’s a limitation of the CMS; improving scores significantly would require self-hosting or switching to a lighter editor.
 
+**Content Security Policy (CSP):** Decap CMS uses `eval()`-style code, so we allow string evaluation via `script-src ... 'unsafe-eval'` for `/admin` (in `src/_headers`, including the block at the end so it wins over the catch-all) and for the OAuth callback (in `netlify/functions/cms-callback.js` response headers). If a tool still reports “script-src blocked” or “CSP prevents evaluation”, verify the **deployed** response headers (DevTools → Network → select the request → Response Headers); `_headers` only apply on Netlify, not when serving locally.
+
 **Lighthouse clues that affected sign-in:**
 
 - **Cross-Origin-Opener-Policy (COOP):** The site’s catch-all headers set `Cross-Origin-Opener-Policy: same-origin`. That isolates the opener, so after the OAuth popup navigates to GitHub and back, `window.opener` is null in the callback and the callback cannot `postMessage` the token to the admin tab. We override COOP for `/admin` with `unsafe-none` in a **second** `/admin` block at the **end** of `_headers` so it wins over the catch-all (Netlify merges headers; last match wins). The admin page also has a localStorage fallback (retry dispatch on storage and focus, with delays up to 5s) in case the popup loses the opener in some environments.
