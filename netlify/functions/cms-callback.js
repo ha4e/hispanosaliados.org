@@ -46,7 +46,8 @@ function htmlResponse(message, content) {
   const escapeForJs = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
   const msgEscaped = escapeForJs(`authorization:github:${message}:${content}`);
   // Opener can be null after redirect through GitHub; guard every use and show fallback.
-  const script = `(function(){var op=window.opener;var done=false;function send(origin){if(done)return;done=true;if(op)try{op.postMessage("${msgEscaped}",origin||"*");}catch(e){}window.close();if(!op)document.getElementById("msg").textContent="This window lost its connection to the admin tab. Close this window, go back to /admin, and click Login with GitHub again. If it keeps happening, try another browser.";}if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},150);})();`;
+  // Wait 500ms before sending token so parent has time to attach listener; delay close so message is delivered.
+  const script = `(function(){var op=window.opener;var done=false;function send(origin){if(done)return;done=true;if(op)try{op.postMessage("${msgEscaped}",origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}if(!op)document.getElementById("msg").textContent="This window lost its connection to the admin tab. Close this window, go back to /admin, and click Login with GitHub again. If it keeps happening, try another browser.";}if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);})();`;
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'text/html; charset=utf-8' },
