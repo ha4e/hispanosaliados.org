@@ -72,7 +72,7 @@ document.getElementById(\"msg\").textContent=\"Sign-in complete. You can close t
 
       :else
       (js/Promise.
-       (fn [resolve reject]
+       (fn [resolve _reject]
          (let [params (doto (js/URLSearchParams.)
                         (.set "client_id" client-id)
                         (.set "client_secret" client-secret)
