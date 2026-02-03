@@ -54,7 +54,7 @@ function htmlResponse(message, content) {
   const authMsg = `authorization:github:${message}:${content}`;
   const authMsgEscaped = escapeForJsString(authMsg);
   // Decap netlify-auth expects event.data to be a string (calls .indexOf). Always send string via postMessage.
-  const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(op&&msg)try{op.postMessage(msg,origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}else if(msg){try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";}}if(!op&&rawMsg){send();}else{if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);}})();`;
+  const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(!msg)return;try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}if(op)try{op.postMessage(msg,origin||"*");}catch(e){}setTimeout(function(){document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";window.close();},300);}if(!op&&rawMsg){send();}else{if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);}})();`;
   return {
     statusCode: 200,
     headers: {
