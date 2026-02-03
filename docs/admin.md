@@ -6,29 +6,36 @@ The content editor is at **`/admin`** (e.g. [www.hispanosaliados.org/admin](http
 
 Editors log in with their **GitHub account**. Only users who have **push access** to the content repository (`ha4e/hispanosaliados.org`) can use the CMS. To add an editor, add them as a collaborator on the repo (or to the GitHub org with access to the repo).
 
-### Netlify OAuth setup (one-time)
+### OAuth proxy setup (one-time)
 
-For “Login with GitHub” to work on the live site, Netlify must have a GitHub OAuth provider configured:
+“Login with GitHub” uses an **OAuth proxy** (Netlify Functions) because Netlify’s built-in OAuth (`api.netlify.com/auth/done`) does not send the postMessage format Decap CMS expects, so the popup would show “Authorized” but the CMS would never receive the token.
 
-1. **Create a GitHub OAuth App**  
+1. **Create a GitHub OAuth App** (for the CMS only; keep it separate from any other OAuth app):  
    GitHub → Settings → Developer settings → OAuth Apps → **New OAuth App**  
-   - **Authorization callback URL:** `https://api.netlify.com/auth/done`  
+   - **Application name:** e.g. `HA4E Content Editor`  
+   - **Homepage URL:** `https://www.hispanosaliados.org`  
+   - **Authorization callback URL:** `https://www.hispanosaliados.org/.netlify/functions/cms-callback`  
+     (If you use a different primary domain or `*.netlify.app`, use that host instead, e.g. `https://YOUR-SITE.netlify.app/.netlify/functions/cms-callback`.)  
    - Note the **Client ID** and create a **Client Secret**.
 
-2. **Add the provider in Netlify**  
-   Netlify → your site → **Project configuration** → **Access & security** → **OAuth**  
-   Under **Authentication Providers**, **Install Provider** → **GitHub**, then enter the Client ID and Client Secret and save.
+2. **Set env vars in Netlify**  
+   Netlify → your site → **Project configuration** → **Environment variables**  
+   Add:  
+   - `CMS_GITHUB_CLIENT_ID` = the OAuth App Client ID  
+   - `CMS_GITHUB_CLIENT_SECRET` = the OAuth App Client Secret  
 
-After that, `/admin` will show “Login with GitHub”; after login, Decap CMS talks to the GitHub API directly to read and commit content.
+3. **Redeploy** so the functions see the new env vars.
+
+After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, which redirects to GitHub; after authorization, GitHub redirects to the callback function, which posts the token to the opener and closes the popup so Decap can complete login.
 
 ### Migrating from Netlify Identity
 
 This project previously used Netlify Identity + Git Gateway (both deprecated). It now uses:
 
 - **Backend:** `github` with repo `ha4e/hispanosaliados.org`
-- **Auth:** Netlify’s OAuth provider (GitHub), which is **not** deprecated
+- **Auth:** Our OAuth proxy (`netlify/functions/cms-auth.js`, `cms-callback.js`) with a dedicated GitHub OAuth App
 
-You can turn off **Identity** and **Git Gateway** in Netlify (Site configuration → Identity / Git Gateway) after the GitHub backend and OAuth are working. Existing Identity users need to be given access via GitHub (repo collaborator or org membership) instead of invites.
+You can turn off **Identity** and **Git Gateway** in Netlify (Site configuration → Identity / Git Gateway). The “Authentication Providers” OAuth in Netlify (api.netlify.com/auth/done) is not used for the CMS; the CMS uses the proxy above.
 
 ## Indexing and SEO
 
