@@ -42,12 +42,14 @@ exports.handler = async (event) => {
 };
 
 function htmlResponse(message, content) {
-  const escaped = String(content).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-  const msgEscaped = `authorization:github:${message}:${escaped}`.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-  const script = `(function(){var done=false;function send(o){if(!done&&window.opener){done=true;window.opener.postMessage("${msgEscaped}",o||"*");window.close();}}window.opener.postMessage("authorizing:github","*");window.addEventListener("message",function once(e){window.removeEventListener("message",once);send(e.origin);});setTimeout(function(){send("*");},2000);})();`;
+  // Escape for embedding in a JS double-quoted string: backslash, quote, newline
+  const escapeForJs = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+  const msgEscaped = escapeForJs(`authorization:github:${message}:${content}`);
+  // Opener can be null after redirect through GitHub; guard every use and show fallback.
+  const script = `(function(){var op=window.opener;var done=false;function send(origin){if(done)return;done=true;if(op)try{op.postMessage("${msgEscaped}",origin||"*");}catch(e){}window.close();if(!op)document.getElementById("msg").textContent="This window lost its connection to the admin tab. Close this window, go back to /admin, and click Login with GitHub again. If it keeps happening, try another browser.";}if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},150);})();`;
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'text/html; charset=utf-8' },
-    body: `<html><body><script>${script}<\/script><p>Completing sign-in…</p><\/body><\/html>`,
+    body: `<html><body><p id="msg">Completing sign-in…</p><script>${script}<\/script><\/body><\/html>`,
   };
 }
