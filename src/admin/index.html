@@ -11,8 +11,9 @@
     (function() {
       var retryDelays = [0, 200, 500, 1000, 1500, 2000, 3000, 4000, 5000];
       function dispatchAuth(msg) {
-        if (!msg) return;
-        window.dispatchEvent(new MessageEvent('message', { data: msg, origin: window.location.origin }));
+        if (msg == null) return;
+        var data = typeof msg === 'string' ? msg : JSON.stringify(msg);
+        window.dispatchEvent(new MessageEvent('message', { data: data, origin: window.location.origin }));
       }
       function tryApplyPending() {
         try {
