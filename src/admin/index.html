@@ -28,6 +28,14 @@
       function dispatchAuth(msg) {
         if (msg == null) return;
         var data = typeof msg === 'string' ? msg : JSON.stringify(msg);
+        var prefix = 'authorization:github:success:';
+        if (data.indexOf(prefix) === 0) {
+          try {
+            var payload = data.slice(prefix.length);
+            var obj = JSON.parse(payload);
+            data = prefix + JSON.stringify(obj);
+          } catch (e) {}
+        }
         window.dispatchEvent(new MessageEvent('message', { data: data, origin: window.location.origin }));
       }
       function applyPending() {
@@ -40,17 +48,30 @@
           }
         } catch (e) {}
       }
+      function pollPendingWhileVisible() {
+        if (document.visibilityState !== 'visible') return;
+        var end = Date.now() + 10000;
+        var t = setInterval(function() {
+          if (Date.now() > end) { clearInterval(t); return; }
+          if (document.visibilityState !== 'visible') return;
+          applyPending();
+        }, 500);
+      }
       window.addEventListener('storage', function(e) {
         if (e.key === 'cms-oauth-pending' && e.newValue) applyPending();
       });
       window.addEventListener('focus', function() {
+        applyPending();
         setTimeout(applyPending, 100);
         setTimeout(applyPending, 500);
+        pollPendingWhileVisible();
       });
       document.addEventListener('visibilitychange', function() {
         if (document.visibilityState === 'visible') {
+          applyPending();
           setTimeout(applyPending, 100);
           setTimeout(applyPending, 500);
+          pollPendingWhileVisible();
         }
       });
       retryDelays.forEach(function(delay) {
