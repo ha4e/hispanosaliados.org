@@ -33,7 +33,7 @@ All **page content** lives in the **`src/content`** folder. Each file correspond
 | `privacy.md` | **Privacy Policy** |
 | `404.md` | **404 (Page not found)** message |
 
-**Note:** The **Volunteer Spotlight** on the Get Involved page is in **`spotlights.edn`** in each content folder (`src/content/en/spotlights.edn` and `src/content/es/spotlights.edn`). If you need to change a spotlight, ask a developer or someone familiar with the project to update it.
+**Note:** The **Volunteer Spotlight** on the Get Involved page is edited in **Decap CMS** (site **/admin**). The data lives in **`spotlights.json`** in each content folder (`src/content/en/spotlights.json` and `src/content/es/spotlights.json`).
 
 ---
 

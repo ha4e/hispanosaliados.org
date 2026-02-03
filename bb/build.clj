@@ -2,7 +2,6 @@
 
 (require '[clojure.java.io :as io]
          '[clojure.string :as str]
-         '[clojure.edn :as edn]
          '[babashka.json :as json]
          '[babashka.fs :as fs]
          '[babashka.process :as p])
@@ -579,21 +578,11 @@
           true)))))
 
 (defn read-spotlights [locale]
-  "Read spotlights for locale from src/content/<locale>/spotlights.json (Decap CMS), fallback to spotlights.edn."
-  (let [json-file (io/file (str "src/content/" locale "/spotlights.json"))
-        edn-file (io/file (str "src/content/" locale "/spotlights.edn"))
-        legacy-edn (io/file "src/content/spotlights.edn")]
-    (cond
-      (.exists json-file)
+  "Read spotlights for locale from src/content/<locale>/spotlights.json (Decap CMS)."
+  (let [json-file (io/file (str "src/content/" locale "/spotlights.json"))]
+    (when (.exists json-file)
       (try (json/read-str (slurp (.getPath json-file)))
-           (catch Exception _ nil))
-      (.exists edn-file)
-      (try (edn/read-string (slurp (.getPath edn-file)))
-           (catch Exception _ nil))
-      (.exists legacy-edn)
-      (try (edn/read-string (slurp (.getPath legacy-edn)))
-           (catch Exception _ nil))
-      :else nil)))
+           (catch Exception _ nil)))))
 
 (def ^:private max-previous-spotlights 6)
 
