@@ -41,17 +41,26 @@ exports.handler = async (event) => {
   return htmlResponse('success', content);
 };
 
+function escapeForJsString(s) {
+  return String(s)
+    .replace(/\\/g, '\\\\')
+    .replace(/"/g, '\\"')
+    .replace(/\n/g, '\\n')
+    .replace(/\r/g, '\\r')
+    .replace(/<\/script/gi, '<\\/script');
+}
+
 function htmlResponse(message, content) {
   const authMsg = `authorization:github:${message}:${content}`;
-  const authMsgJson = JSON.stringify(authMsg);
-  // When opener is null, write to localStorage immediately so closing the window doesn't lose the token.
-  const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;if(op&&rawMsg)try{op.postMessage(rawMsg,origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}else if(rawMsg){try{localStorage.setItem("cms-oauth-pending",rawMsg);}catch(e){}document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";}}if(!op&&rawMsg){send();}else{if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);}})();`;
+  const authMsgEscaped = escapeForJsString(authMsg);
+  // Decap netlify-auth expects event.data to be a string (calls .indexOf). Always send string via postMessage.
+  const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(op&&msg)try{op.postMessage(msg,origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}else if(msg){try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";}}if(!op&&rawMsg){send();}else{if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);}})();`;
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
     },
-    body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG=${authMsgJson};<\/script><script>${script}<\/script><\/body><\/html>`,
+    body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG="${authMsgEscaped}";<\/script><script>${script}<\/script><\/body><\/html>`,
   };
 }
