@@ -15,6 +15,11 @@ plugins/cache-images/package-lock.json
 # Plugin: shadow-cljs build cache (only target/cache-images.js is committed)
 plugins/cache-images/.shadow-cljs/
 
+# Netlify functions: lockfile optional (cms-auth.js, cms-callback.js are checked in)
+netlify/functions/package-lock.json
+# Netlify functions: shadow-cljs build cache (compiled JS is committed, no Java on CI)
+netlify/functions/.shadow-cljs/
+
 # IDE
 .vscode/
 .idea/
