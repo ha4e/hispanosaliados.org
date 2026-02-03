@@ -72,6 +72,18 @@
     {{head-extra}}
 </head>
 <body>
+    <!-- Netlify Identity: send invite/confirmation/recovery links to /admin where the widget can set password -->
+    <script>
+(function() {
+  var h = window.location.hash || '';
+  if (h.indexOf('invite_token=') !== -1 || h.indexOf('confirmation_token=') !== -1 || h.indexOf('recovery_token=') !== -1 || h.indexOf('email_change_token=') !== -1) {
+    var path = window.location.pathname;
+    if (path !== '/admin/' && path !== '/admin') {
+      window.location.replace('/admin' + (window.location.search || '') + h);
+    }
+  }
+})();
+    </script>
     <header role="banner">
         <nav class="navbar" role="navigation" aria-label="{{aria_nav_label}}">
             <div class="container">
