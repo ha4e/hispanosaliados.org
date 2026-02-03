@@ -72,25 +72,6 @@
     {{head-extra}}
 </head>
 <body>
-    <!-- Netlify Identity: send invite/confirmation/recovery links to dedicated page so the widget can set password (Decap on /admin overwrites the hash) -->
-    <script>
-(function() {
-  var path = window.location.pathname;
-  if (path.indexOf('/admin/accept-invite') !== -1) return;
-  var h = (window.location.hash || '').replace(/^#\/?/, '');
-  var q = window.location.search || '';
-  var tokenInHash = /(invite|confirmation|recovery|email_change)_token=/.test(h);
-  var tokenInQuery = /(invite|confirmation|recovery|email_change)_token=/.test(q);
-  if (tokenInHash) {
-    window.location.replace('/admin/accept-invite.html' + q + '#' + h);
-    return;
-  }
-  if (tokenInQuery) {
-    var hashPart = q.replace(/^\?/, '').split('&').filter(function(p) { return /^(invite|confirmation|recovery|email_change)_token=/.test(p); }).join('&');
-    window.location.replace('/admin/accept-invite.html#' + hashPart);
-  }
-})();
-    </script>
     <header role="banner">
         <nav class="navbar" role="navigation" aria-label="{{aria_nav_label}}">
             <div class="container">
