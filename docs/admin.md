@@ -35,7 +35,7 @@ After that, `/admin` → “Login with GitHub” opens the proxy at `/auth`, whi
 This project previously used Netlify Identity + Git Gateway (both deprecated). It now uses:
 
 - **Backend:** `github` with repo `ha4e/hispanosaliados.org`
-- **Auth:** Our OAuth proxy (`netlify/functions/cms-auth.js`, `cms-callback.js`) with a dedicated GitHub OAuth App
+- **Auth:** Our OAuth proxy (`netlify/functions/cms-auth.js`, `cms-callback.js`) with a dedicated GitHub OAuth App. Source is ClojureScript in `netlify/functions/src/`; the compiled JS is checked in so Netlify builds do not require Java. Rebuild with `make netlify-fns` after editing the `.cljs` files.
 
 You can turn off **Identity** and **Git Gateway** in Netlify (Site configuration → Identity / Git Gateway). The “Authentication Providers” OAuth in Netlify (api.netlify.com/auth/done) is not used for the CMS; the CMS uses the proxy above.
 
@@ -52,7 +52,7 @@ So it’s expected that Lighthouse’s SEO audit reports “Page is blocked from
 
 Lighthouse performance scores for `/admin` are largely driven by the **Decap CMS** JavaScript bundle (loaded from unpkg). The bundle is large and causes most of the main-thread time and total blocking time (e.g. TBT ~900 ms, LCP ~1.8 s with most time in “element render delay”). That’s a limitation of the CMS; improving scores significantly would require self-hosting or switching to a lighter editor.
 
-**Content Security Policy (CSP):** Decap CMS uses `eval()`-style code, so we allow string evaluation via `script-src ... 'unsafe-eval'` for `/admin` (in `src/_headers`, including the block at the end so it wins over the catch-all) and for the OAuth callback (in `netlify/functions/cms-callback.js` response headers). If a tool still reports “script-src blocked” or “CSP prevents evaluation”, verify the **deployed** response headers (DevTools → Network → select the request → Response Headers); `_headers` only apply on Netlify, not when serving locally.
+**Content Security Policy (CSP):** Decap CMS uses `eval()`-style code, so we allow string evaluation via `script-src ... 'unsafe-eval'` for `/admin` (in `src/_headers`, including the block at the end so it wins over the catch-all) and for the OAuth callback (in the cms-callback function’s response headers, built from `netlify/functions/src/cms_callback.cljs`). If a tool still reports “script-src blocked” or “CSP prevents evaluation”, verify the **deployed** response headers (DevTools → Network → select the request → Response Headers); `_headers` only apply on Netlify, not when serving locally.
 
 **Lighthouse clues that affected sign-in:**
 
