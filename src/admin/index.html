@@ -9,12 +9,23 @@
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
   <script>
     (function() {
+      function applyPending() {
+        try {
+          var msg = localStorage.getItem('cms-oauth-pending');
+          if (msg) {
+            localStorage.removeItem('cms-oauth-pending');
+            window.dispatchEvent(new MessageEvent('message', { data: msg, origin: window.location.origin }));
+          }
+        } catch (e) {}
+      }
       window.addEventListener('storage', function(e) {
         if (e.key === 'cms-oauth-pending' && e.newValue) {
           try { localStorage.removeItem('cms-oauth-pending'); } catch (err) {}
           window.dispatchEvent(new MessageEvent('message', { data: e.newValue, origin: window.location.origin }));
         }
       });
+      window.addEventListener('focus', applyPending);
+      applyPending();
     })();
   </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" defer></script>
