@@ -22,48 +22,6 @@
       };
     })();
   </script>
-  <script>
-    (function() {
-      var retryDelays = [0, 300, 1000, 2000];
-      function dispatchAuth(msg) {
-        if (msg == null) return;
-        var data = typeof msg === 'string' ? msg : JSON.stringify(msg);
-        var prefix = 'authorization:github:success:';
-        if (data.indexOf(prefix) === 0) {
-          try {
-            var payload = data.slice(prefix.length);
-            var obj = JSON.parse(payload);
-            data = prefix + JSON.stringify(obj);
-          } catch (e) {}
-        }
-        window.dispatchEvent(new MessageEvent('message', { data: data, origin: window.location.origin }));
-      }
-      function applyPending() {
-        try {
-          var msg = localStorage.getItem('cms-oauth-pending');
-          if (msg) retryDelays.forEach(function(d) { setTimeout(function() { dispatchAuth(msg); }, d); });
-        } catch (e) {}
-      }
-      window.addEventListener('storage', function(e) {
-        if (e.key === 'cms-oauth-pending' && e.newValue) applyPending();
-      });
-      window.addEventListener('focus', function() { applyPending(); });
-      document.addEventListener('visibilitychange', function() {
-        if (document.visibilityState === 'visible') applyPending();
-      });
-      retryDelays.forEach(function(delay) {
-        setTimeout(function() {
-          try {
-            var msg = localStorage.getItem('cms-oauth-pending');
-            if (msg) retryDelays.forEach(function(d) { setTimeout(function() { dispatchAuth(msg); }, d); });
-          } catch (e) {}
-        }, delay);
-      });
-      setTimeout(function() {
-        try { if (localStorage.getItem('cms-oauth-pending')) localStorage.removeItem('cms-oauth-pending'); } catch (e) {}
-      }, 12000);
-    })();
-  </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" defer></script>
 </head>
 <body>
