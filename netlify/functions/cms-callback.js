@@ -68,8 +68,8 @@ function htmlResponse(message, content) {
   const authMsg = `authorization:github:${message}:${content}`;
   const authMsgEscaped = escapeForJsString(authMsg);
   // Decap netlify-auth expects event.data to be a string (calls .indexOf). Always send string via postMessage.
-  const script = `(function(){var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(!msg)return;try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}var isError=rawMsg.indexOf("authorization:github:error:")===0;var btn=document.getElementById("complete-btn");if(isError){if(btn)btn.style.display="none";var esc=rawMsg.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");document.getElementById("msg").innerHTML="Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\"white-space:pre-wrap;font-size:12px;\\">"+esc+"</pre>";return;}if(window.opener){try{window.opener.postMessage("authorizing:github","*");setTimeout(function(){try{window.opener.postMessage(msg,"*");}catch(e){}},400);}catch(e){}}
-document.getElementById("msg").textContent="Sign-in complete. You can close this window.";if(btn){btn.onclick=function(){if(window.opener&&msg){try{if(window.opener.focus)window.opener.focus();window.opener.postMessage(msg,"*");document.getElementById("msg").textContent="Sent. You can close this window.";setTimeout(function(){window.close();},1500);}catch(e){document.getElementById("msg").textContent="Switch to the admin tab, then close this window.";}}else{document.getElementById("msg").textContent="Switch to the admin tab, then close this window.";};}}}if(rawMsg){setTimeout(send,100);}})();`;
+  const script = `(function(){setTimeout(function(){var rawMsg=window.CMS_OAUTH_MSG;if(!rawMsg)return;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);var isError=rawMsg.indexOf("authorization:github:error:")===0;if(isError){var esc=rawMsg.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");document.getElementById("msg").innerHTML="Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\"white-space:pre-wrap;font-size:12px;\\">"+esc+"</pre>";return;}if(window.opener){try{window.opener.postMessage("authorizing:github","*");setTimeout(function(){try{window.opener.postMessage(msg,"*");}catch(e){}},400);}catch(e){}}
+document.getElementById("msg").textContent="Sign-in complete. You can close this window.";},100);})();`;
   return {
     statusCode: 200,
     headers: {
@@ -77,6 +77,6 @@ document.getElementById("msg").textContent="Sign-in complete. You can close this
       'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
       'Cross-Origin-Opener-Policy': 'unsafe-none',
     },
-    body: `<html><body><p id="msg">Completing sign-in…</p><button id="complete-btn" type="button" style="margin-top:0.5rem;padding:0.5rem 1rem;font-size:1rem;cursor:pointer;">Complete sign-in in admin tab</button><script>window.CMS_OAUTH_MSG="${authMsgEscaped}";<\/script><script>${script}<\/script><\/body><\/html>`,
+    body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG="${authMsgEscaped}";<\/script><script>${script}<\/script><\/body><\/html>`,
   };
 }
