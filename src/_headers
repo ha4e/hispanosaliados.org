@@ -1,9 +1,7 @@
 # Admin (Decap CMS): noindex; CSP must allow unsafe-eval for Decap (see decaporg/decap-cms#5932)
-# COOP unsafe-none so OAuth popup keeps window.opener after GitHub redirect; otherwise callback cannot postMessage and sign-in fails.
 /admin
 /admin/*
   X-Robots-Tag: noindex, nofollow
-  Cross-Origin-Opener-Policy: unsafe-none
   Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.netlify.com https://app.netlify.com https://*.netlify.com
 
 # Security: CSP and hardening (adjust CSP if you add external scripts/fonts)
@@ -64,3 +62,9 @@
 
 /index.html
   Cache-Control: no-cache, no-store, must-revalidate
+
+# COOP + CSP for /admin must come after /* so they win (Netlify: last match wins). Decap needs unsafe-eval; COOP unsafe-none so OAuth popup keeps opener.
+/admin
+/admin/*
+  Cross-Origin-Opener-Policy: unsafe-none
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.netlify.com https://app.netlify.com https://*.netlify.com
