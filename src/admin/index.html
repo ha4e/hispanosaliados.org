@@ -47,6 +47,12 @@
         setTimeout(applyPending, 100);
         setTimeout(applyPending, 500);
       });
+      document.addEventListener('visibilitychange', function() {
+        if (document.visibilityState === 'visible') {
+          setTimeout(applyPending, 100);
+          setTimeout(applyPending, 500);
+        }
+      });
       retryDelays.forEach(function(delay) {
         setTimeout(function() {
           try {
