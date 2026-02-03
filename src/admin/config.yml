@@ -1,7 +1,9 @@
 # Decap CMS config for HA4E. Editors use /admin on the live site.
-# Netlify: enable Identity and Git Gateway so editors can log in without GitHub.
+# Auth: GitHub backend (no deprecated Netlify Identity/Git Gateway).
+# Netlify OAuth: add GitHub provider in Project config > Access & security > OAuth.
 backend:
-  name: git-gateway
+  name: github
+  repo: ha4e/hispanosaliados.org
   branch: main
 
 media_folder: "src/assets/images"
