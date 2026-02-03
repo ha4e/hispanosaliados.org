@@ -1,8 +1,8 @@
-# Admin (Decap CMS): noindex; CSP must allow unsafe-eval for Decap (see decaporg/decap-cms#5932)
+# Admin (Decap CMS): noindex; CSP must allow unsafe-eval for Decap (see decaporg/decap-cms#5932). Decap bundle is self-hosted at /admin/decap-cms.js.
 /admin
 /admin/*
   X-Robots-Tag: noindex, nofollow
-  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com blob: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://unpkg.com https://api.github.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' blob: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.github.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
 
 # Security: CSP and hardening (adjust CSP if you add external scripts/fonts)
 # GiveButter donation widget + Decap CMS admin: union of both so /admin and /* both match without blocking
@@ -63,8 +63,10 @@
 /index.html
   Cache-Control: no-cache, no-store, must-revalidate
 
-# COOP + CSP for /admin must come after /* so they win (Netlify: last match wins). Decap needs unsafe-eval; COOP unsafe-none so OAuth popup keeps opener.
+# COOP + CSP for /admin must come after /* so they win (Netlify: last match wins). Decap needs unsafe-eval; COOP unsafe-none so OAuth popup keeps opener. Decap bundle is self-hosted.
 /admin
 /admin/*
   Cross-Origin-Opener-Policy: unsafe-none
-  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com blob: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://unpkg.com https://api.github.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' blob: 'unsafe-inline' 'unsafe-eval'; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.github.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
+/admin/decap-cms.js
+  Cache-Control: public, max-age=31536000, immutable

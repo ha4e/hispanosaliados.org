@@ -7,9 +7,21 @@
          '[babashka.fs :as fs]
          '[babashka.process :as p])
 
+(defn strip-frontmatter
+  "If content has YAML frontmatter (starts with ---), return only the body. Else return content."
+  [content]
+  (if (and content (str/starts-with? (str/trim content) "---"))
+    (let [trimmed (str/trim content)
+          after-first (subs trimmed 3)
+          close-idx (str/index-of after-first "\n---")]
+      (if close-idx
+        (str/trim (subs after-first (+ close-idx 4)))
+        content))
+    content))
+
 (defn read-markdown [file]
   (when (.exists (io/file file))
-    (slurp file)))
+    (-> (slurp file) strip-frontmatter)))
 
 (defn process-markdown-line [line]
   (cond
@@ -215,11 +227,16 @@
 (defn copy-headers []
   (copy-static-file "src/_headers" "public/_headers"))
 
+(def ^:private decap-cms-version "3.10.0")
+(def ^:private decap-cms-url (str "https://unpkg.com/decap-cms@" decap-cms-version "/dist/decap-cms.js"))
+
 (defn copy-admin
-  "Copy src/admin (Decap CMS) to public/admin so /admin is available on the live site."
+  "Copy src/admin (Decap CMS) to public/admin so /admin is available on the live site.
+   If decap-cms.js is not present in public/admin, download it from unpkg (self-hosted for performance)."
   []
   (let [admin-dir (io/file "src/admin")
-        public-admin "public/admin"]
+        public-admin "public/admin"
+        decap-dest (str public-admin "/decap-cms.js")]
     (when (.exists admin-dir)
       (.mkdirs (io/file public-admin))
       (doseq [f (file-seq admin-dir)]
@@ -227,7 +244,16 @@
           (let [name (.getName f)
                 dest (str public-admin "/" name)]
             (fs/copy (.getPath f) dest {:replace-existing true})
-            (println "Copied admin:" name)))))))
+            (println "Copied admin:" name))))
+      ;; Self-host Decap CMS bundle: download if missing (avoids unpkg redirect + enables caching)
+      (when (not (.exists (io/file decap-dest)))
+        (println "Downloading decap-cms.js for self-hosting...")
+        (let [result (p/process ["curl" "-sL" decap-cms-url "-o" decap-dest]
+                               {:dir (System/getProperty "user.dir")
+                                :out :string :err :string})]
+          (if (= (:exit @result) 0)
+            (println "Downloaded decap-cms.js (" decap-cms-version ")")
+            (println "Warning: failed to download decap-cms.js:" (:err @result))))))))
 
 (def ^:private sitemap-base "https://www.hispanosaliados.org")
 
