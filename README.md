@@ -17,7 +17,12 @@ ha4e/
 ├── src/
 │   ├── templates/          # HTML templates
 │   ├── content/             # Markdown content files
-│   └── assets/              # CSS, JS, images
+│   ├── assets/              # CSS, JS, images
+│   ├── admin/               # Decap CMS (config, entry page at /admin)
+│   ├── _headers             # Response headers (CSP, cache, etc.)
+│   └── _redirects           # URL rewrites
+├── netlify/
+│   └── functions/          # OAuth proxy for CMS (cms-auth, cms-callback)
 ├── bb/                      # Babashka build scripts
 ├── docs/                    # Project documentation
 ├── plugins/                 # Netlify build plugins (e.g. cache-images)
@@ -48,7 +53,7 @@ make serve
 
 Deploy to Netlify by connecting the repository. The build runs `scripts/netlify-build.sh`, which installs Babashka (if needed) and runs `make build`. Publish directory is `public/`.
 
-For staff who update **content** (text) only: edit Markdown files in `src/content/` via GitHub; Netlify builds and deploys automatically. See [docs/website-maintenance.md](docs/website-maintenance.md).
+For staff who update **content**: edit Markdown/JSON in `src/content/` via GitHub, or use the **web editor** at `/admin` (Decap CMS, GitHub sign-in). See [docs/website-maintenance.md](docs/website-maintenance.md) and [docs/admin.md](docs/admin.md).
 
 ## License and trademarks
 
