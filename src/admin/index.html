@@ -7,6 +7,16 @@
   <title>HA4E Content Editor</title>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+  <script>
+    (function() {
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'cms-oauth-pending' && e.newValue) {
+          try { localStorage.removeItem('cms-oauth-pending'); } catch (err) {}
+          window.dispatchEvent(new MessageEvent('message', { data: e.newValue, origin: window.location.origin }));
+        }
+      });
+    })();
+  </script>
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js" defer></script>
 </head>
 <body>

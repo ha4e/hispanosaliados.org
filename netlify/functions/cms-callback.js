@@ -42,15 +42,13 @@ exports.handler = async (event) => {
 };
 
 function htmlResponse(message, content) {
-  // Escape for embedding in a JS double-quoted string: backslash, quote, newline
-  const escapeForJs = (s) => String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
-  const msgEscaped = escapeForJs(`authorization:github:${message}:${content}`);
-  // Opener can be null after redirect through GitHub; guard every use and show fallback.
-  // Wait 500ms before sending token so parent has time to attach listener; delay close so message is delivered.
-  const script = `(function(){var op=window.opener;var done=false;function send(origin){if(done)return;done=true;if(op)try{op.postMessage("${msgEscaped}",origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}if(!op)document.getElementById("msg").textContent="This window lost its connection to the admin tab. Close this window, go back to /admin, and click Login with GitHub again. If it keeps happening, try another browser.";}if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);})();`;
+  const authMsg = `authorization:github:${message}:${content}`;
+  const authMsgJson = JSON.stringify(authMsg);
+  // When opener is null we store the raw message in localStorage so the admin tab can complete login via storage event.
+  const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;if(op&&rawMsg)try{op.postMessage(rawMsg,origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}else if(rawMsg){try{localStorage.setItem("cms-oauth-pending",rawMsg);}catch(e){}document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";}if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);})();`;
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'text/html; charset=utf-8' },
-    body: `<html><body><p id="msg">Completing sign-in…</p><script>${script}<\/script><\/body><\/html>`,
+    body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG=${authMsgJson};<\/script><script>${script}<\/script><\/body><\/html>`,
   };
 }
