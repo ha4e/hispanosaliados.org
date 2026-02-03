@@ -5,26 +5,21 @@
   (:require [clojure.string :as str]
             [goog.object :as gobj]))
 
-(defn- escape-for-js-string [s]
-  (-> (str s)
-      (str/replace #"\\" "\\\\")
-      (str/replace #"\"" "\\\"")
-      (str/replace #"\n" "\\n")
-      (str/replace #"\r" "\\r")
-      (str/replace #"(?i)</script" "<\\/script")))
+(defn- escape-for-json-script [s]
+  "Escape payload so it can be placed inside <script type=\"application/json\"> without closing the tag."
+  (str/replace (str s) #"(?i)</script" "<\\/script"))
 
 (def ^:private inline-script
-  "(function(){setTimeout(function(){var rawMsg=window.CMS_OAUTH_MSG;if(!rawMsg)return;var msg=typeof rawMsg===\"string\"?rawMsg:JSON.stringify(rawMsg);var isError=rawMsg.indexOf(\"authorization:github:error:\")===0;if(isError){var esc=rawMsg.replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\");document.getElementById(\"msg\").innerHTML=\"Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\\\\"white-space:pre-wrap;font-size:12px;\\\\\">\"+esc+\"</pre>\";return;}if(window.opener){try{window.opener.postMessage(\"authorizing:github\",\"*\");setTimeout(function(){try{window.opener.postMessage(msg,\"*\");}catch(e){}},400);}catch(e){}}
-document.getElementById(\"msg\").textContent=\"Sign-in complete. You can close this window.\";},100);})();")
+  "(function(){setTimeout(function(){var el=document.getElementById(\"cms-oauth-msg\");var rawMsg=el?el.textContent:null;if(!rawMsg||!rawMsg.trim()){document.getElementById(\"msg\").textContent=\"No response. Close this window and try again.\";return;}var msg=rawMsg.trim();var isError=msg.indexOf(\"authorization:github:error:\")===0;if(isError){var esc=msg.replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\");document.getElementById(\"msg\").innerHTML=\"Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\\"white-space:pre-wrap;font-size:12px;\\\">\"+esc+\"</pre>\";return;}if(window.opener){try{window.opener.postMessage(\"authorizing:github\",\"*\");setTimeout(function(){try{window.opener.postMessage(msg,\"*\");}catch(e){}},400);}catch(e){}}document.getElementById(\"msg\").textContent=\"Sign-in complete. You can close this window.\";},100);})();")
 
 (defn- html-response [message content]
   (let [auth-msg (str "authorization:github:" message ":" content)
-        escaped (escape-for-js-string auth-msg)
-        body (str "<html><body><p id=\"msg\">Completing sign-in…</p><script>window.CMS_OAUTH_MSG=\""
-                  escaped
-                  "\";<\\/script><script>"
+        safe-payload (escape-for-json-script auth-msg)
+        body (str "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Signing in…</title></head><body><main><p id=\"msg\">Completing sign-in…</p></main><script type=\"application/json\" id=\"cms-oauth-msg\">"
+                  safe-payload
+                  "<\\/script><script>"
                   inline-script
-                  "<\\/script><\\/body><\\/html>")]
+                  "<\\/script></body></html>")]
     (clj->js {:statusCode 200
               :headers (clj->js {"Content-Type" "text/html; charset=utf-8"
                                  "Content-Security-Policy" "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';"
