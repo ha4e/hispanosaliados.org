@@ -24,52 +24,36 @@
   </script>
   <script>
     (function() {
-      var retryDelays = [0, 200, 500, 1000, 1500, 2000, 3000, 4000, 5000];
+      var retryDelays = [0, 200, 500, 1000, 1500, 2000, 3000, 4000, 5000, 7000, 10000];
       function dispatchAuth(msg) {
         if (msg == null) return;
         var data = typeof msg === 'string' ? msg : JSON.stringify(msg);
         window.dispatchEvent(new MessageEvent('message', { data: data, origin: window.location.origin }));
       }
-      function tryApplyPending() {
-        try {
-          var msg = localStorage.getItem('cms-oauth-pending');
-          if (msg) {
-            dispatchAuth(msg);
-            return true;
-          }
-        } catch (e) {}
-        return false;
-      }
-      function applyPendingAndClear() {
+      function applyPending() {
         try {
           var msg = localStorage.getItem('cms-oauth-pending');
           if (msg) {
             retryDelays.forEach(function(delay) {
               setTimeout(function() { dispatchAuth(msg); }, delay);
             });
-            try { localStorage.removeItem('cms-oauth-pending'); } catch (e) {}
           }
         } catch (e) {}
       }
-      function retryDispatch(msg) {
-        retryDelays.forEach(function(delay) {
-          setTimeout(function() { dispatchAuth(msg); }, delay);
-        });
-      }
       window.addEventListener('storage', function(e) {
-        if (e.key === 'cms-oauth-pending' && e.newValue) {
-          retryDispatch(e.newValue);
-        }
+        if (e.key === 'cms-oauth-pending' && e.newValue) applyPending();
       });
       window.addEventListener('focus', function() {
-        setTimeout(applyPendingAndClear, 100);
-        setTimeout(applyPendingAndClear, 500);
+        setTimeout(applyPending, 100);
+        setTimeout(applyPending, 500);
       });
       retryDelays.forEach(function(delay) {
         setTimeout(function() {
           try {
             var msg = localStorage.getItem('cms-oauth-pending');
-            if (msg) retryDispatch(msg);
+            if (msg) retryDelays.forEach(function(d) {
+              setTimeout(function() { dispatchAuth(msg); }, d);
+            });
           } catch (e) {}
         }, delay);
       });
