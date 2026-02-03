@@ -19,6 +19,8 @@ plugins/cache-images/.shadow-cljs/
 netlify/functions/package-lock.json
 # Netlify functions: shadow-cljs build cache (compiled JS is committed, no Java on CI)
 netlify/functions/.shadow-cljs/
+# shadow-cljs build manifest (regenerated on first build; used in plugins/ and netlify/functions)
+manifest.edn
 
 # IDE
 .vscode/
