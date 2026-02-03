@@ -80,5 +80,24 @@ collections:
               - { label: "Año", name: "year", widget: "number" }
               - { label: "Descripción", name: "blurb", widget: "markdown", required: false }
 
-# Page content (src/content/en/*.md and es/*.md) can be edited in GitHub for now.
-# To add page editing here later: use folder collections with format frontmatter and a body field.
+  - name: "pages-en"
+    label: "Pages (English)"
+    folder: "src/content/en"
+    extension: "md"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string", required: false, hint: "Optional; used for new pages. Existing pages use filename." }
+      - { label: "Body", name: "body", widget: "markdown" }
+
+  - name: "pages-es"
+    label: "Pages (Spanish)"
+    folder: "src/content/es"
+    extension: "md"
+    format: "frontmatter"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Título", name: "title", widget: "string", required: false, hint: "Opcional; para páginas nuevas. Las existentes usan el nombre del archivo." }
+      - { label: "Cuerpo", name: "body", widget: "markdown" }
