@@ -12,63 +12,69 @@ locale: "en"
 collections:
   - name: "spotlights-en"
     label: "Volunteer Spotlight (English)"
-    file: "src/content/en/spotlights.json"
-    format: "json"
-    fields:
-      - label: "Current spotlight"
-        name: "current"
-        widget: "object"
-        collapsed: false
+    files:
+      - label: "Spotlights"
+        name: "spotlights"
+        file: "src/content/en/spotlights.json"
+        format: "json"
         fields:
-          - { label: "Name", name: "name", widget: "string" }
-          - { label: "Role", name: "role", widget: "string" }
-          - { label: "URL (e.g. LinkedIn)", name: "url", widget: "string", required: false }
-          - { label: "Image path", name: "image", widget: "string", hint: "e.g. /assets/images/spotlights/january-2026.jpg" }
-          - { label: "Month", name: "month", widget: "string", hint: "e.g. January" }
-          - { label: "Year", name: "year", widget: "number" }
-          - { label: "Blurb (markdown ok)", name: "blurb", widget: "markdown" }
-      - label: "Previous spotlights"
-        name: "previous"
-        widget: "list"
-        summary: "{{fields.name}} ({{fields.month}} {{fields.year}})"
-        fields:
-          - { label: "Name", name: "name", widget: "string" }
-          - { label: "Role", name: "role", widget: "string" }
-          - { label: "URL", name: "url", widget: "string", required: false }
-          - { label: "Image path", name: "image", widget: "string", required: false }
-          - { label: "Month", name: "month", widget: "string" }
-          - { label: "Year", name: "year", widget: "number" }
-          - { label: "Blurb", name: "blurb", widget: "markdown", required: false }
+          - label: "Current spotlight"
+            name: "current"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "URL (e.g. LinkedIn)", name: "url", widget: "string", required: false }
+              - { label: "Image path", name: "image", widget: "string", hint: "e.g. /assets/images/spotlights/january-2026.jpg" }
+              - { label: "Month", name: "month", widget: "string", hint: "e.g. January" }
+              - { label: "Year", name: "year", widget: "number" }
+              - { label: "Blurb (markdown ok)", name: "blurb", widget: "markdown" }
+          - label: "Previous spotlights"
+            name: "previous"
+            widget: "list"
+            summary: "{{fields.name}} ({{fields.month}} {{fields.year}})"
+            fields:
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Role", name: "role", widget: "string" }
+              - { label: "URL", name: "url", widget: "string", required: false }
+              - { label: "Image path", name: "image", widget: "string", required: false }
+              - { label: "Month", name: "month", widget: "string" }
+              - { label: "Year", name: "year", widget: "number" }
+              - { label: "Blurb", name: "blurb", widget: "markdown", required: false }
 
   - name: "spotlights-es"
     label: "Volunteer Spotlight (Spanish)"
-    file: "src/content/es/spotlights.json"
-    format: "json"
-    fields:
-      - label: "Spotlight actual"
-        name: "current"
-        widget: "object"
-        collapsed: false
+    files:
+      - label: "Spotlights"
+        name: "spotlights"
+        file: "src/content/es/spotlights.json"
+        format: "json"
         fields:
-          - { label: "Nombre", name: "name", widget: "string" }
-          - { label: "Rol", name: "role", widget: "string" }
-          - { label: "URL (ej. LinkedIn)", name: "url", widget: "string", required: false }
-          - { label: "Ruta de imagen", name: "image", widget: "string", hint: "ej. /assets/images/spotlights/january-2026.jpg" }
-          - { label: "Mes", name: "month", widget: "string", hint: "ej. Enero" }
-          - { label: "Año", name: "year", widget: "number" }
-          - { label: "Descripción (markdown ok)", name: "blurb", widget: "markdown" }
-      - label: "Spotlights anteriores"
-        name: "previous"
-        widget: "list"
-        summary: "{{fields.name}} ({{fields.month}} {{fields.year}})"
-        fields:
-          - { label: "Nombre", name: "name", widget: "string" }
-          - { label: "Rol", name: "role", widget: "string" }
-          - { label: "URL", name: "url", widget: "string", required: false }
-          - { label: "Ruta de imagen", name: "image", widget: "string", required: false }
-          - { label: "Mes", name: "month", widget: "string" }
-          - { label: "Año", name: "year", widget: "number" }
-          - { label: "Descripción", name: "blurb", widget: "markdown", required: false }
+          - label: "Spotlight actual"
+            name: "current"
+            widget: "object"
+            collapsed: false
+            fields:
+              - { label: "Nombre", name: "name", widget: "string" }
+              - { label: "Rol", name: "role", widget: "string" }
+              - { label: "URL (ej. LinkedIn)", name: "url", widget: "string", required: false }
+              - { label: "Ruta de imagen", name: "image", widget: "string", hint: "ej. /assets/images/spotlights/january-2026.jpg" }
+              - { label: "Mes", name: "month", widget: "string", hint: "ej. Enero" }
+              - { label: "Año", name: "year", widget: "number" }
+              - { label: "Descripción (markdown ok)", name: "blurb", widget: "markdown" }
+          - label: "Spotlights anteriores"
+            name: "previous"
+            widget: "list"
+            summary: "{{fields.name}} ({{fields.month}} {{fields.year}})"
+            fields:
+              - { label: "Nombre", name: "name", widget: "string" }
+              - { label: "Rol", name: "role", widget: "string" }
+              - { label: "URL", name: "url", widget: "string", required: false }
+              - { label: "Ruta de imagen", name: "image", widget: "string", required: false }
+              - { label: "Mes", name: "month", widget: "string" }
+              - { label: "Año", name: "year", widget: "number" }
+              - { label: "Descripción", name: "blurb", widget: "markdown", required: false }
 
 # Page content (src/content/en/*.md and es/*.md) can be edited in GitHub for now.
 # To add page editing here later: use folder collections with format frontmatter and a body field.
