@@ -48,7 +48,10 @@ function htmlResponse(message, content) {
   const script = `(function(){var op=window.opener;var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(origin){if(done)return;done=true;if(op&&rawMsg)try{op.postMessage(rawMsg,origin||"*");setTimeout(function(){window.close();},300);}catch(e){window.close();}else if(rawMsg){try{localStorage.setItem("cms-oauth-pending",rawMsg);}catch(e){}document.getElementById("msg").textContent="Close this window; the admin tab will complete sign-in.";}}if(!op&&rawMsg){send();}else{if(op)try{op.postMessage("authorizing:github","*");}catch(e){}setTimeout(function(){send("*");},500);}})();`;
   return {
     statusCode: 200,
-    headers: { 'Content-Type': 'text/html; charset=utf-8' },
+    headers: {
+      'Content-Type': 'text/html; charset=utf-8',
+      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
+    },
     body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG=${authMsgJson};<\/script><script>${script}<\/script><\/body><\/html>`,
   };
 }
