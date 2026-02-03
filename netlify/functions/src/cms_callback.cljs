@@ -5,8 +5,9 @@
   (:require [clojure.string :as str]
             [goog.object :as gobj]))
 
-(defn- escape-for-json-script [s]
+(defn- escape-for-json-script
   "Escape payload so it can be placed inside <script type=\"application/json\"> without closing the tag."
+  [s]
   (str/replace (str s) #"(?i)</script" "<\\/script"))
 
 (def ^:private inline-script
