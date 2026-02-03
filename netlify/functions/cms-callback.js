@@ -68,13 +68,13 @@ function htmlResponse(message, content) {
   const authMsg = `authorization:github:${message}:${content}`;
   const authMsgEscaped = escapeForJsString(authMsg);
   // Decap netlify-auth expects event.data to be a string (calls .indexOf). Always send string via postMessage.
-  const script = `(function(){var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(!msg)return;try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}var isError=rawMsg.indexOf("authorization:github:error:")===0;if(isError){var esc=rawMsg.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");document.getElementById("msg").innerHTML="Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\"white-space:pre-wrap;font-size:12px;\\">"+esc+"</pre>";return;}document.getElementById("msg").textContent="Sign-in complete. Switch back to the admin tab, then close this window.";}if(rawMsg){setTimeout(send,100);}})();`;
+  const script = `(function(){var rawMsg=window.CMS_OAUTH_MSG;var done=false;function send(){if(done)return;done=true;var msg=typeof rawMsg==="string"?rawMsg:JSON.stringify(rawMsg);if(!msg)return;try{localStorage.setItem("cms-oauth-pending",msg);}catch(e){}var isError=rawMsg.indexOf("authorization:github:error:")===0;if(isError){var esc=rawMsg.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");document.getElementById("msg").innerHTML="Sign-in failed. Copy this and fix the issue, then close this window:<br><pre style=\\"white-space:pre-wrap;font-size:12px;\\">"+esc+"</pre>";return;}document.getElementById("msg").textContent="Sign-in complete. Click the button below so the admin tab can finish.";var btn=document.getElementById("complete-btn");if(btn){btn.style.display="inline-block";btn.onclick=function(){if(window.opener&&msg)try{window.opener.postMessage(msg,"*");}catch(e){}setTimeout(function(){window.close();},200);};}if(rawMsg){setTimeout(send,100);}})();`;
   return {
     statusCode: 200,
     headers: {
       'Content-Type': 'text/html; charset=utf-8',
       'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline';",
     },
-    body: `<html><body><p id="msg">Completing sign-in…</p><script>window.CMS_OAUTH_MSG="${authMsgEscaped}";<\/script><script>${script}<\/script><\/body><\/html>`,
+    body: `<html><body><p id="msg">Completing sign-in…</p><button id="complete-btn" type="button" style="display:none;margin-top:0.5rem;padding:0.4rem 0.8rem;">Complete sign-in in admin tab</button><script>window.CMS_OAUTH_MSG="${authMsgEscaped}";<\/script><script>${script}<\/script><\/body><\/html>`,
   };
 }
