@@ -2,7 +2,7 @@
 /admin
 /admin/*
   X-Robots-Tag: noindex, nofollow
-  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.netlify.com https://app.netlify.com https://*.netlify.com
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://unpkg.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
 
 # Security: CSP and hardening (adjust CSP if you add external scripts/fonts)
 # GiveButter donation widget + Decap CMS admin: union of both so /admin and /* both match without blocking
@@ -67,4 +67,4 @@
 /admin
 /admin/*
   Cross-Origin-Opener-Policy: unsafe-none
-  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://api.netlify.com https://app.netlify.com https://*.netlify.com
+  Content-Security-Policy: default-src 'self'; img-src 'self' https: data:; script-src 'self' https://unpkg.com 'unsafe-inline' 'unsafe-eval'; style-src 'self' https://unpkg.com 'unsafe-inline'; frame-src 'self' https://app.netlify.com; connect-src 'self' https://unpkg.com https://api.netlify.com https://app.netlify.com https://*.netlify.com
